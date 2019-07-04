@@ -1,0 +1,55 @@
+package kartollika.recipiesbook.features.adapters
+
+import android.content.Context
+import android.view.LayoutInflater
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import kartollika.recipiesbook.R
+import kartollika.recipiesbook.data.models.Ingredient
+
+interface IngredientActionsListener {
+    fun onCheckedStateChanged(ingredient: String, isChecked: Boolean)
+    fun onDeleteAction(ingredient: String)
+}
+
+class IngredientsAdapter(private val context: Context, private val chipGroup: ChipGroup) {
+
+    private var isCloseIconVisible = false
+
+    constructor(context: Context, chipGroup: ChipGroup, isCloseIconVisible: Boolean) : this(
+        context,
+        chipGroup
+    ) {
+        this.isCloseIconVisible = isCloseIconVisible
+    }
+
+    var ingredientActionsListener: IngredientActionsListener? = null
+
+    fun setupIngredients(ingredientsList: List<Ingredient>) {
+        chipGroup.removeAllViews()
+
+        for (ingredient in ingredientsList) {
+            getNewChipInstance().apply {
+                text = ingredient.name
+                chipGroup.addView(this)
+                isCloseIconVisible = this@IngredientsAdapter.isCloseIconVisible
+
+                setOnCheckedChangeListener { _, isChecked ->
+                    ingredientActionsListener?.onCheckedStateChanged(
+                        this.text as String,
+                        isChecked
+                    )
+                }
+
+                setOnCloseIconClickListener {
+                    ingredientActionsListener?.onDeleteAction(this.text as String)
+                    chipGroup.removeView(this)
+                }
+            }
+        }
+    }
+
+    private fun getNewChipInstance(): Chip {
+        return LayoutInflater.from(context).inflate(R.layout.chip_ingredient, null) as Chip
+    }
+}

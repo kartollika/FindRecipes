@@ -1,4 +1,4 @@
-package kartollika.recipiesbook.data.remote.recipies.request
+package kartollika.recipiesbook.data.remote.search.request
 
 data class RecipeByIngredientRequest(
     var ingredients: String = "",

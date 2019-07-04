@@ -6,12 +6,12 @@ import kartollika.recipiesbook.di.DIManager
 class App : Application() {
 
     companion object {
-        lateinit var applicationComponent: DIManager
+        lateinit var diManager: DIManager
     }
 
     override fun onCreate() {
         super.onCreate()
-        applicationComponent = DIManager(this)
+        diManager = DIManager(this)
     }
 
 }

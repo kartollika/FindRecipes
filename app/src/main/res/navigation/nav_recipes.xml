@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_recipes"
+    app:startDestination="@id/recipiesSearchFragment">
+
+    <fragment
+        android:id="@+id/recipiesSearchFragment"
+        android:name="kartollika.recipiesbook.features.search_by_ingredients.SearchRecipesFragment"
+        android:label="SearchRecipesFragment"
+        tools:layout="@layout/search_recipes_layout" />
+
+    <fragment
+        android:id="@+id/otherMenuItemFragment"
+        android:name="kartollika.recipiesbook.features.search_by_ingredients.OtherFragment"
+        android:label="OtherFragment"
+        tools:layout="@layout/other_fragment_layout" />
+
+
+</navigation>
+
+
+    <!--
+    <navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/android_navigation"
+    app:startDestination="@+id/home_fragment">
+
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.example.androidnavigation.fragments.HomeFragment"
+        tools:layout="@layout/home_fragment">
+
+        <action
+            android:id="@+id/action_goto1"
+            app:destination="@id/first_page_fragment"></action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="com.example.androidnavigation.fragments.ProfileFragment"
+        tools:layout="@layout/home_fragment"></fragment>
+
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.example.androidnavigation.fragments.SettingsFragment"
+        tools:layout="@layout/home_fragment" />
+
+    <fragment
+        android:id="@+id/first_page_fragment"
+        android:name="com.example.androidnavigation.fragments.FirstPageFragment"
+        tools:layout="@layout/first_page_fragment">
+
+        <action
+            android:id="@+id/action_go_home"
+            app:destination="@+id/last_page_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/last_page_fragment"
+        android:name="com.example.androidnavigation.fragments.LastPageFragment"
+        tools:layout="@layout/lastpage_fragment">
+
+        <action
+            android:id="@+id/action_go_home"
+            app:popUpTo="@+id/home_fragment" />
+    </fragment>
+    </navigation>-->

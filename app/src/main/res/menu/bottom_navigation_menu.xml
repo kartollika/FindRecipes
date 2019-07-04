@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/recipiesSearchFragment"
+        android:icon="@drawable/ic_library_books_black_24dp"
+        android:title="Search" />
+    <item
+        android:id="@+id/mealTimeFragment"
+        android:icon="@drawable/ic_date_range_black_24dp"
+        android:title="Meal time" />
+    <item
+        android:id="@+id/otherMenuItemFragment"
+        android:icon="@drawable/ic_menu_black_24dp"
+        android:title="Other" />
+</menu>

@@ -1,4 +1,4 @@
-package kartollika.recipiesbook.data.remote.recipies.response
+package kartollika.recipiesbook.data.remote.search.response
 
 data class RecipeByIngredientResponse(
     var id: Int,
