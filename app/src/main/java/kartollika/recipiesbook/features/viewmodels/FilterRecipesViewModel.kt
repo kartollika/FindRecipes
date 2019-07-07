@@ -15,7 +15,7 @@ class FilterRecipesViewModel
 @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val recipesFilterRepository: RecipesFilterRepository
-) : ViewModel() {
+    ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -34,14 +34,6 @@ class FilterRecipesViewModel
     fun getExcludedIngredients(): LiveData<List<Ingredient>> = excludedIngredientsList
     fun getIntolerancesIngredients(): LiveData<List<Ingredient>> = intoleranceIngredientsList
 
-    private fun loadIncludedIngredients() =
-        recipesFilterRepository.getIncludedIngredients()
-            .subscribeBy(onNext = { includedIngredientsList.postValue(it) })
-
-    private fun loadExcludedIngredients() =
-        recipesFilterRepository.getExcludedIngredients()
-            .subscribeBy(onNext = { excludedIngredientsList.postValue(it) }, onError = {})
-
     fun addNewIngredients(ingredient: String, type: IngredientChosenType) {
         recipesFilterRepository.addNewIngredients(ingredient, type)
     }
@@ -53,4 +45,16 @@ class FilterRecipesViewModel
     fun deleteIngredient(ingredient: String) {
         recipesFilterRepository.deleteIngredient(ingredient)
     }
+
+    fun onQueryInput(query: String) {
+
+    }
+
+    private fun loadIncludedIngredients() =
+        recipesFilterRepository.getIncludedIngredients()
+            .subscribeBy(onNext = { includedIngredientsList.postValue(it) })
+
+    private fun loadExcludedIngredients() =
+        recipesFilterRepository.getExcludedIngredients()
+            .subscribeBy(onNext = { excludedIngredientsList.postValue(it) }, onError = {})
 }

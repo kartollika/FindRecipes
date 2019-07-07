@@ -34,8 +34,8 @@ dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.navigation:navigation-fragment-ktx:2.0.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.0.0"
-    implementation 'androidx.fragment:fragment-ktx:1.1.0-beta01'
-    implementation 'androidx.activity:activity-ktx:1.0.0-beta01'
+    implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha01'
+    implementation 'androidx.activity:activity-ktx:1.1.0-alpha01'
 
     // UI
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -65,11 +65,12 @@ dependencies {
     // Lifecycle components
     implementation "android.arch.lifecycle:extensions:1.1.1"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha02"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02"
 
     // Rx
     implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 }

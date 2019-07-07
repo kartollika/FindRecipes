@@ -20,14 +20,13 @@ class RecipesRepository
     fun searchRecipesComplex(offset: Int = 0, number: Int = 10): Single<List<Recipe>> =
         Single.zip(
             listOf(
-                getIncludedIngredientsRequestFormat(),
-                getExcludedIngredientsRequestFormat()
+                getIncludedActiveIngredientsFlatFormat(),
+                getExcludedActiveIngredientsFlatFormat()
             )
         ) { t -> createSearchRecipesComplexRequest(offset, number, t) }
             .subscribeOn(IoScheduler())
             .flatMap { t: SearchRecipesComplexRequest -> searchRecipesComplex(t) }
             .map { t -> t.results }
-//            .map { t -> t.flatMap { searchRecipeComplexResponse -> searchRecipeComplexResponse.results } }
             .map { t -> t.map { it.mapToRecipeModel() } }
 
 
@@ -45,17 +44,19 @@ class RecipesRepository
             )
         }
 
-    private fun getIncludedIngredientsRequestFormat(): Single<String> =
+    private fun getIncludedActiveIngredientsFlatFormat(): Single<String> =
         Single.create { emitter ->
             filterRepository.getIncludedIngredients()
-                .map { it -> it.map { it.name } }
+                .map { t -> t.filter { it.isActive } }
+                .map { t -> t.map { it.name } }
                 .map { t -> t.joinToString(separator = ",") }
                 .subscribeBy(onNext = { result -> emitter.onSuccess(result) })
         }
 
-    private fun getExcludedIngredientsRequestFormat(): Single<String> =
+    private fun getExcludedActiveIngredientsFlatFormat(): Single<String> =
         Single.create { emitter ->
-            filterRepository.getIncludedIngredients()
+            filterRepository.getExcludedIngredients()
+                .map { list -> list.filter { it.isActive } }
                 .map { it -> it.map { it.name } }
                 .map { t -> t.joinToString(separator = ",") }
                 .subscribeBy(

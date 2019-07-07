@@ -12,8 +12,11 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kartollika.recipiesbook.App
 import kartollika.recipiesbook.R
+import kartollika.recipiesbook.common.ui.createSearchDelayedObservable
 import kartollika.recipiesbook.common.utils.injectViewModel
 import kartollika.recipiesbook.data.models.IngredientChosenType
 import kartollika.recipiesbook.features.adapters.IngredientActionsListener
@@ -23,7 +26,7 @@ import kotlinx.android.synthetic.main.input_dialog_layout.view.*
 import kotlinx.android.synthetic.main.search_recipes_filter_layout.*
 
 
-class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
 
     private val callbacks: MutableList<BottomSheetBehavior.BottomSheetCallback> = mutableListOf()
     private val viewModel: FilterRecipesViewModel by injectViewModel {
@@ -33,6 +36,7 @@ class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private lateinit var includedIngredientsAdapter: IngredientsAdapter
     private lateinit var excludedIngredientsAdapter: IngredientsAdapter
     private lateinit var intoleranceIngredientsAdapter: IngredientsAdapter
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +90,11 @@ class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
         initListeners()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
     private fun initAdapters() {
         includedIngredientsAdapter =
             IngredientsAdapter(requireContext(), includedIngredientsChipGroup, true).apply {
@@ -122,6 +131,12 @@ class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
         addExcludedIngredientsTextView.setOnClickListener {
             createInputIngredientDialog(IngredientChosenType.Excluded).show()
         }
+
+        compositeDisposable.add(recipeQueryFilterTextField.createSearchDelayedObservable(300L)
+            .filter { it.isNotEmpty() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { viewModel.onQueryInput(it) }
+        )
 
         saveFiltersActionView.setOnClickListener { dismiss() }
     }

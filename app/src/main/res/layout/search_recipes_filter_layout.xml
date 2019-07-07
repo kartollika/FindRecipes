@@ -44,7 +44,7 @@
                 android:layout_marginBottom="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputDialogTextField"
+                    android:id="@+id/recipeQueryFilterTextField"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Recipe name" />
@@ -71,7 +71,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView">
+                    app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/includedIngredientsChipGroup"
@@ -80,7 +80,7 @@
                         android:layout_marginBottom="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView">
+                        app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField">
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -120,7 +120,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView">
+                    app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/excludedIngredientsChipGroup"
@@ -129,7 +129,7 @@
                         android:layout_marginBottom="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField" />
 
                     <TextView
                         android:id="@+id/addExcludedIngredientsTextView"
@@ -140,7 +140,9 @@
                         android:gravity="center_vertical"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
-                        android:text="@string/add_excluded_ingredients" />
+                        android:text="@string/add_excluded_ingredients"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

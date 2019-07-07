@@ -54,7 +54,7 @@ class SearchRecipesFragment : BaseFragment() {
     }
 
     private fun openFilters() {
-        TestBottomSheetDialogFragment().apply {
+        RecipesFiltersDialogFragment().apply {
             addCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {
                 }
