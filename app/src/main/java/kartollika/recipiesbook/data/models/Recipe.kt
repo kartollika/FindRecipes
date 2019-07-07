@@ -1,11 +1,14 @@
 package kartollika.recipiesbook.data.models
 
-import android.net.Uri
-
 data class Recipe(
     var id: Int = 0,
     var title: String = "",
-    var image: Uri = Uri.EMPTY,
-    var missingIngredients: Int = 0,
-    var usedIngredientsCount: Int = 0
-)
+    var image: String = "",
+    var missedIngredientCount: Any?,
+    var usedIngredientCount: Any?,
+    var likes: Int?
+) {
+    fun areContentsTheSame(other: Recipe): Boolean {
+        return title == other.title && image == other.image
+    }
+}

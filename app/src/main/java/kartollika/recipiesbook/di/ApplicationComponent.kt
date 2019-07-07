@@ -3,17 +3,24 @@ package kartollika.recipiesbook.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import kartollika.recipiesbook.features.search_by_ingredients.SearchRecipesActivity
+import kartollika.recipiesbook.features.search_recipes.SearchRecipesFragment
+import kartollika.recipiesbook.features.search_recipes.TestBottomSheetDialogFragment
+import kartollika.recipiesbook.features.viewmodels.FilterRecipesViewModel
+import kartollika.recipiesbook.features.viewmodels.SearchRecipesViewModel
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class, StorageModule::class, ViewModelsModule::class])
+@Component(modules = [NetworkModule::class, StorageModule::class])
 interface ApplicationComponent {
+
+    val searchRecipesViewModel: SearchRecipesViewModel
+    val filterRecipesViewModel: FilterRecipesViewModel
 
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): ApplicationComponent
     }
 
-    fun inject(activity: SearchRecipesActivity)
+    fun inject(fragment: SearchRecipesFragment)
+    fun inject(fragment: TestBottomSheetDialogFragment)
 }

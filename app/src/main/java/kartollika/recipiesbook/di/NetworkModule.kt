@@ -7,8 +7,9 @@ import dagger.Module
 import dagger.Provides
 import kartollika.recipiesbook.data.remote.DefaultHttpClient
 import kartollika.recipiesbook.data.remote.NetworkConstants
+import kartollika.recipiesbook.data.remote.extract.ExtractApi
 import kartollika.recipiesbook.data.remote.interceptors.DefaultInterceptor
-import kartollika.recipiesbook.data.remote.recipies.RecipesApi
+import kartollika.recipiesbook.data.remote.search.SearchApi
 import okhttp3.Interceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -23,16 +24,18 @@ abstract class NetworkModule {
         @Provides
         @JvmStatic
         fun provideGson(): Gson {
-            return GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+            return GsonBuilder().create()
         }
 
         @Provides
         @JvmStatic
-        fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory = GsonConverterFactory.create(gson)
+        fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
+            GsonConverterFactory.create(gson)
 
         @Provides
         @JvmStatic
-        fun provideRxJavaCallAdapter(): RxJava2CallAdapterFactory = RxJava2CallAdapterFactory.create()
+        fun provideRxJavaCallAdapter(): RxJava2CallAdapterFactory =
+            RxJava2CallAdapterFactory.create()
 
         @Provides
         @JvmStatic
@@ -57,8 +60,14 @@ abstract class NetworkModule {
 
         @Provides
         @JvmStatic
-        fun provideRecipesApi(retrofit: Retrofit): RecipesApi {
-            return retrofit.create(RecipesApi::class.java)
+        fun provideRecipesApi(retrofit: Retrofit): SearchApi {
+            return retrofit.create(SearchApi::class.java)
+        }
+
+        @Provides
+        @JvmStatic
+        fun provideExtractApi(retrofit: Retrofit): ExtractApi {
+            return retrofit.create(ExtractApi::class.java)
         }
     }
 

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FindRecipies</string>
+    <string name="add_excluded_ingredients">Add excluded ingredients</string>
+    <string name="excluded_ingredients">Excluded ingredients</string>
+    <string name="add_included_ingredients">Add included ingredients</string>
+    <string name="included_ingredients">Included ingredients</string>
+    <string name="filter">Filter</string>
 </resources>

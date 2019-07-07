@@ -1,4 +1,4 @@
-package kartollika.recipiesbook.features.search_by_ingredients
+package kartollika.recipiesbook.features.search_recipes
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -12,12 +12,13 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.chip.ChipGroup
 import kartollika.recipiesbook.App
 import kartollika.recipiesbook.R
 import kartollika.recipiesbook.common.utils.injectViewModel
+import kartollika.recipiesbook.data.models.IngredientChosenType
 import kartollika.recipiesbook.features.adapters.IngredientActionsListener
 import kartollika.recipiesbook.features.adapters.IngredientsAdapter
+import kartollika.recipiesbook.features.viewmodels.FilterRecipesViewModel
 import kotlinx.android.synthetic.main.input_dialog_layout.view.*
 import kotlinx.android.synthetic.main.search_recipes_filter_layout.*
 
@@ -25,11 +26,13 @@ import kotlinx.android.synthetic.main.search_recipes_filter_layout.*
 class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private val callbacks: MutableList<BottomSheetBehavior.BottomSheetCallback> = mutableListOf()
-    private val viewModel by injectViewModel { App.diManager.applicationComponent!!.filterRecipesViewModel }
+    private val viewModel: FilterRecipesViewModel by injectViewModel {
+        App.diManager.applicationComponent!!.filterRecipesViewModel
+    }
 
-    private val includedIngredientsViewGroup: ChipGroup by lazy { includedIngredientsChipGroup }
-    private val addIncludedIngredientView by lazy { addNewIncludedIngredientsTextView }
-    private lateinit var ingredientsAdapter: IngredientsAdapter
+    private lateinit var includedIngredientsAdapter: IngredientsAdapter
+    private lateinit var excludedIngredientsAdapter: IngredientsAdapter
+    private lateinit var intoleranceIngredientsAdapter: IngredientsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,32 +82,55 @@ class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ingredientsAdapter =
-            IngredientsAdapter(requireContext(), includedIngredientsChipGroup, true).apply {
-                ingredientActionsListener = object : IngredientActionsListener {
-                    override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
-                        Log.d("CHIP", "$ingredient checked state is $isChecked")
-                    }
-
-                    override fun onDeleteAction(ingredient: String) {
-                        Log.d("CHIP", "$ingredient was removed")
-                    }
-                }
-            }
+        initAdapters()
         initListeners()
     }
 
+    private fun initAdapters() {
+        includedIngredientsAdapter =
+            IngredientsAdapter(requireContext(), includedIngredientsChipGroup, true).apply {
+                ingredientActionsListener = object : IngredientActionsListener {
+                    override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
+                        viewModel.switchActiveIngredient(ingredient, isChecked)
+                    }
+
+                    override fun onDeleteAction(ingredient: String) {
+                        viewModel.deleteIngredient(ingredient)
+                    }
+                }
+            }
+
+        excludedIngredientsAdapter =
+            IngredientsAdapter(requireContext(), excludedIngredientsChipGroup, true).apply {
+                ingredientActionsListener = object : IngredientActionsListener {
+                    override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
+                        viewModel.switchActiveIngredient(ingredient, isChecked)
+                    }
+
+                    override fun onDeleteAction(ingredient: String) {
+                        viewModel.deleteIngredient(ingredient)
+                    }
+                }
+            }
+    }
+
     private fun initListeners() {
-        addIncludedIngredientView.setOnClickListener {
-            createInputIngredientDialog().show()
+        addIncludedIngredientsTextView.setOnClickListener {
+            createInputIngredientDialog(IngredientChosenType.Included).show()
         }
+
+        addExcludedIngredientsTextView.setOnClickListener {
+            createInputIngredientDialog(IngredientChosenType.Excluded).show()
+        }
+
+        saveFiltersActionView.setOnClickListener { dismiss() }
     }
 
     fun addCallback(callback: BottomSheetBehavior.BottomSheetCallback) {
         callbacks.add(callback)
     }
 
-    private fun createInputIngredientDialog(): AlertDialog =
+    private fun createInputIngredientDialog(type: IngredientChosenType): AlertDialog =
         AlertDialog.Builder(context).apply {
             val dialogInnerView =
                 LayoutInflater.from(context).inflate(R.layout.input_dialog_layout, null)
@@ -112,8 +138,8 @@ class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
             setView(dialogInnerView)
             setPositiveButton("Add entered") { dialog, which ->
-                viewModel.includeIngredient(
-                    ingredientsTextField.text.toString()
+                viewModel.addNewIngredients(
+                    ingredientsTextField.text.toString(), type
                 )
             }
             setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
@@ -122,7 +148,11 @@ class TestBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private fun initObservers() {
         viewModel.getIncludedIngredients().observe(this, Observer {
             Log.d("OBSERVER", "size of list ${it.size}")
-            ingredientsAdapter.setupIngredients(it)
+            includedIngredientsAdapter.setupIngredients(it)
+        })
+
+        viewModel.getExcludedIngredients().observe(this, Observer {
+            excludedIngredientsAdapter.setupIngredients(it)
         })
     }
 

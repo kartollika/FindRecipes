@@ -1,12 +1,13 @@
 package kartollika.recipiesbook.data.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import io.reactivex.Completable
 import io.reactivex.Observable
-import kartollika.recipiesbook.data.models.Ingredient
+import io.reactivex.Single
+import kartollika.recipiesbook.data.entities.Ingredient
 
 @Dao
 interface IngredientsDao {
@@ -17,6 +18,12 @@ interface IngredientsDao {
     @Insert
     fun insertIngredient(ingredient: Ingredient): Completable
 
-    @Delete
-    fun deleteIngredient(ingredient: Ingredient): Completable
+    @Update
+    fun updateIngredient(ingredient: Ingredient): Completable
+
+    @Query("DELETE from ingredients_table WHERE name = :name")
+    fun deleteIngredientByName(name: String): Completable
+
+    @Query("SELECT * from ingredients_table WHERE name = :name")
+    fun getIngredientByName(name: String): Single<Ingredient>
 }

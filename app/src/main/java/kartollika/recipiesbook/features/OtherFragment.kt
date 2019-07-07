@@ -1,9 +1,9 @@
-package kartollika.recipiesbook.features.search_by_ingredients
+package kartollika.recipiesbook.features
 
 import android.os.Bundle
 import android.view.View
 import kartollika.recipiesbook.R
-import kartollika.recipiesbook.common.ui.BaseFragment
+import kartollika.recipiesbook.common.base.BaseFragment
 
 class OtherFragment : BaseFragment() {
 

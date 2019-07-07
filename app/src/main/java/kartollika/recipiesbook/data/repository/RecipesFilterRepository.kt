@@ -1,9 +1,13 @@
 package kartollika.recipiesbook.data.repository
 
 import io.reactivex.Observable
+import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
+import kartollika.recipiesbook.data.entities.Ingredient
+import kartollika.recipiesbook.data.models.FoodItem
+import kartollika.recipiesbook.data.models.IngredientChosenType
 import kartollika.recipiesbook.data.remote.extract.ExtractApi
+import kartollika.recipiesbook.data.remote.extract.response.mapToFoodItem
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,21 +19,34 @@ class RecipesFilterRepository
 ) {
     fun getIncludedIngredients() = ingredientsRepository.getIncludedIngredients()
 
-    fun addNewIngredient(ingredientsRawText: String) {
-        extractApi.detectFoodInText(ingredientsRawText)
-            .subscribeOn(Schedulers.io())
-            .flatMap { t ->
-                Observable.fromIterable(t.annotations)
-                    .filter { it.tag == "ingredient" }
-                    .map { it.annotation }
-            }
-            .subscribeBy(
-                onNext = { ingredient ->
-                    ingredientsRepository.addIncludedIngredient(
-                        ingredient
+    fun getExcludedIngredients() = ingredientsRepository.getExcludedIngredients()
+
+    fun addNewIngredients(ingredientRawText: String, type: IngredientChosenType) {
+        parseFoodInText(ingredientRawText)
+            .filter { it.tag == "ingredient" }
+            .subscribeBy(onNext = { foodItem ->
+                ingredientsRepository.addIngredient(
+                    Ingredient(
+                        foodItem.name,
+                        type,
+                        true
                     )
-                },
-                onError = { thr -> thr.printStackTrace() }
-            )
+                )
+            })
     }
+
+    fun switchActivateIngredient(ingredient: String, state: Boolean) {
+        ingredientsRepository.switchActivateIngredient(ingredient, state)
+    }
+
+    fun deleteIngredient(ingredient: String) {
+        ingredientsRepository.deleteIngredient(ingredient)
+    }
+
+    private fun parseFoodInText(text: String): Observable<FoodItem> =
+        extractApi.detectFoodInText(text)
+            .subscribeOn(IoScheduler())
+            .map { it.annotations }
+            .flatMapIterable { it }
+            .map { it.mapToFoodItem() }
 }

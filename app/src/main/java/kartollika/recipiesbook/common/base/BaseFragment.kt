@@ -1,4 +1,4 @@
-package kartollika.recipiesbook.common.ui
+package kartollika.recipiesbook.common.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

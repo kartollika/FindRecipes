@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kartollika.recipiesbook.R
-import kartollika.recipiesbook.data.models.Ingredient
+import kartollika.recipiesbook.data.entities.Ingredient
 
 interface IngredientActionsListener {
     fun onCheckedStateChanged(ingredient: String, isChecked: Boolean)
@@ -33,6 +33,7 @@ class IngredientsAdapter(private val context: Context, private val chipGroup: Ch
                 text = ingredient.name
                 chipGroup.addView(this)
                 isCloseIconVisible = this@IngredientsAdapter.isCloseIconVisible
+                isChecked = ingredient.isActive
 
                 setOnCheckedChangeListener { _, isChecked ->
                     ingredientActionsListener?.onCheckedStateChanged(

@@ -6,7 +6,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kartollika.recipiesbook.R
-import kartollika.recipiesbook.common.ui.BaseActivity
+import kartollika.recipiesbook.common.base.BaseActivity
 import kotlinx.android.synthetic.main.main_hub_activity.*
 
 class MainHubActivity : BaseActivity() {

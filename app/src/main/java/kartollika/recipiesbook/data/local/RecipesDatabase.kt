@@ -2,9 +2,12 @@ package kartollika.recipiesbook.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import kartollika.recipiesbook.data.models.Ingredient
+import androidx.room.TypeConverters
+import kartollika.recipiesbook.data.entities.Ingredient
+import kartollika.recipiesbook.data.models.IngredientChosenType
 
 @Database(entities = [Ingredient::class], version = 1)
+@TypeConverters(IngredientChosenType.Converters::class)
 abstract class RecipesDatabase : RoomDatabase() {
 
     abstract fun getIngredientsDao(): IngredientsDao
