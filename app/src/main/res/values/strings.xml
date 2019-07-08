@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FindRecipies</string>
+    <string name="app_name">FindRecipes</string>
     <string name="add_excluded_ingredients">Add excluded ingredients</string>
     <string name="excluded_ingredients">Excluded ingredients</string>
     <string name="intolerance_ingredients">Intolerance</string>

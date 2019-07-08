@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/recipiesSearchFragment"
-        android:name="kartollika.recipiesbook.features.search_recipes.SearchRecipesFragment"
+        android:name="kartollika.recipesbook.features.search_recipes.SearchRecipesFragment"
         android:label="SearchRecipesFragment"
         tools:layout="@layout/search_recipes_layout" />
 
     <fragment
         android:id="@+id/otherMenuItemFragment"
-        android:name="kartollika.recipiesbook.features.OtherFragment"
+        android:name="kartollika.recipesbook.features.OtherFragment"
         android:label="OtherFragment"
         tools:layout="@layout/other_fragment_layout" />
 
