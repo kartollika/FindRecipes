@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kartollika.recipiesbook.R
-import kartollika.recipiesbook.data.entities.Ingredient
+import kartollika.recipiesbook.data.local.entities.IngredientEntity
 
 interface IngredientActionsListener {
     fun onCheckedStateChanged(ingredient: String, isChecked: Boolean)
@@ -25,7 +25,7 @@ class IngredientsAdapter(private val context: Context, private val chipGroup: Ch
 
     var ingredientActionsListener: IngredientActionsListener? = null
 
-    fun setupIngredients(ingredientsList: List<Ingredient>) {
+    fun setupIngredients(ingredientsList: List<IngredientEntity>) {
         chipGroup.removeAllViews()
 
         for (ingredient in ingredientsList) {

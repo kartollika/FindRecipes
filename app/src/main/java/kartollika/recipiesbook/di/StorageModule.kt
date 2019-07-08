@@ -3,7 +3,6 @@ package kartollika.recipiesbook.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import kartollika.recipiesbook.data.local.RecipesDatabase
@@ -20,11 +19,7 @@ object StorageModule {
     @Provides
     @JvmStatic
     fun provideRecipesDatabase(context: Context) =
-        Room.databaseBuilder(
-            context,
-            RecipesDatabase::class.java,
-            "DATABASE"
-        ).build()
+        RecipesDatabase.getInstance(context)
 
     @Provides
     @JvmStatic

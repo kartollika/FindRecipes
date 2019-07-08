@@ -3,8 +3,8 @@ package kartollika.recipiesbook.data.repository
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
-import kartollika.recipiesbook.data.entities.Ingredient
 import kartollika.recipiesbook.data.local.IngredientsDao
+import kartollika.recipiesbook.data.local.entities.IngredientEntity
 import kartollika.recipiesbook.data.models.IngredientChosenType
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,33 +15,20 @@ class IngredientsRepository
     private val ingredientsDao: IngredientsDao
 ) {
 
-    fun getAllIngredients(): Observable<List<Ingredient>> =
-        ingredientsDao
-            .getAllIngredients()
-
-    fun getIncludedIngredients(): Observable<List<Ingredient>> =
-        getAllIngredients()
-            .map {
-                it.filter { ingredient -> ingredient.chosenType == IngredientChosenType.Included }
-            }
+    fun getIncludedIngredients(): Observable<List<IngredientEntity>> =
+        ingredientsDao.getAllIngredientsOfType(IngredientChosenType.Included.name)
             .subscribeOn(IoScheduler())
 
-    fun getExcludedIngredients(): Observable<List<Ingredient>> =
-        getAllIngredients()
-            .map {
-                it.filter { ingredient -> ingredient.chosenType == IngredientChosenType.Excluded }
-            }
+    fun getExcludedIngredients(): Observable<List<IngredientEntity>> =
+        ingredientsDao.getAllIngredientsOfType(IngredientChosenType.Excluded.name)
             .subscribeOn(IoScheduler())
 
-    fun getIntoleranceIngredients(): Observable<List<Ingredient>> =
-        getAllIngredients()
-            .map {
-                it.filter { ingredient -> ingredient.chosenType == IngredientChosenType.Intolerance }
-            }
+    fun getIntoleranceIngredients(): Observable<List<IngredientEntity>> =
+        ingredientsDao.getAllIngredientsOfType(IngredientChosenType.Intolerance.name)
             .subscribeOn(IoScheduler())
 
 
-    fun addIngredient(ingredient: Ingredient): Disposable =
+    fun addIngredient(ingredient: IngredientEntity): Disposable =
         ingredientsDao
             .insertIngredient(ingredient)
             .subscribeOn(IoScheduler())
@@ -64,7 +51,7 @@ class IngredientsRepository
             .subscribe { t -> updateIngredient(t) }
 
 
-    private fun updateIngredient(ingredient: Ingredient) {
+    private fun updateIngredient(ingredient: IngredientEntity) {
         ingredientsDao.updateIngredient(ingredient)
             .subscribeOn(IoScheduler())
             .subscribe()

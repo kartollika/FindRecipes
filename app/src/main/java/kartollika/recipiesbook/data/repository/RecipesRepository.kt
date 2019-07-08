@@ -21,7 +21,10 @@ class RecipesRepository
         Single.zip(
             listOf(
                 getIncludedActiveIngredientsFlatFormat(),
-                getExcludedActiveIngredientsFlatFormat()
+                getExcludedActiveIngredientsFlatFormat(),
+                filterRepository.getQueryRecipe(),
+                filterRepository.getRanking(),
+                getIntoleranceActiveIngredientsFlatFormat()
             )
         ) { t -> createSearchRecipesComplexRequest(offset, number, t) }
             .subscribeOn(IoScheduler())
@@ -40,7 +43,10 @@ class RecipesRepository
                 offset = offset,
                 number = number,
                 includedIngredients = t[0] as String,
-                excludedIngredients = t[1] as String
+                excludedIngredients = t[1] as String,
+
+                query = t[2] as String,
+                ranking = t[3] as Int
             )
         }
 
@@ -64,6 +70,18 @@ class RecipesRepository
                     onError = { throwable -> emitter.onError(throwable) })
         }
 
+    private fun getIntoleranceActiveIngredientsFlatFormat(): Single<String> =
+        Single.create { emitter ->
+            filterRepository.getIntoleranceIngredients()
+                .map { list -> list.filter { it.isActive } }
+                .map { it -> it.map { it.name } }
+                .map { t -> t.joinToString(separator = ",") }
+                .subscribeBy(
+                    onNext = { result -> emitter.onSuccess(result) },
+                    onError = { throwable -> emitter.onError(throwable) })
+        }
+
+
     private fun searchRecipesComplex(searchRecipesComplexRequest: SearchRecipesComplexRequest): Single<SearchRecipeComplexResponse> {
         searchRecipesComplexRequest.let {
             return searchApi.searchRecipesComplex(
@@ -73,7 +91,8 @@ class RecipesRepository
                 includedIngredients = it.includedIngredients,
                 excludedIngredients = it.excludedIngredients,
                 intolerances = it.intoleranceIngredients,
-                ranking = it.ranking.ordinal
+                ranking = it.ranking,
+                query = it.query
             )
         }
     }

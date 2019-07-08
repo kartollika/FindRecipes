@@ -7,13 +7,16 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
+import kartollika.recipiesbook.data.models.Ranking
 import kartollika.recipiesbook.data.models.Recipe
+import kartollika.recipiesbook.data.repository.RecipesFilterRepository
 import kartollika.recipiesbook.data.repository.RecipesRepository
 import javax.inject.Inject
 
 class SearchRecipesViewModel
 @Inject constructor(
-    private val repository: RecipesRepository
+    private val repository: RecipesRepository,
+    private val filterRepository: RecipesFilterRepository
 ) : ViewModel() {
 
     private val recipes: MutableLiveData<List<Recipe>> = MutableLiveData()
@@ -28,10 +31,13 @@ class SearchRecipesViewModel
             .subscribeBy(onSuccess = { list -> recipes.postValue(list) })
     }
 
+    fun applyRankingFilter(ranking: Ranking) {
+        filterRepository.saveRankingFilter(ranking)
+        performComplexSearch()
+    }
+
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
     }
-
-
 }

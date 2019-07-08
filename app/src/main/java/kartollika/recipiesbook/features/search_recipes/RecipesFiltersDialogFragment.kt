@@ -3,7 +3,6 @@ package kartollika.recipiesbook.features.search_recipes
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kartollika.recipiesbook.App
 import kartollika.recipiesbook.R
 import kartollika.recipiesbook.common.ui.createSearchDelayedObservable
@@ -37,12 +37,11 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
     private lateinit var excludedIngredientsAdapter: IngredientsAdapter
     private lateinit var intoleranceIngredientsAdapter: IngredientsAdapter
     private val compositeDisposable = CompositeDisposable()
+    private lateinit var queryDisposable: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
-
-        initObservers()
     }
 
     override fun onCreateView(
@@ -88,6 +87,7 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
 
         initAdapters()
         initListeners()
+        initObservers()
     }
 
     override fun onDestroy() {
@@ -118,6 +118,19 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
 
                     override fun onDeleteAction(ingredient: String) {
                         viewModel.deleteIngredient(ingredient)
+                    }
+                }
+            }
+
+        intoleranceIngredientsAdapter =
+            IngredientsAdapter(requireContext(), intoleranceIngredientsChipGroup, false).apply {
+                ingredientActionsListener = object : IngredientActionsListener {
+                    override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
+                        viewModel.switchActiveIngredient(ingredient, isChecked)
+                    }
+
+                    override fun onDeleteAction(ingredient: String) {
+                        // Empty stub
                     }
                 }
             }
@@ -162,14 +175,19 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
 
     private fun initObservers() {
         viewModel.getIncludedIngredients().observe(this, Observer {
-            Log.d("OBSERVER", "size of list ${it.size}")
             includedIngredientsAdapter.setupIngredients(it)
         })
 
         viewModel.getExcludedIngredients().observe(this, Observer {
             excludedIngredientsAdapter.setupIngredients(it)
         })
+
+        viewModel.getIntolerancesIngredients().observe(this, Observer {
+            intoleranceIngredientsAdapter.setupIngredients(it)
+        })
+
+
+        viewModel.getQueryText()
+            .observe(this, Observer { s -> recipeQueryFilterTextField.setText(s.toString()) })
     }
-
-
 }

@@ -7,23 +7,26 @@ import androidx.room.Update
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import kartollika.recipiesbook.data.entities.Ingredient
+import kartollika.recipiesbook.data.local.entities.IngredientEntity
 
 @Dao
 interface IngredientsDao {
 
     @Query("SELECT * from ingredients_table")
-    fun getAllIngredients(): Observable<List<Ingredient>>
+    fun getAllIngredients(): Observable<List<IngredientEntity>>
+
+    @Query("SELECT * from ingredients_table WHERE chosenType LIKE :type")
+    fun getAllIngredientsOfType(type: String): Observable<List<IngredientEntity>>
 
     @Insert
-    fun insertIngredient(ingredient: Ingredient): Completable
+    fun insertIngredient(ingredient: IngredientEntity): Completable
 
     @Update
-    fun updateIngredient(ingredient: Ingredient): Completable
+    fun updateIngredient(ingredient: IngredientEntity): Completable
 
     @Query("DELETE from ingredients_table WHERE name = :name")
     fun deleteIngredientByName(name: String): Completable
 
     @Query("SELECT * from ingredients_table WHERE name = :name")
-    fun getIngredientByName(name: String): Single<Ingredient>
+    fun getIngredientByName(name: String): Single<IngredientEntity>
 }

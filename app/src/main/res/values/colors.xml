@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
+    <color name="colorNoAccent">#ADADAD</color>
     <color name="colorPrimaryDark">#CACACA</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorAccent80">#CCD81B60</color>
-    <color name="colorAccent45">#73D81B60</color>
+    <color name="colorAccent">#710CE1</color>
+    <color name="colorAccent80">#CC710CE1</color>
+    <color name="colorAccent45">#73710CE1</color>
+    <color name="colorAccent20">#337F36D8</color>
 
 </resources>
