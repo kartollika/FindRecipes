@@ -1,6 +1,7 @@
 package kartollika.recipesbook.data.repository
 
 import android.content.SharedPreferences
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.internal.schedulers.IoScheduler
@@ -64,14 +65,21 @@ class RecipesFilterRepository
             .apply()
     }
 
-    fun getRanking(): Single<Int> =
+    fun getRankingObservable(): Observable<Int> =
+        RxSharedPreferences.create(sharedPreferences).getInteger(
+            SEARCH_RECIPES_COMPLEX_RANKING,
+            2
+        ).asObservable()
+            .subscribeOn(IoScheduler())
+
+    fun getRankingSingle(): Single<Int> =
         Single.fromCallable { sharedPreferences.getInt(SEARCH_RECIPES_COMPLEX_RANKING, 2) }
             .subscribeOn(IoScheduler())
 
 
     fun saveRankingFilter(ranking: Ranking) {
         sharedPreferences.edit()
-            .putInt(SEARCH_RECIPES_COMPLEX_RANKING, ranking.ordinal)
+            .putInt(SEARCH_RECIPES_COMPLEX_RANKING, ranking.ranking)
             .apply()
     }
 

@@ -23,7 +23,7 @@ class RecipesRepository
                 getIncludedActiveIngredientsFlatFormat(),
                 getExcludedActiveIngredientsFlatFormat(),
                 filterRepository.getQueryRecipe(),
-                filterRepository.getRanking(),
+                filterRepository.getRankingSingle(),
                 getIntoleranceActiveIngredientsFlatFormat()
             )
         ) { t -> createSearchRecipesComplexRequest(offset, number, t) }

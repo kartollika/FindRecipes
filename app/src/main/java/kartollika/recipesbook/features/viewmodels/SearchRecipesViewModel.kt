@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.common.reactive.Event
@@ -22,11 +23,29 @@ class SearchRecipesViewModel
 
     private val recipes: MutableLiveData<List<Recipe>> = MutableLiveData()
     private val recipesRefreshingEvent = MutableLiveData<Event<Boolean>>()
+    private val ranking = MutableLiveData<Ranking>()
     private var compositeDisposable = CompositeDisposable()
+
+    init {
+        compositeDisposable.addAll(
+            loadCurrentRanking()
+        )
+    }
 
     fun getRecipes(): LiveData<List<Recipe>> = recipes
 
     fun getRefreshingEvent(): LiveData<Event<Boolean>> = recipesRefreshingEvent
+
+    fun getRanking(): LiveData<Ranking> = ranking
+
+    private fun loadCurrentRanking(): Disposable =
+        filterRepository.getRankingObservable()
+            .subscribe { rank: Int ->
+                ranking.postValue(
+                    Ranking.fromRankingValue(rank)
+                )
+            }
+
 
     fun performComplexSearch() {
         recipesRefreshingEvent.postValue(Event(true))

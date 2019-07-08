@@ -1,6 +1,5 @@
 package kartollika.recipesbook.features.search_recipes
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
@@ -57,31 +56,34 @@ class SearchRecipesFragment : BaseFragment() {
             PopupMenu(requireContext(), sortingLayoutView).apply {
                 inflate(R.menu.sorting_menu)
                 setOnMenuItemClickListener {
-                    updateSortingIndicator(it.title, it.icon)
-                    when (it.itemId) {
-                        R.id.sort_maximize_used_ingredients -> {
-                            viewModel.applyRankingFilter(Ranking.MaxUsedIngredients)
-                            true
+                    val ranking: Ranking? =
+                        when (it.itemId) {
+                            R.id.sort_maximize_used_ingredients -> {
+                                Ranking.MaxUsedIngredients
+                            }
+                            R.id.sort_minimize_missed_ingredients -> {
+                                Ranking.MinMissingIngredients
+                            }
+                            R.id.sort_relevance -> {
+                                Ranking.Relevance
+                            }
+                            else -> null
                         }
-                        R.id.sort_minimize_missed_ingredients -> {
-                            viewModel.applyRankingFilter(Ranking.MinMissingIngredients)
-                            true
-                        }
-                        R.id.sort_relevance -> {
-                            viewModel.applyRankingFilter(Ranking.Relevance)
-                            true
-                        }
-                        else -> false
-                    }
-
+                    viewModel.applyRankingFilter(ranking!!)
+                    true
                 }
             }.show()
         }
     }
 
-    private fun updateSortingIndicator(sortTitle: CharSequence, sortIcon: Drawable?) {
-        sortingIndicatorTextView.text = sortTitle
-        sortingIndicatorImageView.setImageDrawable(sortIcon)
+//    private fun updateSortingIndicator(sortTitle: CharSequence, sortIcon: Drawable?) {
+//        sortingIndicatorTextView.text = sortTitle
+//        sortingIndicatorImageView.setImageDrawable(sortIcon)
+//    }
+
+    private fun updateSortingIndicator(ranking: Ranking) {
+        sortingIndicatorTextView.text = ranking.naming
+        sortingIndicatorImageView.setImageResource(ranking.icon)
     }
 
     private fun openFilters() {
@@ -108,6 +110,10 @@ class SearchRecipesFragment : BaseFragment() {
 
         viewModel.getRefreshingEvent().observe(this, Observer {
             searchRecipesSwipeRefreshLayout.isRefreshing = it.getContentIfNotHandled() ?: false
+        })
+
+        viewModel.getRanking().observe(this, Observer {
+            updateSortingIndicator(it)
         })
     }
 
