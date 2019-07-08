@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
+import kartollika.recipesbook.common.reactive.Event
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
@@ -20,15 +21,24 @@ class SearchRecipesViewModel
 ) : ViewModel() {
 
     private val recipes: MutableLiveData<List<Recipe>> = MutableLiveData()
-    fun getRecipes(): LiveData<List<Recipe>> = recipes
-
+    private val recipesRefreshingEvent = MutableLiveData<Event<Boolean>>()
     private var compositeDisposable = CompositeDisposable()
 
+    fun getRecipes(): LiveData<List<Recipe>> = recipes
+
+    fun getRefreshingEvent(): LiveData<Event<Boolean>> = recipesRefreshingEvent
+
     fun performComplexSearch() {
+        recipesRefreshingEvent.postValue(Event(true))
         repository.searchRecipesComplex()
             .subscribeOn(IoScheduler())
             .doOnSuccess { t -> Log.d("Obs", t.size.toString()) }
-            .subscribeBy(onSuccess = { list -> recipes.postValue(list) })
+            .subscribeBy(onSuccess = { list ->
+                run {
+                    recipes.postValue(list)
+                    recipesRefreshingEvent.postValue(Event(false))
+                }
+            })
     }
 
     fun applyRankingFilter(ranking: Ranking) {

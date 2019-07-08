@@ -38,6 +38,7 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
     private lateinit var intoleranceIngredientsAdapter: IngredientsAdapter
     private val compositeDisposable = CompositeDisposable()
     private lateinit var queryDisposable: Disposable
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<out View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +60,7 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
             val d = dialog as BottomSheetDialog
             val bottomSheet =
                 d.findViewById(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
-            BottomSheetBehavior.from(bottomSheet!!).apply {
-                isFitToContents = true
-                peekHeight = 0
+            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet!!).apply {
                 state = BottomSheetBehavior.STATE_EXPANDED
 
                 setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -151,7 +150,9 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
             .subscribe { viewModel.onQueryInput(it) }
         )
 
-        saveFiltersActionView.setOnClickListener { dismiss() }
+        saveFiltersActionView.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
     }
 
     fun addCallback(callback: BottomSheetBehavior.BottomSheetCallback) {

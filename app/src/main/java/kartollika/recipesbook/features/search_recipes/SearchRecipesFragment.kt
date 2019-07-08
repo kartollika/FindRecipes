@@ -39,7 +39,7 @@ class SearchRecipesFragment : BaseFragment() {
     private fun initRecyclerView() {
         recipesSearchedAdapter = RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK)
 
-        recipesRecyclerView.apply {
+        searchRecipesRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = recipesSearchedAdapter
@@ -51,15 +51,12 @@ class SearchRecipesFragment : BaseFragment() {
             openFilters()
         }
 
-        testSearchRecipes.setOnClickListener {
-            viewModel.performComplexSearch()
-        }
+        searchRecipesSwipeRefreshLayout.setOnRefreshListener { viewModel.performComplexSearch() }
 
         sortingLayoutView.setOnClickListener {
             PopupMenu(requireContext(), sortingLayoutView).apply {
                 inflate(R.menu.sorting_menu)
                 setOnMenuItemClickListener {
-                    lateinit var ranking: Ranking
                     updateSortingIndicator(it.title, it.icon)
                     when (it.itemId) {
                         R.id.sort_maximize_used_ingredients -> {
@@ -88,27 +85,30 @@ class SearchRecipesFragment : BaseFragment() {
     }
 
     private fun openFilters() {
-        RecipesFiltersDialogFragment().apply {
+        val filtersFragment = RecipesFiltersDialogFragment().apply {
             addCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {
                 }
 
                 override fun onStateChanged(p0: View, state: Int) {
-                    if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+                    if (state == BottomSheetBehavior.STATE_HIDDEN
+                        || state == BottomSheetBehavior.STATE_COLLAPSED
+                    ) {
                         dismiss()
-                    }
-
-                    if (state == BottomSheetBehavior.STATE_HIDDEN) {
                         viewModel.performComplexSearch()
                     }
                 }
             })
-        }.show(childFragmentManager, "FiltersDialog")
+        }
+        filtersFragment.show(fragmentManager!!, "FiltersDialog")
     }
 
     private fun initializeObservers() {
-        viewModel.getRecipes()
-            .observe(this, Observer { recipesSearchedAdapter.setRecipesList(it) })
+        viewModel.getRecipes().observe(this, Observer { recipesSearchedAdapter.setRecipesList(it) })
+
+        viewModel.getRefreshingEvent().observe(this, Observer {
+            searchRecipesSwipeRefreshLayout.isRefreshing = it.getContentIfNotHandled() ?: false
+        })
     }
 
 }
