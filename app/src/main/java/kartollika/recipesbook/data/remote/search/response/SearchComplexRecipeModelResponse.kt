@@ -1,11 +1,11 @@
 package kartollika.recipesbook.data.remote.search.response
 
-import kartollika.recipesbook.data.models.Recipe
+import kartollika.recipesbook.data.models.RecipePreview
 
 data class SearchComplexRecipeModelResponse(
     val id: Int,
-    val usedIngredientCount: Any?,
-    val missedIngredientCount: Any?,
+    val usedIngredientCount: Int?,
+    val missedIngredientCount: Int?,
     val likes: Int?,
     val title: String,
     val image: String,
@@ -16,10 +16,10 @@ data class SearchComplexRecipeModelResponse(
 )
 
 fun SearchComplexRecipeModelResponse.mapToRecipeModel() =
-    Recipe(
+    RecipePreview(
         id = id,
-        usedIngredientCount = this.usedIngredientCount,
-        missedIngredientCount = this.missedIngredientCount,
+        usedIngredientCount = this.usedIngredientCount ?: -1,
+        missedIngredientCount = this.missedIngredientCount ?: -1,
         likes = this.likes,
         title = this.title,
         image = this.image

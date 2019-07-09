@@ -6,4 +6,6 @@
     <string name="add_included_ingredients">Add included ingredients</string>
     <string name="included_ingredients">Included ingredients</string>
     <string name="filter">Filter</string>
+    <string name="used_ingredients_count">Ingredients used: %1$d</string>
+    <string name="missed_ingredients_count">Ingredients missing: %1$d</string>
 </resources>

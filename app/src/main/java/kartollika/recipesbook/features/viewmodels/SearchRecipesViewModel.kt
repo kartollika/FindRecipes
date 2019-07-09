@@ -10,7 +10,7 @@ import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.common.reactive.Event
 import kartollika.recipesbook.data.models.Ranking
-import kartollika.recipesbook.data.models.Recipe
+import kartollika.recipesbook.data.models.RecipePreview
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
 import kartollika.recipesbook.data.repository.RecipesRepository
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class SearchRecipesViewModel
     private val filterRepository: RecipesFilterRepository
 ) : ViewModel() {
 
-    private val recipes: MutableLiveData<List<Recipe>> = MutableLiveData()
+    private val recipes: MutableLiveData<List<RecipePreview>> = MutableLiveData()
     private val recipesRefreshingEvent = MutableLiveData<Event<Boolean>>()
     private val ranking = MutableLiveData<Ranking>()
     private var compositeDisposable = CompositeDisposable()
@@ -32,7 +32,7 @@ class SearchRecipesViewModel
         )
     }
 
-    fun getRecipes(): LiveData<List<Recipe>> = recipes
+    fun getRecipes(): LiveData<List<RecipePreview>> = recipes
 
     fun getRefreshingEvent(): LiveData<Event<Boolean>> = recipesRefreshingEvent
 

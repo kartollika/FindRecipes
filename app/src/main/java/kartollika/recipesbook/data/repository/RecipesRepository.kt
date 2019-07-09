@@ -3,7 +3,7 @@ package kartollika.recipesbook.data.repository
 import io.reactivex.Single
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
-import kartollika.recipesbook.data.models.Recipe
+import kartollika.recipesbook.data.models.RecipePreview
 import kartollika.recipesbook.data.remote.search.SearchApi
 import kartollika.recipesbook.data.remote.search.request.SearchRecipesComplexRequest
 import kartollika.recipesbook.data.remote.search.response.SearchRecipeComplexResponse
@@ -17,7 +17,7 @@ class RecipesRepository
     private val searchApi: SearchApi,
     private val filterRepository: RecipesFilterRepository
 ) {
-    fun searchRecipesComplex(offset: Int = 0, number: Int = 10): Single<List<Recipe>> =
+    fun searchRecipesComplex(offset: Int = 0, number: Int = 10): Single<List<RecipePreview>> =
         Single.zip(
             listOf(
                 getIncludedActiveIngredientsFlatFormat(),

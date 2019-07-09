@@ -1,14 +1,14 @@
 package kartollika.recipesbook.data.models
 
-data class Recipe(
+data class RecipePreview(
     var id: Int = 0,
     var title: String = "",
     var image: String = "",
-    var missedIngredientCount: Any?,
-    var usedIngredientCount: Any?,
+    var missedIngredientCount: Int = -1,
+    var usedIngredientCount: Int = -1,
     var likes: Int?
 ) {
-    fun areContentsTheSame(other: Recipe): Boolean {
+    fun areContentsTheSame(other: RecipePreview): Boolean {
         return title == other.title && image == other.image
     }
 }
