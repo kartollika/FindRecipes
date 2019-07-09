@@ -2,11 +2,14 @@
 <com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.MaterialComponents.Chip.Choice"
-    android:padding="8dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="24sp"
+    android:gravity="center"
+    android:paddingTop="8dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+    android:textSize="24sp"
     app:chipBackgroundColor="@color/chip_accent_background_color_selector"
     app:chipStrokeColor="@color/chip_accent_stroke_color_selector"
-    app:chipStrokeWidth="2dp"/>
+    app:chipStrokeWidth="1.3dp" />
