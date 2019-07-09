@@ -9,13 +9,22 @@
         android:id="@+id/recipiesSearchFragment"
         android:name="kartollika.recipesbook.features.search_recipes.SearchRecipesFragment"
         android:label="SearchRecipesFragment"
-        tools:layout="@layout/search_recipes_layout" />
+        tools:layout="@layout/search_recipes_layout" >
+        <action
+            android:id="@+id/action_recipiesSearchFragment_to_recipeDetailActivity"
+            app:destination="@id/recipeDetailActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/otherMenuItemFragment"
         android:name="kartollika.recipesbook.features.OtherFragment"
         android:label="OtherFragment"
         tools:layout="@layout/other_fragment_layout" />
+    <activity
+        android:id="@+id/recipeDetailActivity"
+        tools:layout="@layout/recipe_detail_layout"
+        android:name="kartollika.recipesbook.features.recipe_detail.RecipeDetailActivity"
+        android:label="RecipeDetailActivity" />
 
 
 </navigation>

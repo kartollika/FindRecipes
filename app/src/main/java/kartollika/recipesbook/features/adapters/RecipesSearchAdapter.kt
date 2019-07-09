@@ -17,7 +17,7 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
     var onRecipeActionListener: OnRecipeActionListener? = null
 
     interface OnRecipeActionListener {
-        fun onItemClicked(recipe: RecipePreview)
+        fun onItemClicked(recipe: RecipePreview, view: View)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeSearchViewHolder {
@@ -47,7 +47,8 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
 
         fun bindView(recipe: RecipePreview) {
             recipeNameView.text = recipe.title
-            Glide.with(recipeImageView).load(recipe.image).centerCrop().into(recipeImageView)
+//            Glide.with(recipeImageView).load(recipe.image).centerCrop().into(recipeImageView)
+            Glide.with(recipeImageView).load(R.drawable.sushi_tools).centerCrop().into(recipeImageView)
             if (recipe.usedIngredientCount != -1) {
                 recipeUsedIngredientsCountView.text = itemView.context.getString(
                     R.string.used_ingredients_count,
@@ -63,7 +64,7 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
             }
 
             itemView.setOnClickListener {
-                onRecipeActionListener?.onItemClicked(recipe)
+                onRecipeActionListener?.onItemClicked(recipe, itemView)
             }
         }
     }

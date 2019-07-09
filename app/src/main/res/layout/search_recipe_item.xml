@@ -28,6 +28,7 @@
                 android:id="@+id/recipe_item_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:transitionName="recipe_image"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/sushi_tools" />
