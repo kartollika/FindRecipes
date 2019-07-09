@@ -3,7 +3,7 @@ package kartollika.recipesbook.data.models
 data class Ingredient(
     var name: String,
     var chosenType: IngredientChosenType,
-    var isActive: Boolean
+    var isActive: Boolean = false
 ) {
     companion object {
         fun getIntolerances(): List<Ingredient> {

@@ -44,9 +44,9 @@ class RecipesRepository
                 number = number,
                 includedIngredients = t[0] as String,
                 excludedIngredients = t[1] as String,
-
                 query = t[2] as String,
-                ranking = t[3] as Int
+                ranking = t[3] as Int,
+                intoleranceIngredients = t[4] as String
             )
         }
 

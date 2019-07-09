@@ -8,6 +8,7 @@ import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.local.entities.IngredientEntity
 import kartollika.recipesbook.data.models.FoodItem
+import kartollika.recipesbook.data.models.Ingredient
 import kartollika.recipesbook.data.models.IngredientChosenType
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.remote.extract.ExtractApi
@@ -47,11 +48,11 @@ class RecipesFilterRepository
             })
     }
 
-    fun switchActivateIngredient(ingredient: String, state: Boolean) {
+    fun switchActivateIngredient(ingredient: Ingredient, state: Boolean) {
         ingredientsRepository.switchActivateIngredient(ingredient, state)
     }
 
-    fun deleteIngredient(ingredient: String) {
+    fun deleteIngredient(ingredient: Ingredient) {
         ingredientsRepository.deleteIngredient(ingredient)
     }
 

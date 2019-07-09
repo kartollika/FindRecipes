@@ -4,15 +4,14 @@ import androidx.room.TypeConverter
 
 enum class IngredientChosenType {
     Included, Excluded, Intolerance;
+}
 
-    companion object Converters {
+class IngredientChosenTypeConverters {
 
-        @JvmStatic
-        @TypeConverter
-        fun convertToChosenType(raw: String): IngredientChosenType = valueOf(raw)
+    @TypeConverter
+    fun convertToChosenType(raw: String): IngredientChosenType =
+        IngredientChosenType.valueOf(raw)
 
-        @JvmStatic
-        @TypeConverter
-        fun convertFromChosenType(chosenType: IngredientChosenType) = chosenType.name
-    }
+    @TypeConverter
+    fun convertFromChosenType(chosenType: IngredientChosenType) = chosenType.name
 }

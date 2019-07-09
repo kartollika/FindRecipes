@@ -12,7 +12,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
@@ -36,7 +35,6 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
     private lateinit var includedIngredientsAdapter: IngredientsAdapter
     private lateinit var excludedIngredientsAdapter: IngredientsAdapter
     private lateinit var intoleranceIngredientsAdapter: IngredientsAdapter
-    private val compositeDisposable = CompositeDisposable()
     private lateinit var queryDisposable: Disposable
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<out View>
 
@@ -89,21 +87,35 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
         initObservers()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
+    override fun onResume() {
+        super.onResume()
+        queryDisposable = startQueryReactiveListener()
     }
+
+    override fun onPause() {
+        super.onPause()
+        queryDisposable.dispose()
+    }
+
+    private fun startQueryReactiveListener(): Disposable =
+        recipeQueryFilterTextField.createSearchDelayedObservable(300L)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { viewModel.onQueryInput(it) }
 
     private fun initAdapters() {
         includedIngredientsAdapter =
             IngredientsAdapter(requireContext(), includedIngredientsChipGroup, true).apply {
                 ingredientActionsListener = object : IngredientActionsListener {
                     override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
-                        viewModel.switchActiveIngredient(ingredient, isChecked)
+                        viewModel.switchActiveIngredient(
+                            ingredient,
+                            IngredientChosenType.Included,
+                            isChecked
+                        )
                     }
 
                     override fun onDeleteAction(ingredient: String) {
-                        viewModel.deleteIngredient(ingredient)
+                        viewModel.deleteIngredient(ingredient, IngredientChosenType.Included)
                     }
                 }
             }
@@ -112,11 +124,15 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
             IngredientsAdapter(requireContext(), excludedIngredientsChipGroup, true).apply {
                 ingredientActionsListener = object : IngredientActionsListener {
                     override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
-                        viewModel.switchActiveIngredient(ingredient, isChecked)
+                        viewModel.switchActiveIngredient(
+                            ingredient,
+                            IngredientChosenType.Excluded,
+                            isChecked
+                        )
                     }
 
                     override fun onDeleteAction(ingredient: String) {
-                        viewModel.deleteIngredient(ingredient)
+                        viewModel.deleteIngredient(ingredient, IngredientChosenType.Excluded)
                     }
                 }
             }
@@ -125,7 +141,11 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
             IngredientsAdapter(requireContext(), intoleranceIngredientsChipGroup, false).apply {
                 ingredientActionsListener = object : IngredientActionsListener {
                     override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
-                        viewModel.switchActiveIngredient(ingredient, isChecked)
+                        viewModel.switchActiveIngredient(
+                            ingredient,
+                            IngredientChosenType.Intolerance,
+                            isChecked
+                        )
                     }
 
                     override fun onDeleteAction(ingredient: String) {
@@ -143,12 +163,6 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
         addExcludedIngredientsTextView.setOnClickListener {
             createInputIngredientDialog(IngredientChosenType.Excluded).show()
         }
-
-        compositeDisposable.add(recipeQueryFilterTextField.createSearchDelayedObservable(300L)
-            .filter { it.isNotEmpty() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { viewModel.onQueryInput(it) }
-        )
 
         saveFiltersActionView.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN

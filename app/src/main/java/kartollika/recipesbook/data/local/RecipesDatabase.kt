@@ -10,10 +10,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import io.reactivex.internal.schedulers.IoScheduler
 import kartollika.recipesbook.data.local.entities.IngredientEntity
 import kartollika.recipesbook.data.models.Ingredient
-import kartollika.recipesbook.data.models.IngredientChosenType
+import kartollika.recipesbook.data.models.IngredientChosenTypeConverters
 
 @Database(entities = [IngredientEntity::class], version = 1)
-@TypeConverters(IngredientChosenType.Converters::class)
+@TypeConverters(IngredientChosenTypeConverters::class)
 abstract class RecipesDatabase : RoomDatabase() {
 
     abstract fun getIngredientsDao(): IngredientsDao

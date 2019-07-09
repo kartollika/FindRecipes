@@ -8,6 +8,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import kartollika.recipesbook.data.local.entities.IngredientEntity
+import kartollika.recipesbook.data.models.IngredientChosenType
 
 @Dao
 interface IngredientsDao {
@@ -24,9 +25,9 @@ interface IngredientsDao {
     @Update
     fun updateIngredient(ingredient: IngredientEntity): Completable
 
-    @Query("DELETE from ingredients_table WHERE name = :name")
-    fun deleteIngredientByName(name: String): Completable
+    @Query("DELETE from ingredients_table WHERE name = :name AND chosenType LIKE :type")
+    fun deleteIngredient(name: String, type: IngredientChosenType): Completable
 
-    @Query("SELECT * from ingredients_table WHERE name = :name")
-    fun getIngredientByName(name: String): Single<IngredientEntity>
+    @Query("SELECT * from ingredients_table WHERE name = :name AND chosenType LIKE :type")
+    fun getIngredientByNameAndType(name: String, type: IngredientChosenType): Single<IngredientEntity>
 }
