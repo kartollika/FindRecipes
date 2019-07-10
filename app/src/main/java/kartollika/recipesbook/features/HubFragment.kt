@@ -16,11 +16,7 @@ class HubFragment : BaseFragment() {
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var navController: NavController
 
-    override fun getContentView(): Int = R.layout.hub_layout
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    override fun getLayoutRes(): Int = R.layout.hub_layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,7 +24,8 @@ class HubFragment : BaseFragment() {
     }
 
     private fun setupBottomNavigation() {
-        navController = Navigation.findNavController(requireActivity(), R.id.bottom_navigation_container)
+        navController =
+            Navigation.findNavController(requireActivity(), R.id.bottom_navigation_container)
         bottomNavigation = bottomNavigationView.apply {
             setupWithNavController(navController)
         }

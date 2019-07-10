@@ -7,8 +7,12 @@
 
     <fragment
         android:id="@+id/hubFragment"
-        tools:layout="@layout/hub_layout"
         android:name="kartollika.recipesbook.features.HubFragment"
-        android:label="HubFragment" />
+        android:label="HubFragment"
+        tools:layout="@layout/hub_layout">
+
+
+    </fragment>
+
 
 </navigation>

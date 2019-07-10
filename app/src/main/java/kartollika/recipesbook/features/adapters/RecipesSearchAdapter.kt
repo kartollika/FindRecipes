@@ -48,7 +48,8 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
         fun bindView(recipe: RecipePreview) {
             recipeNameView.text = recipe.title
 //            Glide.with(recipeImageView).load(recipe.image).centerCrop().into(recipeImageView)
-            Glide.with(recipeImageView).load(R.drawable.sushi_tools).centerCrop().into(recipeImageView)
+            Glide.with(itemView.context).load(R.drawable.sushi_tools).centerCrop().into(recipeImageView)
+
             if (recipe.usedIngredientCount != -1) {
                 recipeUsedIngredientsCountView.text = itemView.context.getString(
                     R.string.used_ingredients_count,
