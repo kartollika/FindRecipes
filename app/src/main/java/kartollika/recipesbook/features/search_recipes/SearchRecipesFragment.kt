@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kartollika.recipesbook.App
@@ -12,9 +14,8 @@ import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
-import kartollika.recipesbook.features.MainActivity
-import kartollika.recipesbook.features.adapters.RecipesSearchAdapter
-import kartollika.recipesbook.features.recipe_detail.RecipeDetailFragment
+import kartollika.recipesbook.features.HubFragmentDirections
+import kartollika.recipesbook.features.search_recipes.adapters.RecipesSearchAdapter
 import kotlinx.android.synthetic.main.search_recipe_item.view.*
 import kotlinx.android.synthetic.main.search_recipes_layout.*
 
@@ -50,52 +51,16 @@ class SearchRecipesFragment : BaseFragment() {
             RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK).apply {
                 onRecipeActionListener = object : RecipesSearchAdapter.OnRecipeActionListener {
                     override fun onItemClicked(recipe: RecipePreview, view: View) {
-                        /* val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                             activity!!,
-                             view.recipe_item_image,
-                             ViewCompat.getTransitionName(view.recipe_item_image) ?: ""
-                         )*/
-                        /*startActivity(
-                            Intent(context, RecipeDetailFragment::class.java),
-                            options.toBundle()
-                        )*/
-                        /* (activity as MainActivity).openDetailView(
-                             Pair(
-                                 view.recipe_item_image,
-                                 "imageView"
-                             )
-                         )*/
-                        (activity as MainActivity).replaceFragment(RecipeDetailFragment(), mapOf(view.recipe_item_image to "123"))
-//                        childFragmentManager
-//                            .beginTransaction()
-//                            .replace(R.id.navHostFragment, RecipeDetailFragment())
-//                            .addSharedElement(recipe_item_image, "123")
-//                            .addToBackStack(null)
-//                            .commit()
-                        /*   val extras = FragmentNavigator.Extras.Builder()
-                               .addSharedElement(view.recipe_item_image, "123").build()*//*(
-                            view.recipe_item_image to "123"
-                        )*//*
-//
-//
-// .findNavController(this@SearchRecipesFragment)
+                        val extras = FragmentNavigator.Extras.Builder()
+                            .addSharedElement(view.recipeDetailImage, "recipe_image").build()
+
+
+                        val direction =
+                            HubFragmentDirections.Action_hubFragment_to_recipeDetailFragment()
+                                .setRecipeId(recipe.id)
+
                         Navigation.findNavController(activity!!, R.id.navHostFragment)
-
-                            .navigate(
-                                R.id.action_hubFragment_to_recipeDetailFragment,
-                                null,
-                                null,
-                                extras
-                            )*/
-//                            .navigate(
-//                                R.id.action_hubFragment_to_recipeDetailFragment,
-//                                null,
-//                                null,
-//                                extras
-//                            )
-
-//                        Navigation.findNavController(activity!!, R.id.navHostFragment)
-//                            .navigate(R.id.action_hubFragment_to_recipeDetailFragment)
+                            .navigate(direction, extras)
                     }
                 }
             }
@@ -120,7 +85,7 @@ class SearchRecipesFragment : BaseFragment() {
                 setOnMenuItemClickListener {
                     val ranking: Ranking? =
                         when (it.itemId) {
-                            kartollika.recipesbook.R.id.sort_maximize_used_ingredients -> {
+                            R.id.sort_maximize_used_ingredients -> {
                                 Ranking.MaxUsedIngredients
                             }
                             R.id.sort_minimize_missed_ingredients -> {

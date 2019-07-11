@@ -2,98 +2,53 @@ package kartollika.recipesbook.data.repository
 
 import io.reactivex.Single
 import io.reactivex.internal.schedulers.IoScheduler
-import io.reactivex.rxkotlin.subscribeBy
-import kartollika.recipesbook.data.models.RecipePreview
-import kartollika.recipesbook.data.remote.search.SearchApi
-import kartollika.recipesbook.data.remote.search.request.SearchRecipesComplexRequest
-import kartollika.recipesbook.data.remote.search.response.SearchRecipeComplexResponse
-import kartollika.recipesbook.data.remote.search.response.mapToRecipeModel
+import kartollika.recipesbook.data.local.RecipesDao
+import kartollika.recipesbook.data.local.entities.RecipeEntity
+import kartollika.recipesbook.data.models.mapToRecipeModel
+import kartollika.recipesbook.data.remote.data.DataApi
+import kartollika.recipesbook.data.remote.data.response.RecipeResponse
+import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class RecipesRepository
 @Inject constructor(
-    private val searchApi: SearchApi,
-    private val filterRepository: RecipesFilterRepository
+    private val recipesDao: RecipesDao,
+    private val dataApi: DataApi
 ) {
-    fun searchRecipesComplex(offset: Int = 0, number: Int = 10): Single<List<RecipePreview>> =
-        Single.zip(
-            listOf(
-                getIncludedActiveIngredientsFlatFormat(),
-                getExcludedActiveIngredientsFlatFormat(),
-                filterRepository.getQueryRecipe(),
-                filterRepository.getRankingSingle(),
-                getIntoleranceActiveIngredientsFlatFormat()
-            )
-        ) { t -> createSearchRecipesComplexRequest(offset, number, t) }
+
+    @Suppress("SENSELESS_COMPARISON")
+    fun isRecipeInDb(id: Int): Single<Boolean> =
+        recipesDao.isRecipeInTable(id)
             .subscribeOn(IoScheduler())
-            .flatMap { t: SearchRecipesComplexRequest -> searchRecipesComplex(t) }
-            .map { t -> t.results }
-            .map { t -> t.map { it.mapToRecipeModel() } }
+            .map { it > 0 }
 
-
-    private fun createSearchRecipesComplexRequest(
-        offset: Int,
-        number: Int,
-        t: Array<out Any>
-    ): SearchRecipesComplexRequest =
-        t.let {
-            return SearchRecipesComplexRequest(
-                offset = offset,
-                number = number,
-                includedIngredients = t[0] as String,
-                excludedIngredients = t[1] as String,
-                query = t[2] as String,
-                ranking = t[3] as Int,
-                intoleranceIngredients = t[4] as String
-            )
-        }
-
-    private fun getIncludedActiveIngredientsFlatFormat(): Single<String> =
-        Single.create { emitter ->
-            filterRepository.getIncludedIngredients()
-                .map { t -> t.filter { it.isActive } }
-                .map { t -> t.map { it.name } }
-                .map { t -> t.joinToString(separator = ",") }
-                .subscribeBy(onNext = { result -> emitter.onSuccess(result) })
-        }
-
-    private fun getExcludedActiveIngredientsFlatFormat(): Single<String> =
-        Single.create { emitter ->
-            filterRepository.getExcludedIngredients()
-                .map { list -> list.filter { it.isActive } }
-                .map { it -> it.map { it.name } }
-                .map { t -> t.joinToString(separator = ",") }
-                .subscribeBy(
-                    onNext = { result -> emitter.onSuccess(result) },
-                    onError = { throwable -> emitter.onError(throwable) })
-        }
-
-    private fun getIntoleranceActiveIngredientsFlatFormat(): Single<String> =
-        Single.create { emitter ->
-            filterRepository.getIntoleranceIngredients()
-                .map { list -> list.filter { it.isActive } }
-                .map { it -> it.map { it.name } }
-                .map { t -> t.joinToString(separator = ",") }
-                .subscribeBy(
-                    onNext = { result -> emitter.onSuccess(result) },
-                    onError = { throwable -> emitter.onError(throwable) })
-        }
-
-
-    private fun searchRecipesComplex(searchRecipesComplexRequest: SearchRecipesComplexRequest): Single<SearchRecipeComplexResponse> {
-        searchRecipesComplexRequest.let {
-            return searchApi.searchRecipesComplex(
-                limitLicense = it.limitLicence,
-                offset = it.offset,
-                number = it.number,
-                includedIngredients = it.includedIngredients,
-                excludedIngredients = it.excludedIngredients,
-                intolerances = it.intoleranceIngredients,
-                ranking = it.ranking,
-                query = it.query
-            )
-        }
-    }
+    fun getRecipeById(id: Int) =
+        isRecipeInDb(id)
+            .flatMap { isInDb ->
+                if (isInDb) {
+                    recipesDao.getRecipeById(id)
+                        .flatMap {
+                            if (it.cachedUntil.before(Date(System.currentTimeMillis()))) {
+                                dataApi.getRecipeInformation(id)
+                            } else {
+                                Single.just(it)
+                            }
+                        }
+                } else {
+                    dataApi.getRecipeInformation(id)
+                }
+            }
+            .map {
+                when (it) {
+                    is RecipeEntity -> it.mapToRecipeModel()
+                    is RecipeResponse -> {
+                        recipesDao.insertRecipe(RecipeEntity(it.id, it.title, it.image))
+                            .subscribeOn(IoScheduler())
+                            .subscribe()
+                        it.mapToRecipeModel()
+                    }
+                    else -> throw IllegalArgumentException()
+                }
+            }
 }
+

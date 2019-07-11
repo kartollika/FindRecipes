@@ -18,8 +18,8 @@
         android:name="kartollika.recipesbook.features.OtherFragment"
         android:label="OtherFragment"
         tools:layout="@layout/other_fragment_layout">
-
     </fragment>
+
 
 
 

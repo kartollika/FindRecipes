@@ -18,8 +18,8 @@ import kartollika.recipesbook.R
 import kartollika.recipesbook.common.ui.createSearchDelayedObservable
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.IngredientChosenType
-import kartollika.recipesbook.features.adapters.IngredientActionsListener
-import kartollika.recipesbook.features.adapters.IngredientsAdapter
+import kartollika.recipesbook.features.search_recipes.adapters.IngredientActionsListener
+import kartollika.recipesbook.features.search_recipes.adapters.IngredientsAdapter
 import kartollika.recipesbook.features.viewmodels.FilterRecipesViewModel
 import kotlinx.android.synthetic.main.input_dialog_layout.view.*
 import kotlinx.android.synthetic.main.search_recipes_filter_layout.*

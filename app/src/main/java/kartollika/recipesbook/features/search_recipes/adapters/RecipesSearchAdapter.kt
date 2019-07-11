@@ -1,4 +1,4 @@
-package kartollika.recipesbook.features.adapters
+package kartollika.recipesbook.features.search_recipes.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -41,15 +41,13 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
     inner class RecipeSearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val recipeNameView = itemView.recipe_item_name
-        private val recipeImageView = itemView.recipe_item_image
+        private val recipeImageView = itemView.recipeDetailImage
         private val recipeUsedIngredientsCountView = itemView.recipe_item_used_ingredients
         private val recipeMissingIngredientsCountView = itemView.recipe_item_missed_ingredients
 
         fun bindView(recipe: RecipePreview) {
             recipeNameView.text = recipe.title
-//            Glide.with(recipeImageView).load(recipe.image).centerCrop().into(recipeImageView)
-            Glide.with(itemView.context).load(R.drawable.sushi_tools).centerCrop().into(recipeImageView)
-
+            Glide.with(recipeImageView).load(recipe.image).centerCrop().into(recipeImageView)
             if (recipe.usedIngredientCount != -1) {
                 recipeUsedIngredientsCountView.text = itemView.context.getString(
                     R.string.used_ingredients_count,

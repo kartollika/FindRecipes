@@ -1,55 +1,78 @@
 package kartollika.recipesbook.features.recipe_detail
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
+import kartollika.recipesbook.common.utils.injectViewModel
+import kartollika.recipesbook.data.models.Recipe
+import kartollika.recipesbook.features.recipe_detail.adapters.IngredientsRequireAdapter
 import kotlinx.android.synthetic.main.recipe_detail_layout.*
 
 class RecipeDetailFragment : BaseFragment() {
+
+    private lateinit var ingredientsRequireAdapter: IngredientsRequireAdapter
+
+    private val viewModel by injectViewModel { App.diManager.applicationComponent!!.recipeDetailViewModel }
 
     override fun getLayoutRes(): Int = R.layout.recipe_detail_layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postponeEnterTransition()
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
+        val args = RecipeDetailFragmentArgs.fromBundle(arguments)
+        viewModel.loadRecipeById(args.recipeId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Glide.with(this).load(R.drawable.sushi_tools).centerCrop()
-            .listener(object : RequestListener<Drawable?> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable?>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    startPostponedEnterTransition()
-                    return false
-                }
+        if (getView() != null) {
+            initializeObservers()
+            initializeIngredientsRecyclerView()
+        }
+    }
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable?>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    startPostponedEnterTransition()
-                    return false
-                }
-            })
-            .into(recipe_item_image)
+    private fun initializeIngredientsRecyclerView() {
+        ingredientsRequireAdapter =
+            IngredientsRequireAdapter(IngredientsRequireAdapter.DEFAULT_DIFF_CALLBACK)
+        recipeDetailRequiredIngredients.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = ingredientsRequireAdapter
+        }
+    }
+
+    private fun initializeObservers() {
+        viewModel.getRecipeDetail().observe(viewLifecycleOwner, Observer {
+            fillRecipeInformation(it)
+        })
+
+        viewModel.getIsLoading().observe(viewLifecycleOwner, Observer {
+            switchLoadingUiState(it)
+        })
+    }
+
+    private fun switchLoadingUiState(isLoading: Boolean) {
+        if (isLoading) {
+            content.visibility = View.GONE
+            recipeDetailContentLoadingProgressView.show()
+        } else {
+            content.visibility = View.VISIBLE
+            recipeDetailContentLoadingProgressView.hide()
+        }
+    }
+
+    private fun fillRecipeInformation(it: Recipe) {
+        Glide.with(this).load(it.image).centerCrop().into(recipeDetailImage)
+        recipeDetailTitle.text = it.title
+        ingredientsRequireAdapter.submitList(it.requiredIngredients)
     }
 }

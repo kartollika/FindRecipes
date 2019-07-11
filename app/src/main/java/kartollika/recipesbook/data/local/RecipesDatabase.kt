@@ -8,15 +8,18 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import io.reactivex.internal.schedulers.IoScheduler
+import kartollika.recipesbook.common.utils.TimeConverters
 import kartollika.recipesbook.data.local.entities.IngredientEntity
-import kartollika.recipesbook.data.models.Ingredient
+import kartollika.recipesbook.data.local.entities.RecipeEntity
 import kartollika.recipesbook.data.models.IngredientChosenTypeConverters
+import kartollika.recipesbook.data.models.IngredientSearch
 
-@Database(entities = [IngredientEntity::class], version = 1)
-@TypeConverters(IngredientChosenTypeConverters::class)
+@Database(entities = [IngredientEntity::class, RecipeEntity::class], version = 1)
+@TypeConverters(IngredientChosenTypeConverters::class, TimeConverters::class)
 abstract class RecipesDatabase : RoomDatabase() {
 
     abstract fun getIngredientsDao(): IngredientsDao
+    abstract fun getRecipesDao(): RecipesDao
 
     companion object {
 
@@ -45,7 +48,7 @@ abstract class RecipesDatabase : RoomDatabase() {
 }
 
 private fun populateIntolerances(db: RecipesDatabase) {
-    for (intolerance in Ingredient.getIntolerances())
+    for (intolerance in IngredientSearch.getIntolerances())
         db.getIngredientsDao().insertIngredient(
             IngredientEntity(
                 intolerance.name,

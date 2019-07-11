@@ -1,4 +1,4 @@
-package kartollika.recipesbook.features.adapters
+package kartollika.recipesbook.features.search_recipes.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
