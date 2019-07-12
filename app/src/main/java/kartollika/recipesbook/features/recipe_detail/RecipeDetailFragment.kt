@@ -1,8 +1,10 @@
 package kartollika.recipesbook.features.recipe_detail
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
@@ -26,18 +28,21 @@ class RecipeDetailFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-
-        val args = RecipeDetailFragmentArgs.fromBundle(arguments)
-        viewModel.loadRecipeById(args.recipeId)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (getView() != null) {
-            initializeObservers()
-            initializeIngredientsRecyclerView()
+        initializeIngredientsRecyclerView()
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
+
+        Handler().post { initializeObservers() }
+
+        val args = RecipeDetailFragmentArgs.fromBundle(arguments)
+        viewModel.loadRecipeById(args.recipeId)
     }
 
     private fun initializeIngredientsRecyclerView() {
@@ -45,17 +50,16 @@ class RecipeDetailFragment : BaseFragment() {
             IngredientsRequireAdapter(IngredientsRequireAdapter.DEFAULT_DIFF_CALLBACK)
         recipeDetailRequiredIngredients.apply {
             layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
             adapter = ingredientsRequireAdapter
         }
     }
 
     private fun initializeObservers() {
-        viewModel.getRecipeDetail().observe(viewLifecycleOwner, Observer {
+        viewModel.getRecipeDetail().observe(this, Observer {
             fillRecipeInformation(it)
         })
 
-        viewModel.getIsLoading().observe(viewLifecycleOwner, Observer {
+        viewModel.getIsLoading().observe(this, Observer {
             switchLoadingUiState(it)
         })
     }
@@ -72,7 +76,7 @@ class RecipeDetailFragment : BaseFragment() {
 
     private fun fillRecipeInformation(it: Recipe) {
         Glide.with(this).load(it.image).centerCrop().into(recipeDetailImage)
-        recipeDetailTitle.text = it.title
-        ingredientsRequireAdapter.submitList(it.requiredIngredients)
+        collapsingToolbar.title = it.title
+        ingredientsRequireAdapter.setIngredientsList(it.requiredIngredients)
     }
 }

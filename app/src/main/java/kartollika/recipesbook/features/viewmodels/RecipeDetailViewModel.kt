@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.data.repository.RecipesRepository
@@ -28,11 +29,14 @@ class RecipeDetailViewModel
     }
 
     private fun startLoadRecipeData(id: Int): Disposable =
-        searchRecipesRepository.getRecipeById(id)
-            .subscribeBy {
-                isLoadingLiveData.postValue(false)
-                recipeDetail.postValue(it)
-            }
+        searchRecipesRepository.getRecipe(id)
+            .subscribeOn(IoScheduler())
+            .doOnEvent { _, _ -> isLoadingLiveData.postValue(false) }
+            .subscribeBy(
+                onSuccess = {
+                    recipeDetail.postValue(it)
+                }
+            )
 
     override fun onCleared() {
         super.onCleared()

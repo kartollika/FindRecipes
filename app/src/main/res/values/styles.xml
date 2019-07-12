@@ -20,6 +20,10 @@
     <style name="Widget.MaterialComponents.Chip.Choice.TextAppearance">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
     </style>
+
+    <style name="TitleText">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
     <!--
      <style name="CustomBottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">
          &lt;!&ndash;<item name="android:windowCloseOnTouchOutside">false</item>&ndash;&gt;

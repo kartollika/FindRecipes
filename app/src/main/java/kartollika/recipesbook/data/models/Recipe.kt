@@ -8,7 +8,7 @@ data class Recipe(
     val id: Int,
     val title: String,
     val image: String,
-    val requiredIngredients: List<IngredientDetail> = listOf()
+    var requiredIngredients: List<IngredientDetail> = listOf()
 )
 
 fun RecipeResponse.mapToRecipeModel() =

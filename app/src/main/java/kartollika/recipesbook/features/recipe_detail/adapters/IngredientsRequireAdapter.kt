@@ -31,12 +31,16 @@ class IngredientsRequireAdapter(diffCallback: DiffUtil.ItemCallback<IngredientDe
                 newItem: IngredientDetail
             ): Boolean {
                 return oldItem.name == newItem.name
-                    && oldItem.amount == newItem.amount
                     && oldItem.image == newItem.image
+                    && oldItem.amount == newItem.amount
                     && oldItem.original == newItem.original
                     && oldItem.unit == newItem.unit
             }
         }
+    }
+
+    fun setIngredientsList(list: List<IngredientDetail>) {
+        submitList(list)
     }
 
     override fun onCreateViewHolder(
