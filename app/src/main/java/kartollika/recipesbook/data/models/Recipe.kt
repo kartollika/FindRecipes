@@ -2,7 +2,6 @@ package kartollika.recipesbook.data.models
 
 import kartollika.recipesbook.data.local.entities.RecipeEntity
 import kartollika.recipesbook.data.remote.data.response.RecipeResponse
-import kartollika.recipesbook.data.remote.data.response.mapToIngredientDetail
 
 data class Recipe(
     val id: Int,
@@ -15,8 +14,7 @@ fun RecipeResponse.mapToRecipeModel() =
     Recipe(
         id = this.id,
         title = this.title,
-        image = this.image,
-        requiredIngredients = this.extendedIngredients.map { it.mapToIngredientDetail() }
+        image = this.image
     )
 
 fun RecipeEntity.mapToRecipeModel() =

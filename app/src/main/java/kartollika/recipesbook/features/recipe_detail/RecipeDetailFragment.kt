@@ -12,6 +12,7 @@ import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.utils.injectViewModel
+import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.features.recipe_detail.adapters.IngredientsRequireAdapter
 import kotlinx.android.synthetic.main.recipe_detail_layout.*
@@ -62,6 +63,10 @@ class RecipeDetailFragment : BaseFragment() {
         viewModel.getIsLoading().observe(this, Observer {
             switchLoadingUiState(it)
         })
+
+        viewModel.getIngredientsList().observe(this, Observer {
+            fillIngredientsInformation(it)
+        })
     }
 
     private fun switchLoadingUiState(isLoading: Boolean) {
@@ -77,6 +82,9 @@ class RecipeDetailFragment : BaseFragment() {
     private fun fillRecipeInformation(it: Recipe) {
         Glide.with(this).load(it.image).centerCrop().into(recipeDetailImage)
         collapsingToolbar.title = it.title
-        ingredientsRequireAdapter.setIngredientsList(it.requiredIngredients)
+    }
+
+    private fun fillIngredientsInformation(list: List<IngredientDetail>) {
+        ingredientsRequireAdapter.setIngredientsList(list)
     }
 }

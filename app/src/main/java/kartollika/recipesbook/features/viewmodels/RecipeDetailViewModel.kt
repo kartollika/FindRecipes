@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
+import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.data.repository.RecipesRepository
 import javax.inject.Inject
@@ -18,20 +18,29 @@ class RecipeDetailViewModel
 
     private val isLoadingLiveData = MutableLiveData<Boolean>()
     private val recipeDetail = MutableLiveData<Recipe>()
+    private val recipeIngredientsLiveData = MutableLiveData<List<IngredientDetail>>()
     private val compositeDisposable = CompositeDisposable()
 
     fun getRecipeDetail(): LiveData<Recipe> = recipeDetail
     fun getIsLoading(): LiveData<Boolean> = isLoadingLiveData
+    fun getIngredientsList(): LiveData<List<IngredientDetail>> = recipeIngredientsLiveData
 
     fun loadRecipeById(id: Int) {
-        isLoadingLiveData.postValue(true)
-        compositeDisposable.add(startLoadRecipeData(id))
+        isLoadingLiveData.postValue(false)
+        compositeDisposable.addAll(
+            startLoadRecipeData(id),
+            startLoadingIngredientsData(id)
+        )
     }
 
+    private fun startLoadingIngredientsData(id: Int): Disposable =
+        searchRecipesRepository.getRecipeIngredientsList(id)
+            .subscribeBy(onSuccess = { recipeIngredientsLiveData.postValue(it) })
+
+
     private fun startLoadRecipeData(id: Int): Disposable =
-        searchRecipesRepository.getRecipe(id)
-            .subscribeOn(IoScheduler())
-            .doOnEvent { _, _ -> isLoadingLiveData.postValue(false) }
+        searchRecipesRepository.getRecipeMainInformation(id)
+//            .doOnEvent { _, _ -> isLoadingLiveData.postValue(false) }
             .subscribeBy(
                 onSuccess = {
                     recipeDetail.postValue(it)
