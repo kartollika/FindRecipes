@@ -5,8 +5,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import kartollika.recipesbook.data.local.IngredientsDao
 import kartollika.recipesbook.data.local.entities.IngredientEntity
-import kartollika.recipesbook.data.models.Ingredient
 import kartollika.recipesbook.data.models.IngredientChosenType
+import kartollika.recipesbook.data.models.IngredientSearch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,13 +35,13 @@ class IngredientsRepository
             .subscribeOn(IoScheduler())
             .subscribe()
 
-    fun deleteIngredient(ingredient: Ingredient) {
+    fun deleteIngredient(ingredient: IngredientSearch) {
         ingredientsDao.deleteIngredient(ingredient.name, ingredient.chosenType)
             .subscribeOn(IoScheduler())
             .subscribe()
     }
 
-    fun switchActivateIngredient(ingredient: Ingredient, state: Boolean): Disposable =
+    fun switchActivateIngredient(ingredient: IngredientSearch, state: Boolean): Disposable =
         ingredientsDao.getIngredientByNameAndType(ingredient.name, ingredient.chosenType)
             .map { t ->
                 t.apply {

@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import kartollika.recipesbook.data.remote.DefaultHttpClient
 import kartollika.recipesbook.data.remote.NetworkConstants
+import kartollika.recipesbook.data.remote.data.DataApi
 import kartollika.recipesbook.data.remote.extract.ExtractApi
 import kartollika.recipesbook.data.remote.interceptors.DefaultInterceptor
 import kartollika.recipesbook.data.remote.search.SearchApi
@@ -68,6 +69,12 @@ abstract class NetworkModule {
         @JvmStatic
         fun provideExtractApi(retrofit: Retrofit): ExtractApi {
             return retrofit.create(ExtractApi::class.java)
+        }
+
+        @Provides
+        @JvmStatic
+        fun provideDataApi(retrofit: Retrofit): DataApi {
+            return retrofit.create(DataApi::class.java)
         }
     }
 

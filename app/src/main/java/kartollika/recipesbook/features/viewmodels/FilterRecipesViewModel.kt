@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.local.entities.IngredientEntity
-import kartollika.recipesbook.data.models.Ingredient
 import kartollika.recipesbook.data.models.IngredientChosenType
+import kartollika.recipesbook.data.models.IngredientSearch
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
 import javax.inject.Inject
 
@@ -43,11 +43,20 @@ class FilterRecipesViewModel
     }
 
     fun switchActiveIngredient(ingredient: String, type: IngredientChosenType, state: Boolean) {
-        recipesFilterRepository.switchActivateIngredient(Ingredient(ingredient, type), state)
+        recipesFilterRepository.switchActivateIngredient(
+            IngredientSearch(
+                ingredient,
+                type
+            ), state)
     }
 
     fun deleteIngredient(ingredient: String, type: IngredientChosenType) {
-        recipesFilterRepository.deleteIngredient(Ingredient(ingredient, type))
+        recipesFilterRepository.deleteIngredient(
+            IngredientSearch(
+                ingredient,
+                type
+            )
+        )
     }
 
     fun onQueryInput(query: String) {

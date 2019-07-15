@@ -12,12 +12,12 @@ import kartollika.recipesbook.common.reactive.Event
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
-import kartollika.recipesbook.data.repository.RecipesRepository
+import kartollika.recipesbook.data.repository.SearchRecipesRepository
 import javax.inject.Inject
 
 class SearchRecipesViewModel
 @Inject constructor(
-    private val repository: RecipesRepository,
+    private val repositorySearch: SearchRecipesRepository,
     private val filterRepository: RecipesFilterRepository
 ) : ViewModel() {
 
@@ -49,7 +49,7 @@ class SearchRecipesViewModel
 
     fun performComplexSearch() {
         recipesRefreshingEvent.postValue(Event(true))
-        repository.searchRecipesComplex()
+        repositorySearch.searchRecipesComplex()
             .subscribeOn(IoScheduler())
             .doOnSuccess { t -> Log.d("Obs", t.size.toString()) }
             .subscribeBy(onSuccess = { list ->

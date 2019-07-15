@@ -25,12 +25,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/recipe_item_image"
+                android:id="@+id/recipeDetailImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/sushi_tools" />
+                android:transitionName="recipe_image" />
 
             <ImageView
                 android:layout_width="match_parent"

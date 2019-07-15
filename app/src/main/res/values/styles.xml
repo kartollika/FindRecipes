@@ -6,6 +6,7 @@
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
@@ -18,6 +19,10 @@
 
     <style name="Widget.MaterialComponents.Chip.Choice.TextAppearance">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+    <style name="TitleText">
+        <item name="android:textColor">@android:color/white</item>
     </style>
     <!--
      <style name="CustomBottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">

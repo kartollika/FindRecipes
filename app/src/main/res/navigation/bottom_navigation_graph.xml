@@ -9,12 +9,18 @@
         android:id="@+id/recipiesSearchFragment"
         android:name="kartollika.recipesbook.features.search_recipes.SearchRecipesFragment"
         android:label="SearchRecipesFragment"
-        tools:layout="@layout/search_recipes_layout" />
+        tools:layout="@layout/search_recipes_layout">
+
+    </fragment>
 
     <fragment
         android:id="@+id/otherMenuItemFragment"
         android:name="kartollika.recipesbook.features.OtherFragment"
         android:label="OtherFragment"
-        tools:layout="@layout/other_fragment_layout" />
+        tools:layout="@layout/other_fragment_layout">
+    </fragment>
+
+
+
 
 </navigation>
