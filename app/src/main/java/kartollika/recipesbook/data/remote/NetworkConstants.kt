@@ -14,6 +14,8 @@ abstract class NetworkConstants {
         const val intolerances_QUERY = "intolerances"
         const val ranking_QUERY = "ranking"
 
+        const val IMAGE_BASE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
+
     }
 
     abstract class Search {
@@ -25,6 +27,12 @@ abstract class NetworkConstants {
     abstract class Extract {
         companion object {
             const val detectFoodInText = "food/detect"
+        }
+    }
+
+    abstract class Data {
+        companion object {
+            const val recipeInformation = "recipes/{id}/information"
         }
     }
 }

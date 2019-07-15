@@ -5,7 +5,6 @@ import androidx.room.Entity
 import kartollika.recipesbook.data.models.IngredientChosenType
 
 @Entity(tableName = "ingredients_table", primaryKeys = ["name", "chosenType"])
-//@TypeConverters(IngredientChosenTypeConverters::class)
 data class IngredientEntity(
     @ColumnInfo var name: String,
     var chosenType: IngredientChosenType,

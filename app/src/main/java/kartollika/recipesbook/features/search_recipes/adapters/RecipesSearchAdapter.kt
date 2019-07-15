@@ -1,4 +1,4 @@
-package kartollika.recipesbook.features.adapters
+package kartollika.recipesbook.features.search_recipes.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +17,7 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
     var onRecipeActionListener: OnRecipeActionListener? = null
 
     interface OnRecipeActionListener {
-        fun onItemClicked(recipe: RecipePreview)
+        fun onItemClicked(recipe: RecipePreview, view: View)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeSearchViewHolder {
@@ -41,7 +41,7 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
     inner class RecipeSearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val recipeNameView = itemView.recipe_item_name
-        private val recipeImageView = itemView.recipe_item_image
+        private val recipeImageView = itemView.recipeDetailImage
         private val recipeUsedIngredientsCountView = itemView.recipe_item_used_ingredients
         private val recipeMissingIngredientsCountView = itemView.recipe_item_missed_ingredients
 
@@ -63,7 +63,7 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
             }
 
             itemView.setOnClickListener {
-                onRecipeActionListener?.onItemClicked(recipe)
+                onRecipeActionListener?.onItemClicked(recipe, itemView)
             }
         }
     }
