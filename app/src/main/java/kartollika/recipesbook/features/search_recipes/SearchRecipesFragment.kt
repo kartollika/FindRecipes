@@ -1,6 +1,7 @@
 package kartollika.recipesbook.features.search_recipes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
@@ -11,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
+import kartollika.recipesbook.common.ui.EndlessScrollListener
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
@@ -66,6 +68,11 @@ class SearchRecipesFragment : BaseFragment() {
             }
 
         searchRecipesRecyclerView.apply {
+            addOnScrollListener(object : EndlessScrollListener() {
+                override fun onLoadMoreItems() {
+                    Log.d("EndlessScroll", "onLoadMoreItems called")
+                }
+            })
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = recipesSearchedAdapter
