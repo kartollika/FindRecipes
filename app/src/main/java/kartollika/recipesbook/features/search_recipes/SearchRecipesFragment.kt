@@ -80,7 +80,7 @@ class SearchRecipesFragment : BaseFragment() {
         searchRecipesSwipeRefreshLayout.setOnRefreshListener { viewModel.performComplexSearch() }
 
         sortingLayoutView.setOnClickListener {
-            PopupMenu(requireContext(), sortingLayoutView).apply {
+            PopupMenu(requireContext(), linearLayout).apply {
                 inflate(R.menu.sorting_menu)
                 setOnMenuItemClickListener {
                     val ranking: Ranking? =
