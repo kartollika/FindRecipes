@@ -8,13 +8,13 @@ import androidx.room.ForeignKey
     primaryKeys = ["recipeId", "recipeIngredientId"],
     foreignKeys = [ForeignKey(
         entity = RecipeEntity::class,
-        parentColumns = ["id"],
-        childColumns = ["recipeId"]
+        parentColumns = arrayOf("id"),
+        childColumns = arrayOf("recipeId")
     ),
         ForeignKey(
             entity = RecipeIngredientEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["recipeIngredientId"]
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("recipeIngredientId")
         )]
 )
 data class RecipeIngredientRecipeJoinEntity(
