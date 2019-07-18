@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
@@ -52,6 +53,7 @@ class RecipeDetailFragment : BaseFragment() {
         recipeDetailRequiredIngredients.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ingredientsRequireAdapter
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
     }
 
