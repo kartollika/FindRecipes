@@ -2,6 +2,7 @@ package kartollika.recipesbook.data.repository
 
 import io.reactivex.Single
 import io.reactivex.internal.schedulers.IoScheduler
+import kartollika.recipesbook.data.local.RecipeIngredientDao
 import kartollika.recipesbook.data.local.RecipeIngredientRecipeDao
 import kartollika.recipesbook.data.local.RecipesDao
 import kartollika.recipesbook.data.local.entities.RecipeEntity
@@ -9,6 +10,7 @@ import kartollika.recipesbook.data.local.entities.RecipeIngredientRecipeJoinEnti
 import kartollika.recipesbook.data.local.entities.mapToIngredientDetail
 import kartollika.recipesbook.data.local.entities.mapToRecipeEntity
 import kartollika.recipesbook.data.models.IngredientDetail
+import kartollika.recipesbook.data.models.mapToRecipeIngredientEntity
 import kartollika.recipesbook.data.models.mapToRecipeModel
 import kartollika.recipesbook.data.remote.data.DataApi
 import kartollika.recipesbook.data.remote.data.response.mapToIngredientDetail
@@ -18,6 +20,7 @@ class RecipesRepository
 @Inject constructor(
     private val recipesDao: RecipesDao,
     private val recipeIngredientRecipeDao: RecipeIngredientRecipeDao,
+    private val recipeIngredientDao: RecipeIngredientDao,
     private val dataApi: DataApi
 ) {
 
@@ -38,6 +41,13 @@ class RecipesRepository
             .onErrorResumeNext(
                 dataApi.getRecipeInformation(recipeId)
                     .map { it.extendedIngredients.map { it.mapToIngredientDetail() } }
+                    .doOnSuccess {
+                        it.forEach {
+                            recipeIngredientDao.insertIngredient(it.mapToRecipeIngredientEntity())
+                                .subscribeOn(IoScheduler())
+                                .subscribe()
+                        }
+                    }
                     .doOnSuccess {
                         it.forEach {
                             insertIngredientForRecipeRelation(recipeId, it)
