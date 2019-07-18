@@ -8,17 +8,19 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         app:elevation="0dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="16dp"
+            android:textColor="@android:color/black"
+            android:layout_marginRight="64dp"
+            android:layout_marginLeft="64dp"
             android:text="Search recipes"
             android:textSize="32sp"
-            android:textStyle="bold"
             app:layout_scrollFlags="scroll|enterAlways" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -42,7 +44,6 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:paddingTop="16dp"
