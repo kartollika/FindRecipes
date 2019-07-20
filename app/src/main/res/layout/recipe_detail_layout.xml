@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/recipeDetailContentLoadingProgressView"
@@ -21,17 +22,19 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="192dp"
+            android:layout_height="250dp"
             android:fitsSystemWindows="true"
+            app:statusBarScrim="@android:color/transparent"
             app:collapsedTitleTextAppearance="@style/TitleText"
             app:expandedTitleGravity="bottom"
-            app:expandedTitleMarginBottom="32dp"
+            app:expandedTitleMarginBottom="24dp"
             app:expandedTitleMarginStart="32dp"
             app:expandedTitleTextAppearance="@style/TitleText"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:maxLines="3"
             app:toolbarId="@id/toolbar">
 
             <ImageView
@@ -62,15 +65,15 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
                 android:layout_width="match_parent"
-                android:paddingRight="16dp"
                 android:layout_height="?attr/actionBarSize"
+                android:paddingRight="16dp"
                 app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -111,10 +114,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        app:borderWidth="0dp"
         android:backgroundTint="#E6A910"
         android:src="@drawable/ic_star_border_black_24dp"
+        app:borderWidth="0dp"
         app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|end"/>
+        app:layout_anchorGravity="bottom|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

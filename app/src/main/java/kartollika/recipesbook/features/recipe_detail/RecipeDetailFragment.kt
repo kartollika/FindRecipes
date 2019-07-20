@@ -1,14 +1,20 @@
 package kartollika.recipesbook.features.recipe_detail
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
@@ -82,7 +88,21 @@ class RecipeDetailFragment : BaseFragment() {
     }
 
     private fun fillRecipeInformation(it: Recipe) {
-        Glide.with(this).load(it.image).centerCrop().into(recipeDetailImage)
+        Glide.with(this).asBitmap().centerCrop().load(it.image).into(object : CustomTarget<Bitmap>() {
+
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                recipeDetailImage.setImageBitmap(resource)
+
+                Palette.Builder(resource).setRegion(0, 0, resource.width, 20).generate {
+                    requireActivity().window.statusBarColor =
+                        it!!.getDarkVibrantColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
+                }
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+            }
+        })
+
         collapsingToolbar.title = it.title
     }
 
