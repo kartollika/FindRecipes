@@ -14,12 +14,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingTop="16dp"
-            android:textColor="@android:color/black"
-            android:layout_marginRight="64dp"
             android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
             android:text="Search recipes"
+            android:textColor="@android:color/black"
             android:textSize="32sp"
             app:layout_scrollFlags="scroll|enterAlways" />
 
@@ -36,7 +36,6 @@
             android:id="@+id/sortingLayoutView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -46,9 +45,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
-                android:paddingTop="16dp"
+                android:paddingTop="12dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="16dp"
+                android:paddingBottom="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -91,8 +90,9 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/searchRecipesSwipeRefreshLayout"
                 android:layout_width="match_parent"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -101,8 +101,8 @@
                     android:id="@+id/searchRecipesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+
                     android:nestedScrollingEnabled="true"
-                    android:padding="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
