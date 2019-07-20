@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.WithoutLastItemDecorator
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -53,13 +52,17 @@ class RecipeDetailFragment : BaseFragment() {
         viewModel.loadRecipeById(args.recipeId)
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
+    }
+
     private fun initializeIngredientsRecyclerView() {
         ingredientsRequireAdapter =
             IngredientsRequireAdapter(IngredientsRequireAdapter.DEFAULT_DIFF_CALLBACK)
         recipeDetailRequiredIngredients.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = ingredientsRequireAdapter
-            addItemDecoration(WithoutLastItemDecorator(requireContext(), LinearLayoutManager.VERTICAL))
         }
     }
 
