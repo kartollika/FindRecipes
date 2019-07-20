@@ -2,6 +2,7 @@ package kartollika.recipesbook.data.repository
 
 import io.reactivex.Single
 import io.reactivex.internal.schedulers.IoScheduler
+import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.local.RecipeIngredientDao
 import kartollika.recipesbook.data.local.RecipeIngredientRecipeDao
 import kartollika.recipesbook.data.local.RecipesDao
@@ -82,7 +83,9 @@ class RecipesRepository
             RecipeIngredientRecipeJoinEntity(recipeId, it.id)
         )
             .subscribeOn(IoScheduler())
-            .subscribe()
+            .subscribeBy(
+                onError = { it.printStackTrace() }
+            )
     }
 
     private fun insertRecipeEntity(recipe: RecipeEntity) {

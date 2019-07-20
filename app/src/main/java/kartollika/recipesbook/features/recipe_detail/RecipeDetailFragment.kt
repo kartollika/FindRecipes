@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.WithoutLastItemDecorator
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -59,7 +59,7 @@ class RecipeDetailFragment : BaseFragment() {
         recipeDetailRequiredIngredients.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ingredientsRequireAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            addItemDecoration(WithoutLastItemDecorator(requireContext(), LinearLayoutManager.VERTICAL))
         }
     }
 
@@ -93,7 +93,7 @@ class RecipeDetailFragment : BaseFragment() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 recipeDetailImage.setImageBitmap(resource)
 
-                Palette.Builder(resource).setRegion(0, 0, resource.width, 20).generate {
+                Palette.Builder(resource).setRegion(0, 0, resource.width, 50).generate {
                     requireActivity().window.statusBarColor =
                         it!!.getDarkVibrantColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
                 }
