@@ -2,6 +2,7 @@ package kartollika.recipesbook.data.remote.search
 
 import io.reactivex.Single
 import kartollika.recipesbook.data.remote.NetworkConstants
+import kartollika.recipesbook.data.remote.NetworkConstants.Companion.addRecipeInformation_QUERY
 import kartollika.recipesbook.data.remote.NetworkConstants.Companion.excludeIngredients_QUERY
 import kartollika.recipesbook.data.remote.NetworkConstants.Companion.includeIngredients_QUERY
 import kartollika.recipesbook.data.remote.NetworkConstants.Companion.intolerances_QUERY
@@ -30,7 +31,8 @@ interface SearchApi {
         @Query(excludeIngredients_QUERY) excludedIngredients: String = "",
         @Query(intolerances_QUERY) intolerances: String = "",
         @Query(ranking_QUERY) ranking: Int = 2,
-        @Query(query_QUERY) query: String = ""
+        @Query(query_QUERY) query: String = "",
+        @Query(addRecipeInformation_QUERY) addRecipeInformation: Boolean = true
     ): Single<SearchRecipeComplexResponse>
 
 }

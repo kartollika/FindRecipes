@@ -13,6 +13,7 @@ abstract class NetworkConstants {
         const val excludeIngredients_QUERY = "excludeIngredients"
         const val intolerances_QUERY = "intolerances"
         const val ranking_QUERY = "ranking"
+        const val addRecipeInformation_QUERY = "addRecipeInformation"
 
         const val IMAGE_BASE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
 

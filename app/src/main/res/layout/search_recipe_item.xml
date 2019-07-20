@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:clipToPadding="true"
     android:elevation="4dp"
     android:focusable="true"
-    android:layout_marginTop="8dp"
     app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true">
 
@@ -37,7 +37,7 @@
                 android:src="@drawable/fade_gradient" />
 
             <TextView
-                android:id="@+id/recipe_item_name"
+                android:id="@+id/recipeItemImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|left"
@@ -53,9 +53,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/recipeItemReadyInMinutes"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:drawableTint="@android:color/darker_gray"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="14sp"
+                android:drawablePadding="4dp"
+                android:drawableRight="@drawable/ic_access_time_black_24dp"
+                tools:text="12 minutes"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
-                android:id="@+id/recipe_item_used_ingredients"
+                android:id="@+id/recipeItemUsedIngredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -66,7 +80,7 @@
                 tools:text="Ingredients used: 0" />
 
             <TextView
-                android:id="@+id/recipe_item_missed_ingredients"
+                android:id="@+id/recipeItemMissedIngredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -75,7 +89,7 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recipe_item_used_ingredients"
+                app:layout_constraintTop_toBottomOf="@id/recipeItemUsedIngredients"
                 tools:text="Ingredients missing: 0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

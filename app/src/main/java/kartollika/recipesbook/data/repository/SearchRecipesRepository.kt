@@ -92,7 +92,8 @@ class SearchRecipesRepository
                 excludedIngredients = it.excludedIngredients,
                 intolerances = it.intoleranceIngredients,
                 ranking = it.ranking,
-                query = it.query
+                query = it.query,
+                addRecipeInformation = it.addRecipeInformation
             )
         }
     }

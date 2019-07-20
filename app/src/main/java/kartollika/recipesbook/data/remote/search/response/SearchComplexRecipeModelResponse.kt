@@ -12,7 +12,8 @@ data class SearchComplexRecipeModelResponse(
     val calories: Int?,
     val protein: String?,
     val fat: String?,
-    val carbs: String?
+    val carbs: String?,
+    val readyInMinutes: Int?
 )
 
 fun SearchComplexRecipeModelResponse.mapToRecipeModel() =
@@ -22,5 +23,6 @@ fun SearchComplexRecipeModelResponse.mapToRecipeModel() =
         missedIngredientCount = this.missedIngredientCount ?: -1,
         likes = this.likes,
         title = this.title,
-        image = this.image
+        image = this.image,
+        readyInMinutes = this.readyInMinutes
     )

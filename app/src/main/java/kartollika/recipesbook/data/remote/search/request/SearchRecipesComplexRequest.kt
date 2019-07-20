@@ -10,5 +10,6 @@ data class SearchRecipesComplexRequest(
     var ranking: Int = 2,
     var includedIngredients: String = "",
     var excludedIngredients: String = "",
-    var intoleranceIngredients: String = ""
+    var intoleranceIngredients: String = "",
+    var addRecipeInformation: Boolean = true
 )
