@@ -56,17 +56,20 @@
             <TextView
                 android:id="@+id/recipeItemReadyInMinutes"
                 android:layout_width="wrap_content"
-                android:gravity="center_vertical"
-                android:drawableTint="@android:color/darker_gray"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:textSize="14sp"
-                android:drawablePadding="4dp"
                 android:drawableRight="@drawable/ic_access_time_black_24dp"
-                tools:text="12 minutes"
+                android:drawablePadding="4dp"
+                android:drawableTint="@android:color/darker_gray"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text="12 minutes" />
 
             <TextView
                 android:id="@+id/recipeItemUsedIngredients"
