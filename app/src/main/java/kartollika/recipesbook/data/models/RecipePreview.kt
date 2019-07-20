@@ -6,7 +6,8 @@ data class RecipePreview(
     var image: String = "",
     var missedIngredientCount: Int = -1,
     var usedIngredientCount: Int = -1,
-    var likes: Int?
+    var likes: Int?,
+    var readyInMinutes: Int?
 ) {
     fun areContentsTheSame(other: RecipePreview): Boolean {
         return title == other.title && image == other.image

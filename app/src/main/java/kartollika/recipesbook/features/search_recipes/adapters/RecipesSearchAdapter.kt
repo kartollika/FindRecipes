@@ -40,10 +40,11 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
 
     inner class RecipeSearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val recipeNameView = itemView.recipe_item_name
+        private val recipeNameView = itemView.recipeItemImage
         private val recipeImageView = itemView.recipeDetailImage
-        private val recipeUsedIngredientsCountView = itemView.recipe_item_used_ingredients
-        private val recipeMissingIngredientsCountView = itemView.recipe_item_missed_ingredients
+        private val recipeUsedIngredientsCountView = itemView.recipeItemUsedIngredients
+        private val recipeMissingIngredientsCountView = itemView.recipeItemMissedIngredients
+        private val recipeItemReadyInMinutes = itemView.recipeItemReadyInMinutes
 
         fun bindView(recipe: RecipePreview) {
             recipeNameView.text = recipe.title
@@ -53,6 +54,8 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
                     R.string.used_ingredients_count,
                     recipe.usedIngredientCount
                 )
+            } else {
+                recipeUsedIngredientsCountView.visibility = View.GONE
             }
 
             if (recipe.missedIngredientCount != -1) {
@@ -60,6 +63,14 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
                     R.string.missed_ingredients_count,
                     recipe.missedIngredientCount
                 )
+            } else {
+                recipeMissingIngredientsCountView.visibility = View.GONE
+            }
+
+            if (recipe.readyInMinutes != null) {
+                recipeItemReadyInMinutes.text = itemView.context.getString(R.string.ready_in_minutes, recipe.readyInMinutes)
+            } else {
+                recipeItemReadyInMinutes.visibility = View.GONE
             }
 
             itemView.setOnClickListener {

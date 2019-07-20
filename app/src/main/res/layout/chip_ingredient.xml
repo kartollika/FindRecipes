@@ -8,8 +8,8 @@
     android:paddingTop="8dp"
     android:paddingRight="8dp"
     android:paddingBottom="8dp"
-    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    android:textSize="24sp"
+    app:textEndPadding="8dp"
+    android:textAppearance="@style/IngredientChipTextAppearance"
     app:chipBackgroundColor="@color/chip_accent_background_color_selector"
     app:chipStrokeColor="@color/chip_accent_stroke_color_selector"
     app:chipStrokeWidth="1.3dp" />

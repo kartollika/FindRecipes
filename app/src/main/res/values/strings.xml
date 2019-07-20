@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">FindRecipes</string>
     <string name="add_excluded_ingredients">Add excluded ingredients</string>
-    <string name="excluded_ingredients">Excluded ingredients</string>
-    <string name="intolerance_ingredients">Intolerance</string>
+    <string name="excluded_ingredients">Excluded ingredients:</string>
+    <string name="intolerance_ingredients">Intolerance:</string>
     <string name="add_included_ingredients">Add included ingredients</string>
-    <string name="included_ingredients">Included ingredients</string>
+    <string name="included_ingredients">Included ingredients:</string>
     <string name="filter">Filter</string>
     <string name="used_ingredients_count">Ingredients used: %1$d</string>
     <string name="missed_ingredients_count">Ingredients missing: %1$d</string>
+    <string name="ready_in_minutes">%1$d minutes</string>
 </resources>

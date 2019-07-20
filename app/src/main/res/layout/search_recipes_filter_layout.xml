@@ -45,7 +45,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/recipeQueryFilterTextField"
@@ -58,7 +58,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -92,14 +92,14 @@
                         android:id="@+id/addIncludedIngredientsTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawableTint="@android:color/darker_gray"
                         android:background="?attr/selectableItemBackground"
-                        android:drawableLeft="@android:drawable/ic_input_add"
+                        android:drawableLeft="@drawable/ic_add_black_24dp"
                         android:gravity="center_vertical"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="@string/add_included_ingredients"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -107,6 +107,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_marginBottom="16dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -140,13 +141,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
-                        android:drawableLeft="@android:drawable/ic_input_add"
+                        android:drawableTint="@android:color/darker_gray"
+                        android:drawableLeft="@drawable/ic_add_black_24dp"
                         android:gravity="center_vertical"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="@string/add_excluded_ingredients"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -177,7 +178,6 @@
                         android:id="@+id/intoleranceIngredientsChipGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField" />
