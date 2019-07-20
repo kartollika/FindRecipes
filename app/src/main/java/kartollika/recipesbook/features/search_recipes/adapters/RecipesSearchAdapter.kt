@@ -53,6 +53,8 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
                     R.string.used_ingredients_count,
                     recipe.usedIngredientCount
                 )
+            } else {
+                recipeUsedIngredientsCountView.visibility = View.GONE
             }
 
             if (recipe.missedIngredientCount != -1) {
@@ -60,6 +62,8 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
                     R.string.missed_ingredients_count,
                     recipe.missedIngredientCount
                 )
+            } else {
+                recipeMissingIngredientsCountView.visibility = View.GONE
             }
 
             itemView.setOnClickListener {
