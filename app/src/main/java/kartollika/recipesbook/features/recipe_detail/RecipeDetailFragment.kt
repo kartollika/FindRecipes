@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -107,6 +108,17 @@ class RecipeDetailFragment : BaseFragment() {
         })
 
         collapsingToolbar.title = it.title
+
+        recipeDetailImage.setOnClickListener { view ->
+            val extras = FragmentNavigatorExtras(
+                recipeDetailImage to "recipe_detail_image"
+            )
+
+            findNavController().navigate(R.id.action_recipeDetailFragment_to_photoViewFragment, Bundle().apply {
+                putString("photo_uri", it.image)
+                putString("name", it.title)
+            }, null, extras)
+        }
     }
 
     private fun fillIngredientsInformation(list: List<IngredientDetail>) {

@@ -26,7 +26,17 @@
             android:name="recipeId"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_recipeDetailFragment_to_photoViewFragment"
+            app:destination="@id/photoViewFragment" />
     </fragment>
-
-
+    <fragment
+        android:id="@+id/photoViewFragment"
+        android:name="kartollika.recipesbook.features.PhotoViewFragment"
+        android:label="PhotoViewFragment">
+        <argument
+            android:name="photo_uri"
+            android:defaultValue="-"
+            app:argType="string" />
+    </fragment>
 </navigation>
