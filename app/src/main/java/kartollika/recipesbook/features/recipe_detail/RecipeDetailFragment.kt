@@ -97,9 +97,12 @@ class RecipeDetailFragment : BaseFragment() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 recipeDetailImage.setImageBitmap(resource)
 
-                Palette.Builder(resource).setRegion(0, 0, resource.width, 50).generate {
-                    requireActivity().window.statusBarColor =
-                        it!!.getDarkVibrantColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
+                Palette.Builder(resource).setRegion(0, 0, resource.width, 50).generate { palette ->
+                    palette!!.getDarkVibrantColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
+                        .also {
+                            requireActivity().window.statusBarColor = it
+                            collapsingToolbar.setContentScrimColor(it)
+                        }
                 }
             }
 
