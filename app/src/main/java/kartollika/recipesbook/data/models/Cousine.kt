@@ -14,7 +14,7 @@ enum class Cousine(cousine: String) {
     Italian("Italian"),
     Mexican("Mexican"),
     Spanish("Spanish"),
-    MiddleEastern("Middle_eastern"),
+    MiddleEastern("Middle eastern"),
     Jewish("Jewish"),
     American("American"),
     Cajun("Cajun"),
@@ -22,7 +22,7 @@ enum class Cousine(cousine: String) {
     Greek("Greek"),
     German("German"),
     Nordic("Nordic"),
-    EasternEuropean("Eastern_european"),
+    EasternEuropean("Eastern european"),
     Caribbean("Caribbean"),
-    LatinAmerican("Latin_american")
+    LatinAmerican("Latin american")
 }

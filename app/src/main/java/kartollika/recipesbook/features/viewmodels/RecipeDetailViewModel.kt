@@ -28,22 +28,17 @@ class RecipeDetailViewModel
     fun loadRecipeById(id: Int) {
         isLoadingLiveData.postValue(false)
         compositeDisposable.addAll(
-            startLoadRecipeData(id),
-            startLoadingIngredientsData(id)
+            startLoadRecipeData(id)
         )
     }
 
-    private fun startLoadingIngredientsData(id: Int): Disposable =
-        searchRecipesRepository.getRecipeIngredientsList(id)
-            .subscribeBy(onSuccess = { recipeIngredientsLiveData.postValue(it) })
-
-
     private fun startLoadRecipeData(id: Int): Disposable =
         searchRecipesRepository.getRecipeMainInformation(id)
-//            .doOnEvent { _, _ -> isLoadingLiveData.postValue(false) }
+            .doOnEvent { _, _ -> isLoadingLiveData.postValue(false) }
             .subscribeBy(
                 onSuccess = {
                     recipeDetail.postValue(it)
+                    recipeIngredientsLiveData.postValue(it.requiredIngredients)
                 }
             )
 

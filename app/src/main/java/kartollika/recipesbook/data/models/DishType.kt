@@ -3,7 +3,7 @@ package kartollika.recipesbook.data.models
 enum class DishType(type: String) {
     Main("main"),
     Course("course"),
-    SideDish("side_dish"),
+    SideDish("side dish"),
     Dessert("dessert"),
     Appetizer("appetizer"),
     Salad("salad"),

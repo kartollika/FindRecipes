@@ -1,6 +1,7 @@
 package kartollika.recipesbook.data.repository
 
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.local.RecipeIngredientDao
@@ -11,10 +12,9 @@ import kartollika.recipesbook.data.local.entities.RecipeIngredientRecipeJoinEnti
 import kartollika.recipesbook.data.local.entities.mapToIngredientDetail
 import kartollika.recipesbook.data.local.entities.mapToRecipeEntity
 import kartollika.recipesbook.data.models.IngredientDetail
-import kartollika.recipesbook.data.models.mapToRecipeIngredientEntity
+import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.data.models.mapToRecipeModel
 import kartollika.recipesbook.data.remote.data.DataApi
-import kartollika.recipesbook.data.remote.data.response.mapToIngredientDetail
 import javax.inject.Inject
 
 class RecipesRepository
@@ -26,7 +26,15 @@ class RecipesRepository
 ) {
 
     fun getRecipeMainInformation(recipeId: Int) =
-        getCachedRecipe(recipeId)
+        Single.zip<Recipe, List<IngredientDetail>, Recipe>(
+            getCachedRecipe(recipeId),
+            getCachedIngredients(recipeId),
+            BiFunction { t1, t2 ->
+                t1.apply {
+                    requiredIngredients = t2
+                }
+            }
+        )
             .subscribeOn(IoScheduler())
             .onErrorResumeNext(
                 dataApi.getRecipeInformation(recipeId)
@@ -34,24 +42,9 @@ class RecipesRepository
                     .doOnSuccess {
                         insertRecipeEntity(it.mapToRecipeEntity())
                     }
-            )
-
-    fun getRecipeIngredientsList(recipeId: Int) =
-        getCachedIngredients(recipeId)
-            .subscribeOn(IoScheduler())
-            .onErrorResumeNext(
-                dataApi.getRecipeInformation(recipeId)
-                    .map { it.extendedIngredients.map { it.mapToIngredientDetail() } }
                     .doOnSuccess {
-                        it.forEach {
-                            recipeIngredientDao.insertIngredient(it.mapToRecipeIngredientEntity())
-                                .subscribeOn(IoScheduler())
-                                .subscribe()
-                        }
-                    }
-                    .doOnSuccess {
-                        it.forEach {
-                            insertIngredientForRecipeRelation(recipeId, it)
+                        it.requiredIngredients.forEach { ingredient ->
+                            insertIngredientForRecipeRelation(recipeId, ingredient.id)
                         }
                     }
             )
@@ -77,10 +70,10 @@ class RecipesRepository
 
     private fun insertIngredientForRecipeRelation(
         recipeId: Int,
-        it: IngredientDetail
+        ingredientId: Int
     ) {
         recipeIngredientRecipeDao.insert(
-            RecipeIngredientRecipeJoinEntity(recipeId, it.id)
+            RecipeIngredientRecipeJoinEntity(recipeId, ingredientId)
         )
             .subscribeOn(IoScheduler())
             .subscribeBy(
