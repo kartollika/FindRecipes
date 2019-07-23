@@ -61,7 +61,7 @@ class RecipeDetailFragment : BaseFragment() {
     private fun initializeIngredientsRecyclerView() {
         ingredientsRequireAdapter =
             IngredientsRequireAdapter(IngredientsRequireAdapter.DEFAULT_DIFF_CALLBACK)
-        recipeDetailRequiredIngredients.apply {
+        recipeDetailRequiredIngredientsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = ingredientsRequireAdapter
         }
@@ -111,7 +111,6 @@ class RecipeDetailFragment : BaseFragment() {
         })
 
         collapsingToolbar.title = it.title
-
         recipeDetailImage.setOnClickListener { view ->
             val extras = FragmentNavigatorExtras(
                 recipeDetailImage to "recipe_detail_image"
@@ -122,9 +121,14 @@ class RecipeDetailFragment : BaseFragment() {
                 putString("name", it.title)
             }, null, extras)
         }
+
+        recipeDetailCookingTime.text = getString(R.string.cooking_time, it.cookingTime)
+        recipeDetailPricePerServing.text = getString(R.string.price_per_serving, it.pricePerServing)
+        recipeDetailTotalServings.text = getString(R.string.total_servings, it.totalServings)
     }
 
     private fun fillIngredientsInformation(list: List<IngredientDetail>) {
+        recipeDetailIngredientsListCardView.visibility = View.VISIBLE
         ingredientsRequireAdapter.setIngredientsList(list)
     }
 }

@@ -25,5 +25,10 @@ data class RecipeResponse(
     val aggregateLikes: Int,
     val creditText: String,
     val sourceName: String,
-    val instructions: String
+    val instructions: String,
+    val pricePerServing: Double,
+    val dishTypes: List<String>,
+    val cuisines: List<String>,
+    val diets: List<String>,
+    val analyzedInstructions: List<AnalyzedInstructionsResponse>
 )

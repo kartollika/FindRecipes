@@ -7,8 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface DataApi {
-
-
     @GET(NetworkConstants.Data.recipeInformation)
     fun getRecipeInformation(@Path(value = "id") id: Int): Single<RecipeResponse>
 }
