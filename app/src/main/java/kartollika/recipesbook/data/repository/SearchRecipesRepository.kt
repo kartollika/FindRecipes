@@ -17,6 +17,7 @@ class SearchRecipesRepository
     private val searchApi: SearchApi,
     private val filterRepository: RecipesFilterRepository
 ) {
+
     fun searchRecipesComplex(offset: Int = 0, number: Int = 10): Single<List<RecipePreview>> =
         Single.zip(
             listOf(

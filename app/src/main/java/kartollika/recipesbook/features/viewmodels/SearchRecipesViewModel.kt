@@ -21,6 +21,7 @@ class SearchRecipesViewModel
     private val filterRepository: RecipesFilterRepository
 ) : ViewModel() {
 
+    private var recipesList = mutableListOf<RecipePreview>()
     private val recipes: MutableLiveData<List<RecipePreview>> = MutableLiveData()
     private val recipesRefreshingEvent = MutableLiveData<Event<Boolean>>()
     private val ranking = MutableLiveData<Ranking>()
@@ -47,14 +48,19 @@ class SearchRecipesViewModel
             }
 
 
-    fun performComplexSearch() {
+    fun performComplexSearch(offset: Int = 0) {
         recipesRefreshingEvent.postValue(Event(true))
-        repositorySearch.searchRecipesComplex()
+        repositorySearch.searchRecipesComplex(offset)
             .subscribeOn(IoScheduler())
             .doOnSuccess { t -> Log.d("Obs", t.size.toString()) }
             .subscribeBy(onSuccess = { list ->
                 run {
-                    recipes.postValue(list)
+                    recipesList = if (offset > 0) {
+                        recipesList.apply { addAll(list) }
+                    } else {
+                        list.toMutableList()
+                    }
+                    recipes.postValue(recipesList)
                     recipesRefreshingEvent.postValue(Event(false))
                 }
             })

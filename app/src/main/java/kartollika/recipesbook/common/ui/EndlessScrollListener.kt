@@ -5,15 +5,27 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class EndlessScrollListener : RecyclerView.OnScrollListener() {
 
-    var visibleThreshold = 5
+    private var visibleThreshold = 5
     private var loading: Boolean = false
     private var previousTotal = 0
+    private val lock = Object()
+    private var totalCount = 0
+
+    abstract fun onLoadMoreItems()
+
+    fun resetScrollingState() {
+        previousTotal = 0
+        totalCount = 0
+        loading = false
+    }
+
+    fun getTotal() = totalCount
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
         val nowVisibleCount = recyclerView.childCount
-        val totalCount = recyclerView.layoutManager?.itemCount!!
+        totalCount = recyclerView.layoutManager?.itemCount!!
         val firstVisibleItem =
             (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 
@@ -30,6 +42,4 @@ abstract class EndlessScrollListener : RecyclerView.OnScrollListener() {
             loading = true
         }
     }
-
-    abstract fun onLoadMoreItems()
 }

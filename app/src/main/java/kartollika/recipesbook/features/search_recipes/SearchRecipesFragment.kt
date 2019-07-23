@@ -1,7 +1,6 @@
 package kartollika.recipesbook.features.search_recipes
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
@@ -26,6 +25,12 @@ class SearchRecipesFragment : BaseFragment() {
 
     private val viewModel by injectViewModel { App.diManager.applicationComponent!!.searchRecipesViewModel }
     private lateinit var recipesSearchedAdapter: RecipesSearchAdapter
+
+    private val endlessScrollListener = object : EndlessScrollListener() {
+        override fun onLoadMoreItems() {
+            viewModel.performComplexSearch(getTotal())
+        }
+    }
 
     override fun getLayoutRes(): Int = R.layout.search_recipes_layout
 
@@ -68,11 +73,7 @@ class SearchRecipesFragment : BaseFragment() {
             }
 
         searchRecipesRecyclerView.apply {
-            addOnScrollListener(object : EndlessScrollListener() {
-                override fun onLoadMoreItems() {
-                    Log.d("EndlessScroll", "onLoadMoreItems called")
-                }
-            })
+            addOnScrollListener(endlessScrollListener)
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = recipesSearchedAdapter
@@ -84,7 +85,10 @@ class SearchRecipesFragment : BaseFragment() {
             openFilters()
         }
 
-        searchRecipesSwipeRefreshLayout.setOnRefreshListener { viewModel.performComplexSearch() }
+        searchRecipesSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.performComplexSearch()
+            endlessScrollListener.resetScrollingState()
+        }
 
         sortingLayoutView.setOnClickListener {
             PopupMenu(requireContext(), linearLayout).apply {
@@ -141,7 +145,9 @@ class SearchRecipesFragment : BaseFragment() {
 
     private fun initializeObservers() {
         viewModel.getRecipes()
-            .observe(viewLifecycleOwner, Observer { recipesSearchedAdapter.setRecipesList(it) })
+            .observe(viewLifecycleOwner, Observer {
+                recipesSearchedAdapter.setRecipesList(it)
+            })
 
         viewModel.getRefreshingEvent().observe(viewLifecycleOwner, Observer {
             searchRecipesSwipeRefreshLayout.isRefreshing = it.getContentIfNotHandled() ?: false
