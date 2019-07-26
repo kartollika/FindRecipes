@@ -91,8 +91,7 @@
                 android:id="@+id/searchRecipesSwipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -101,7 +100,6 @@
                     android:id="@+id/searchRecipesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
                     android:nestedScrollingEnabled="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

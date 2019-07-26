@@ -12,6 +12,7 @@ import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.EndlessScrollListener
+import kartollika.recipesbook.common.ui.PaddingSpaceItemDecoration
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
@@ -73,6 +74,7 @@ class SearchRecipesFragment : BaseFragment() {
             }
 
         searchRecipesRecyclerView.apply {
+            addItemDecoration(PaddingSpaceItemDecoration(requireContext(), vertical = 8, horizontal = 16))
             addOnScrollListener(endlessScrollListener)
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
