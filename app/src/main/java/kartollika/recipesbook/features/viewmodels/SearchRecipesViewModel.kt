@@ -1,5 +1,6 @@
 package kartollika.recipesbook.features.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +9,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.common.reactive.Event
-import kartollika.recipesbook.common.ui.LoadingState
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
@@ -21,15 +21,11 @@ class SearchRecipesViewModel
     private val filterRepository: RecipesFilterRepository
 ) : ViewModel() {
 
-    private val recipes: MutableLiveData<List<RecipePreview>> = MutableLiveData()
-    private val recipesRefreshingEvent = MutableLiveData<Event<LoadingState>>()
-    private val ranking = MutableLiveData<Ranking>()
-    private val errorLiveData = MutableLiveData<Event<String>>()
-
     private var recipesList = mutableListOf<RecipePreview>()
+    private val recipes: MutableLiveData<List<RecipePreview>> = MutableLiveData()
+    private val recipesRefreshingEvent = MutableLiveData<Event<Boolean>>()
+    private val ranking = MutableLiveData<Ranking>()
     private var compositeDisposable = CompositeDisposable()
-    private var currentListOffset = 0
-
 
     init {
         compositeDisposable.addAll(
@@ -39,11 +35,9 @@ class SearchRecipesViewModel
 
     fun getRecipes(): LiveData<List<RecipePreview>> = recipes
 
-    fun getRefreshingEvent(): LiveData<Event<LoadingState>> = recipesRefreshingEvent
+    fun getRefreshingEvent(): LiveData<Event<Boolean>> = recipesRefreshingEvent
 
     fun getRanking(): LiveData<Ranking> = ranking
-
-    fun getErrorObservable(): LiveData<Event<String>> = errorLiveData
 
     private fun loadCurrentRanking(): Disposable =
         filterRepository.getRankingObservable()
@@ -54,29 +48,22 @@ class SearchRecipesViewModel
             }
 
 
-    fun performComplexSearch() {
-        switchLoadingState(LoadingState.Loading)
-        repositorySearch.searchRecipesComplex(currentListOffset)
+    fun performComplexSearch(offset: Int = 0) {
+        recipesRefreshingEvent.postValue(Event(true))
+        repositorySearch.searchRecipesComplex(offset)
             .subscribeOn(IoScheduler())
-            .doOnEvent { _, _ -> switchLoadingState(LoadingState.Finished) }
+            .doOnSuccess { t -> Log.d("Obs", t.size.toString()) }
             .subscribeBy(onSuccess = { list ->
                 run {
-                    recipesList = if (currentListOffset > 0) {
+                    recipesList = if (offset > 0) {
                         recipesList.apply { addAll(list) }
                     } else {
                         list.toMutableList()
                     }
-                    currentListOffset = recipesList.size
                     recipes.postValue(recipesList)
+                    recipesRefreshingEvent.postValue(Event(false))
                 }
-            },
-                onError = {
-                    errorLiveData.postValue(Event("Failed to load recipes"))
-                })
-    }
-
-    private fun switchLoadingState(state: LoadingState) {
-        recipesRefreshingEvent.postValue(Event(state))
+            })
     }
 
     fun applyRankingFilter(ranking: Ranking) {
@@ -87,9 +74,5 @@ class SearchRecipesViewModel
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
-    }
-
-    fun resetList() {
-        currentListOffset = 0
     }
 }

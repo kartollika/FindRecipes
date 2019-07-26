@@ -8,12 +8,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.snackbar.Snackbar
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.EndlessScrollListener
-import kartollika.recipesbook.common.ui.LoadingState
 import kartollika.recipesbook.common.ui.PaddingSpaceItemDecoration
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.Ranking
@@ -31,7 +29,7 @@ class SearchRecipesFragment : BaseFragment() {
 
     private val endlessScrollListener = object : EndlessScrollListener() {
         override fun onLoadMoreItems() {
-            viewModel.performComplexSearch()
+            viewModel.performComplexSearch(getTotal())
         }
     }
 
@@ -90,9 +88,8 @@ class SearchRecipesFragment : BaseFragment() {
         }
 
         searchRecipesSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.resetList()
-            endlessScrollListener.resetScrollingState()
             viewModel.performComplexSearch()
+            endlessScrollListener.resetScrollingState()
         }
 
         sortingLayoutView.setOnClickListener {
