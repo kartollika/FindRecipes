@@ -15,9 +15,9 @@
 
     <fragment
         android:id="@+id/otherMenuItemFragment"
-        android:name="kartollika.recipesbook.features.OtherFragment"
+        android:name="kartollika.recipesbook.features.settings.SettingsFragment"
         android:label="OtherFragment"
-        tools:layout="@layout/other_fragment_layout">
+        tools:layout="@layout/settings_fragment_layout">
     </fragment>
 
 

@@ -8,6 +8,7 @@ import kartollika.recipesbook.features.search_recipes.SearchRecipesFragment
 import kartollika.recipesbook.features.viewmodels.FilterRecipesViewModel
 import kartollika.recipesbook.features.viewmodels.RecipeDetailViewModel
 import kartollika.recipesbook.features.viewmodels.SearchRecipesViewModel
+import kartollika.recipesbook.features.viewmodels.SettingsViewModel
 import javax.inject.Singleton
 
 @Singleton
@@ -17,6 +18,7 @@ interface ApplicationComponent {
     val searchRecipesViewModel: SearchRecipesViewModel
     val filterRecipesViewModel: FilterRecipesViewModel
     val recipeDetailViewModel: RecipeDetailViewModel
+    val settingsViewModel: SettingsViewModel
 
     @Component.Factory
     interface Factory {
