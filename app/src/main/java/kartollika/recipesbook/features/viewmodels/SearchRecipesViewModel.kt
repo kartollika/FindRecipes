@@ -13,6 +13,7 @@ import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
 import kartollika.recipesbook.data.repository.SearchRecipesRepository
+import kartollika.recipesbook.features.search_recipes.LoadingState
 import javax.inject.Inject
 
 class SearchRecipesViewModel
@@ -21,11 +22,13 @@ class SearchRecipesViewModel
     private val filterRepository: RecipesFilterRepository
 ) : ViewModel() {
 
-    private var recipesList = mutableListOf<RecipePreview>()
     private val recipes: MutableLiveData<List<RecipePreview>> = MutableLiveData()
-    private val recipesRefreshingEvent = MutableLiveData<Event<Boolean>>()
+    private val recipesRefreshingEvent = MutableLiveData<Event<LoadingState>>()
     private val ranking = MutableLiveData<Ranking>()
+    private val errorLiveData = MutableLiveData<Event<String>>()
+
     private var compositeDisposable = CompositeDisposable()
+    private var recipesList = mutableListOf<RecipePreview>()
 
     init {
         compositeDisposable.addAll(
@@ -35,9 +38,11 @@ class SearchRecipesViewModel
 
     fun getRecipes(): LiveData<List<RecipePreview>> = recipes
 
-    fun getRefreshingEvent(): LiveData<Event<Boolean>> = recipesRefreshingEvent
+    fun getRefreshingEvent(): LiveData<Event<LoadingState>> = recipesRefreshingEvent
 
     fun getRanking(): LiveData<Ranking> = ranking
+
+    fun getErrorObservable(): LiveData<Event<String>> = errorLiveData
 
     private fun loadCurrentRanking(): Disposable =
         filterRepository.getRankingObservable()
@@ -49,9 +54,9 @@ class SearchRecipesViewModel
 
 
     fun performComplexSearch(offset: Int = 0) {
-        recipesRefreshingEvent.postValue(Event(true))
         repositorySearch.searchRecipesComplex(offset)
             .subscribeOn(IoScheduler())
+            .doOnSubscribe { switchLoadingState(LoadingState.Loading) }
             .doOnSuccess { t -> Log.d("Obs", t.size.toString()) }
             .subscribeBy(onSuccess = { list ->
                 run {
@@ -61,9 +66,16 @@ class SearchRecipesViewModel
                         list.toMutableList()
                     }
                     recipes.postValue(recipesList)
-                    recipesRefreshingEvent.postValue(Event(false))
+                    switchLoadingState(LoadingState.Finished)
                 }
-            })
+            },
+                onError = {
+                    errorLiveData.postValue(Event("Failed to load recipes"))
+                })
+    }
+
+    private fun switchLoadingState(state: LoadingState) {
+        recipesRefreshingEvent.postValue(Event(state))
     }
 
     fun applyRankingFilter(ranking: Ranking) {

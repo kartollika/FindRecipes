@@ -8,6 +8,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
@@ -166,7 +167,7 @@ class SearchRecipesFragment : BaseFragment() {
 
             }
             Snackbar.make(fabOpenRecipesFilters, it.peekContent(), Snackbar.LENGTH_LONG)
-                .setAction("Retry", { viewModel.performComplexSearch()}) .show()
+                .setAction("Retry") { viewModel.performComplexSearch()}.show()
         })
     }
 
