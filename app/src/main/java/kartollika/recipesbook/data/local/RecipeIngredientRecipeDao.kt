@@ -19,6 +19,6 @@ interface RecipeIngredientRecipeDao {
     )
     fun getIngredientsOfRecipe(recipeId: Int): Single<List<RecipeIngredientEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(recipeIngredientRecipeJoin: RecipeIngredientRecipeJoinEntity): Completable
 }
