@@ -8,7 +8,6 @@ abstract class EndlessScrollListener : RecyclerView.OnScrollListener() {
     private var visibleThreshold = 5
     private var loading: Boolean = false
     private var previousTotal = 0
-    private val lock = Object()
     private var totalCount = 0
 
     abstract fun onLoadMoreItems()
@@ -18,8 +17,6 @@ abstract class EndlessScrollListener : RecyclerView.OnScrollListener() {
         totalCount = 0
         loading = false
     }
-
-    fun getTotal() = totalCount
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)

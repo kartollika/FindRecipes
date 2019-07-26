@@ -8,10 +8,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.EndlessScrollListener
+import kartollika.recipesbook.common.ui.LoadingState
 import kartollika.recipesbook.common.ui.PaddingSpaceItemDecoration
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.Ranking
@@ -29,7 +31,7 @@ class SearchRecipesFragment : BaseFragment() {
 
     private val endlessScrollListener = object : EndlessScrollListener() {
         override fun onLoadMoreItems() {
-            viewModel.performComplexSearch(getTotal())
+            viewModel.performComplexSearch()
         }
     }
 
@@ -88,8 +90,9 @@ class SearchRecipesFragment : BaseFragment() {
         }
 
         searchRecipesSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.performComplexSearch()
+            viewModel.resetList()
             endlessScrollListener.resetScrollingState()
+            viewModel.performComplexSearch()
         }
 
         sortingLayoutView.setOnClickListener {
@@ -152,11 +155,21 @@ class SearchRecipesFragment : BaseFragment() {
             })
 
         viewModel.getRefreshingEvent().observe(viewLifecycleOwner, Observer {
-            searchRecipesSwipeRefreshLayout.isRefreshing = it.getContentIfNotHandled() ?: false
+            if (!it.hasBeenHandled) {
+                searchRecipesSwipeRefreshLayout.isRefreshing = it.peekContent() == LoadingState.Loading
+            }
         })
 
         viewModel.getRanking().observe(viewLifecycleOwner, Observer {
             updateSortingIndicator(it)
+        })
+
+        viewModel.getErrorObservable().observe(viewLifecycleOwner, Observer {
+            if (!it.hasBeenHandled) {
+
+            }
+            Snackbar.make(fabOpenRecipesFilters, it.peekContent(), Snackbar.LENGTH_LONG)
+                .setAction("Retry", { viewModel.performComplexSearch()}) .show()
         })
     }
 
