@@ -1,5 +1,6 @@
 package kartollika.recipesbook.features.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,11 +9,11 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.common.reactive.Event
-import kartollika.recipesbook.common.ui.LoadingState
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
 import kartollika.recipesbook.data.repository.SearchRecipesRepository
+import kartollika.recipesbook.features.search_recipes.LoadingState
 import javax.inject.Inject
 
 class SearchRecipesViewModel
@@ -26,10 +27,8 @@ class SearchRecipesViewModel
     private val ranking = MutableLiveData<Ranking>()
     private val errorLiveData = MutableLiveData<Event<String>>()
 
-    private var recipesList = mutableListOf<RecipePreview>()
     private var compositeDisposable = CompositeDisposable()
-    private var currentListOffset = 0
-
+    private var recipesList = mutableListOf<RecipePreview>()
 
     init {
         compositeDisposable.addAll(
@@ -54,20 +53,20 @@ class SearchRecipesViewModel
             }
 
 
-    fun performComplexSearch() {
-        switchLoadingState(LoadingState.Loading)
-        repositorySearch.searchRecipesComplex(currentListOffset)
+    fun performComplexSearch(offset: Int = 0) {
+        repositorySearch.searchRecipesComplex(offset)
             .subscribeOn(IoScheduler())
-            .doOnEvent { _, _ -> switchLoadingState(LoadingState.Finished) }
+            .doOnSubscribe { switchLoadingState(LoadingState.Loading) }
+            .doOnSuccess { t -> Log.d("Obs", t.size.toString()) }
             .subscribeBy(onSuccess = { list ->
                 run {
-                    recipesList = if (currentListOffset > 0) {
+                    recipesList = if (offset > 0) {
                         recipesList.apply { addAll(list) }
                     } else {
                         list.toMutableList()
                     }
-                    currentListOffset = recipesList.size
                     recipes.postValue(recipesList)
+                    switchLoadingState(LoadingState.Finished)
                 }
             },
                 onError = {
@@ -87,9 +86,5 @@ class SearchRecipesViewModel
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
-    }
-
-    fun resetList() {
-        currentListOffset = 0
     }
 }
