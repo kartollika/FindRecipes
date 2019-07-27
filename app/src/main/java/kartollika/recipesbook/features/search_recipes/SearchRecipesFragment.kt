@@ -21,7 +21,6 @@ import kartollika.recipesbook.features.search_recipes.adapters.RecipesSearchAdap
 import kotlinx.android.synthetic.main.search_recipe_item.view.*
 import kotlinx.android.synthetic.main.search_recipes_layout.*
 
-
 class SearchRecipesFragment : BaseFragment() {
 
     private val viewModel by injectViewModel { App.diManager.applicationComponent!!.searchRecipesViewModel }
@@ -87,7 +86,7 @@ class SearchRecipesFragment : BaseFragment() {
         }
 
         sortingLayoutView.setOnClickListener {
-            PopupMenu(requireContext(), linearLayout).apply {
+            PopupMenu(requireContext(), sortingLayoutView).apply {
                 inflate(R.menu.sorting_menu)
                 setOnMenuItemClickListener {
                     val ranking: Ranking? =

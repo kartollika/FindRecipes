@@ -6,6 +6,7 @@
         android:title="Search" />
     <item
         android:id="@+id/mealTimeFragment"
+        android:enabled="false"
         android:icon="@drawable/ic_date_range_black_24dp"
         android:title="Meal time" />
     <item

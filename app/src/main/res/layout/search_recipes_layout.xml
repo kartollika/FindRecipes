@@ -2,9 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
-    android:background="?android:attr/windowBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -12,105 +12,92 @@
         android:background="@android:color/transparent"
         app:elevation="0dp">
 
-        <TextView
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="64dp"
-            android:layout_marginRight="64dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:text="Search recipes"
-            android:textColor="@android:color/black"
-            android:textSize="32sp"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="64dp"
+                android:layout_marginRight="64dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:text="Search recipes"
+                android:textColor="@android:color/black"
+                android:textSize="32sp"
+                app:layout_scrollFlags="scroll|enterAlways" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/sortingLayoutView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingTop="12dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="12dp">
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="0dp"
+            <ImageView
+                android:id="@+id/sortingIndicatorImageView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:paddingTop="12dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/sortingIndicatorImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:tint="@android:color/darker_gray"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_trending_up_black_24dp" />
-
-                <TextView
-                    android:id="@+id/sortingIndicatorTextView"
-                    style="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Relevance"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/sortingIndicatorImageView"
-                    app:layout_constraintStart_toEndOf="@+id/sortingIndicatorImageView"
-                    app:layout_constraintTop_toTopOf="@+id/sortingIndicatorImageView" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:tint="@android:color/darker_gray"
-                    app:layout_constraintBottom_toBottomOf="@+id/sortingIndicatorTextView"
-                    app:layout_constraintStart_toEndOf="@+id/sortingIndicatorTextView"
-                    app:layout_constraintTop_toTopOf="@+id/sortingIndicatorTextView"
-                    app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
-
-            </LinearLayout>
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/searchRecipesSwipeRefreshLayout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_marginLeft="8dp"
+                android:tint="@android:color/darker_gray"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_trending_up_black_24dp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/searchRecipesRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nestedScrollingEnabled="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/sortingIndicatorTextView"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Relevance"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/sortingIndicatorImageView"
+                app:layout_constraintStart_toEndOf="@+id/sortingIndicatorImageView"
+                app:layout_constraintTop_toTopOf="@+id/sortingIndicatorImageView" />
 
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:tint="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/sortingIndicatorTextView"
+                app:layout_constraintStart_toEndOf="@+id/sortingIndicatorTextView"
+                app:layout_constraintTop_toTopOf="@+id/sortingIndicatorTextView"
+                app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/searchRecipesSwipeRefreshLayout"
+        android:layout_width="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecipesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabOpenRecipesFilters"

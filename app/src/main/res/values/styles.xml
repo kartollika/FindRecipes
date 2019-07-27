@@ -12,6 +12,7 @@
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
@@ -25,6 +26,12 @@
     </style>
 
     <style name="TitleText">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ApplyButton" parent="Widget.AppCompat.Button">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+        <item name="android:background">@drawable/button_rounded_background</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 

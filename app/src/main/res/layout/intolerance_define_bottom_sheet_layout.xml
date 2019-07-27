@@ -27,9 +27,11 @@
         </com.google.android.material.chip.ChipGroup>
     </androidx.core.widget.NestedScrollView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/intoleranceDefineApplyAction"
         android:layout_width="match_parent"
+        style="@style/ApplyButton"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Apply" />
 </LinearLayout>
