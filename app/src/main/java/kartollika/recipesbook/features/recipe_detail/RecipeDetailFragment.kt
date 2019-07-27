@@ -7,8 +7,6 @@ import android.os.Handler
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
@@ -21,10 +19,21 @@ import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
+import kartollika.recipesbook.features.MainActivity
+import kartollika.recipesbook.features.PhotoViewFragment
 import kartollika.recipesbook.features.recipe_detail.adapters.IngredientsRequireAdapter
 import kotlinx.android.synthetic.main.recipe_detail_layout.*
 
 class RecipeDetailFragment : BaseFragment() {
+
+    companion object {
+        fun getInstance(recipeId: Int): RecipeDetailFragment =
+            RecipeDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("RECIPE_ID", recipeId)
+                }
+            }
+    }
 
     private lateinit var ingredientsRequireAdapter: IngredientsRequireAdapter
 
@@ -44,13 +53,13 @@ class RecipeDetailFragment : BaseFragment() {
 
         initializeIngredientsRecyclerView()
         toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            (activity as MainActivity).navigateUpFullScreen()
         }
 
         Handler().post { initializeObservers() }
 
-        val args = RecipeDetailFragmentArgs.fromBundle(arguments)
-        viewModel.loadRecipeById(args.recipeId)
+        val recipeId = arguments?.getInt("RECIPE_ID") ?: 0
+        viewModel.loadRecipeById(recipeId)
     }
 
     override fun onDetach() {
@@ -92,34 +101,36 @@ class RecipeDetailFragment : BaseFragment() {
     }
 
     private fun fillRecipeInformation(it: Recipe) {
-        Glide.with(this).asBitmap().centerCrop().load(it.image).into(object : CustomTarget<Bitmap>() {
+        Glide.with(this).asBitmap()
+            .centerCrop().load(it.image).into(object : CustomTarget<Bitmap>() {
 
-            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                recipeDetailImage.setImageBitmap(resource)
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    recipeDetailImage.setImageBitmap(resource)
 
-                Palette.Builder(resource).setRegion(0, 0, resource.width, 50).generate { palette ->
-                    palette!!.getDarkVibrantColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
-                        .also {
-                            requireActivity().window.statusBarColor = it
-                            collapsingToolbar.setContentScrimColor(it)
-                        }
+                    Palette.Builder(resource).setRegion(0, 0, resource.width, 50).generate { palette ->
+                        palette!!.getDarkVibrantColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorPrimaryDark
+                            )
+                        )
+                            .also {
+                                requireActivity().window.statusBarColor = it
+                                collapsingToolbar?.setContentScrimColor(it)
+                            }
+                    }
                 }
-            }
 
-            override fun onLoadCleared(placeholder: Drawable?) {
-            }
-        })
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+            })
 
         collapsingToolbar.title = it.title
         recipeDetailImage.setOnClickListener { view ->
-            val extras = FragmentNavigatorExtras(
-                recipeDetailImage to "recipe_detail_image"
+            (activity as MainActivity).navigateFullScreen(
+                PhotoViewFragment.newInstance(it.image, it.title),
+                sharedElements = mapOf(recipeDetailImage to "recipe_detail_image")
             )
-
-            findNavController().navigate(R.id.action_recipeDetailFragment_to_photoViewFragment, Bundle().apply {
-                putString("photo_uri", it.image)
-                putString("name", it.title)
-            }, null, extras)
         }
 
         recipeDetailCookingTime.text = getString(R.string.cooking_time, it.cookingTime)

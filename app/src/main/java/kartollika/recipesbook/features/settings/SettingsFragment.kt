@@ -8,7 +8,10 @@ import kartollika.recipesbook.App
 import kartollika.recipesbook.BuildConfig
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
+import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.utils.injectViewModel
+import kartollika.recipesbook.features.MainActivity
+import kartollika.recipesbook.features.search_recipes.SearchRecipesFragment
 import kartollika.recipesbook.features.viewmodels.SettingsViewModel
 import kotlinx.android.synthetic.main.settings_fragment_layout.*
 
@@ -38,8 +41,26 @@ class SettingsFragment : BaseFragment() {
             viewModel.clearImagesCache()
         }
 
+        settingsSetupIntoleranceAction.setOnClickListener {
+            (activity as MainActivity).navigateFullScreen(SearchRecipesFragment())
+        }
+
         settingsSignInGoogleAction.setOnClickListener {
 
+        }
+
+        settingsSetupIntoleranceAction.setOnClickListener {
+            IntoleranceDefineDialogFragment().apply {
+                setCloseDialogListener(object : ApplyingBottomSheetDialog.OnCloseDialogListener {
+                    override fun onApply() {
+                        dismiss()
+                        Toast.makeText(requireContext(), "Intolerance was saved", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onCanceled() {
+                    }
+                })
+            }.show(childFragmentManager, "")
         }
     }
 

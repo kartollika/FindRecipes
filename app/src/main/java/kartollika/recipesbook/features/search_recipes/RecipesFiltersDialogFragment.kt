@@ -1,20 +1,15 @@
 package kartollika.recipesbook.features.search_recipes
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
+import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.ui.createSearchDelayedObservable
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.IngredientChosenType
@@ -25,59 +20,18 @@ import kotlinx.android.synthetic.main.input_dialog_layout.view.*
 import kotlinx.android.synthetic.main.search_recipes_filter_layout.*
 
 
-class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
+class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
 
-    private val callbacks: MutableList<BottomSheetBehavior.BottomSheetCallback> = mutableListOf()
     private val viewModel: FilterRecipesViewModel by injectViewModel {
         App.diManager.applicationComponent!!.filterRecipesViewModel
     }
+
+    override fun getLayoutRes(): Int = R.layout.search_recipes_filter_layout
 
     private lateinit var includedIngredientsAdapter: IngredientsAdapter
     private lateinit var excludedIngredientsAdapter: IngredientsAdapter
     private lateinit var intoleranceIngredientsAdapter: IngredientsAdapter
     private lateinit var queryDisposable: Disposable
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<out View>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.search_recipes_filter_layout, container, false)
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-
-        dialog.setOnShowListener { dialog ->
-            val d = dialog as BottomSheetDialog
-            val bottomSheet =
-                d.findViewById(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
-            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet!!).apply {
-                state = BottomSheetBehavior.STATE_EXPANDED
-
-                setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                    override fun onSlide(p0: View, p1: Float) {
-                        for (callback in callbacks) {
-                            callback.onSlide(p0, p1)
-                        }
-                    }
-
-                    override fun onStateChanged(p0: View, p1: Int) {
-                        for (callback in callbacks) {
-                            callback.onStateChanged(p0, p1)
-                        }
-                    }
-                })
-            }
-        }
-        return dialog
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -165,12 +119,9 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
         }
 
         saveFiltersActionView.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            dismiss()
+            super.onCloseDialogListener?.onApply()
         }
-    }
-
-    fun addCallback(callback: BottomSheetBehavior.BottomSheetCallback) {
-        callbacks.add(callback)
     }
 
     private fun createInputIngredientDialog(type: IngredientChosenType): AlertDialog =
@@ -200,7 +151,6 @@ class RecipesFiltersDialogFragment : BottomSheetDialogFragment() {
         viewModel.getIntolerancesIngredients().observe(this, Observer {
             intoleranceIngredientsAdapter.setupIngredients(it)
         })
-
 
         viewModel.getQueryText()
             .observe(this, Observer { s -> recipeQueryFilterTextField.setText(s.toString()) })

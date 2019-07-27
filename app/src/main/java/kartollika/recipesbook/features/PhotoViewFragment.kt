@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -47,8 +46,8 @@ class PhotoViewFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+//        postponeEnterTransition()
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-        postponeEnterTransition()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,7 +62,7 @@ class PhotoViewFragment : Fragment() {
 
         toolbar.title = name
         toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            (activity as MainActivity).navigateUpFullScreen()
         }
 
         Glide.with(requireContext())
@@ -75,7 +74,6 @@ class PhotoViewFragment : Fragment() {
                     target: Target<Drawable?>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    startPostponedEnterTransition()
                     return false
                 }
 
@@ -86,6 +84,13 @@ class PhotoViewFragment : Fragment() {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
+                    target?.getSize { width, height ->
+                        run {
+                            val params = photoViewImage.layoutParams
+                            params.height = height
+                            photoViewImage.layoutParams = params
+                        }
+                    }
                     startPostponedEnterTransition()
                     return false
                 }

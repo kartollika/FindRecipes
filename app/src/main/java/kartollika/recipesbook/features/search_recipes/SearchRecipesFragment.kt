@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
+import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.ui.EndlessScrollListener
 import kartollika.recipesbook.common.ui.PaddingSpaceItemDecoration
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
-import kartollika.recipesbook.features.HubFragmentDirections
+import kartollika.recipesbook.features.MainActivity
+import kartollika.recipesbook.features.recipe_detail.RecipeDetailFragment
 import kartollika.recipesbook.features.search_recipes.adapters.RecipesSearchAdapter
 import kotlinx.android.synthetic.main.search_recipe_item.view.*
 import kotlinx.android.synthetic.main.search_recipes_layout.*
@@ -60,16 +59,10 @@ class SearchRecipesFragment : BaseFragment() {
             RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK).apply {
                 onRecipeActionListener = object : RecipesSearchAdapter.OnRecipeActionListener {
                     override fun onItemClicked(recipe: RecipePreview, view: View) {
-                        val extras = FragmentNavigator.Extras.Builder()
-                            .addSharedElement(view.recipeDetailImage, "recipe_image").build()
-
-
-                        val direction =
-                            HubFragmentDirections.Action_hubFragment_to_recipeDetailFragment()
-                                .setRecipeId(recipe.id)
-
-                        Navigation.findNavController(activity!!, R.id.navHostFragment)
-                            .navigate(direction, extras)
+                        (activity as MainActivity).navigateFullScreen(
+                            RecipeDetailFragment.getInstance(recipe.id),
+                            sharedElements = mapOf(view.recipeDetailImage to "recipe_detail_image")
+                        )
                     }
                 }
             }
@@ -117,33 +110,23 @@ class SearchRecipesFragment : BaseFragment() {
         }
     }
 
-//    private fun updateSortingIndicator(sortTitle: CharSequence, sortIcon: Drawable?) {
-//        sortingIndicatorTextView.text = sortTitle
-//        sortingIndicatorImageView.setImageDrawable(sortIcon)
-//    }
-
     private fun updateSortingIndicator(ranking: Ranking) {
         sortingIndicatorTextView.text = ranking.naming
         sortingIndicatorImageView.setImageResource(ranking.icon)
     }
 
     private fun openFilters() {
-        val filtersFragment = RecipesFiltersDialogFragment().apply {
-            addCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(p0: View, p1: Float) {
+        val dialog = RecipesFiltersDialogFragment().apply {
+            setCloseDialogListener(object : ApplyingBottomSheetDialog.OnCloseDialogListener {
+                override fun onApply() {
+                    viewModel.performComplexSearch()
                 }
 
-                override fun onStateChanged(p0: View, state: Int) {
-                    if (state == BottomSheetBehavior.STATE_HIDDEN
-                        || state == BottomSheetBehavior.STATE_COLLAPSED
-                    ) {
-                        dismiss()
-                        viewModel.performComplexSearch()
-                    }
+                override fun onCanceled() {
                 }
             })
         }
-        filtersFragment.show(fragmentManager!!, "FiltersDialog")
+        dialog.show(childFragmentManager, "FiltersDialog")
     }
 
     private fun initializeObservers() {
@@ -167,7 +150,7 @@ class SearchRecipesFragment : BaseFragment() {
 
             }
             Snackbar.make(fabOpenRecipesFilters, it.peekContent(), Snackbar.LENGTH_LONG)
-                .setAction("Retry") { viewModel.performComplexSearch()}.show()
+                .setAction("Retry") { viewModel.performComplexSearch() }.show()
         })
     }
 
