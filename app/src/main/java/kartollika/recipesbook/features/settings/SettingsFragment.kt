@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import kartollika.recipesbook.App
 import kartollika.recipesbook.BuildConfig
 import kartollika.recipesbook.R
@@ -79,11 +80,18 @@ class SettingsFragment : BaseFragment() {
                 }
                 ClearCacheState.Finished -> {
                     settingsClearCacheProgress.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Clear cache done", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        activity!!.findViewById<View>(R.id.test_bottom_sheet_container),
+                        it.peekContent().message,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
                 ClearCacheState.Error -> {
                     settingsClearCacheProgress.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Clear cache error occured", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        it.peekContent().message, Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
