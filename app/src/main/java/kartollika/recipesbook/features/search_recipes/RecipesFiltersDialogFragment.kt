@@ -127,7 +127,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
             super.onCloseDialogListener?.onApply()
         }
 
-        intoleranceIngredientsUsePredefined.setOnCheckedChangeListener { _, checked ->
+        intoleranceIngredientsUsePredefinedCheckBox.setOnCheckedChangeListener { _, checked ->
             viewModel.onUsePredefinedIntoleranceChanged(checked)
         }
     }
@@ -164,6 +164,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
             .observe(this, Observer { s -> recipeQueryFilterTextField.setText(s.toString()) })
 
         viewModel.getUsePredefinedState().observe(this, Observer {
+            intoleranceIngredientsUsePredefinedCheckBox.isChecked = it
             intoleranceIngredientsChipGroup.visibility =
                 if (it) {
                     View.GONE
