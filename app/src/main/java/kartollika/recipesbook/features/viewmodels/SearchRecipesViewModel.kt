@@ -30,12 +30,6 @@ class SearchRecipesViewModel
     private var compositeDisposable = CompositeDisposable()
     private var recipesList = mutableListOf<RecipePreview>()
 
-    init {
-        compositeDisposable.addAll(
-            loadCurrentRanking()
-        )
-    }
-
     fun getRecipes(): LiveData<List<RecipePreview>> = recipes
 
     fun getRefreshingEvent(): LiveData<Event<LoadingState>> = recipesRefreshingEvent

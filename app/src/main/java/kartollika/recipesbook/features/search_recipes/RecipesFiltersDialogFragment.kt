@@ -13,6 +13,7 @@ import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.ui.createSearchDelayedObservable
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.IngredientChosenType
+import kartollika.recipesbook.data.models.IngredientSearch
 import kartollika.recipesbook.features.search_recipes.adapters.IngredientActionsListener
 import kartollika.recipesbook.features.search_recipes.adapters.IngredientsAdapter
 import kartollika.recipesbook.features.viewmodels.FilterRecipesViewModel
@@ -59,6 +60,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
     private fun initAdapters() {
         includedIngredientsAdapter =
             IngredientsAdapter(requireContext(), includedIngredientsChipGroup, true).apply {
+                setActivePredicate { IngredientSearch::isActiveNormal }
                 ingredientActionsListener = object : IngredientActionsListener {
                     override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
                         viewModel.switchActiveIngredient(
@@ -76,6 +78,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
 
         excludedIngredientsAdapter =
             IngredientsAdapter(requireContext(), excludedIngredientsChipGroup, true).apply {
+                setActivePredicate { IngredientSearch::isActiveNormal }
                 ingredientActionsListener = object : IngredientActionsListener {
                     override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
                         viewModel.switchActiveIngredient(
@@ -93,6 +96,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
 
         intoleranceIngredientsAdapter =
             IngredientsAdapter(requireContext(), intoleranceIngredientsChipGroup, false).apply {
+                setActivePredicate { IngredientSearch::isActiveNormal }
                 ingredientActionsListener = object : IngredientActionsListener {
                     override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
                         viewModel.switchActiveIngredient(
@@ -124,11 +128,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
         }
 
         intoleranceIngredientsUsePredefined.setOnCheckedChangeListener { _, checked ->
-            if (checked) {
-
-            } else {
-                intoleranceIngredientsChipGroup.visibility = View.GONE
-            }
+            viewModel.onUsePredefinedIntoleranceChanged(checked)
         }
     }
 
@@ -162,5 +162,14 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
 
         viewModel.getQueryText()
             .observe(this, Observer { s -> recipeQueryFilterTextField.setText(s.toString()) })
+
+        viewModel.getUsePredefinedState().observe(this, Observer {
+            intoleranceIngredientsChipGroup.visibility =
+                if (it) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+        })
     }
 }

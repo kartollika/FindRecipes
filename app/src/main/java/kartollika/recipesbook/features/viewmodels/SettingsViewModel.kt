@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.common.reactive.Event
+import kartollika.recipesbook.data.local.entities.mapToIngredientSearchModel
 import kartollika.recipesbook.data.models.IngredientChosenType
 import kartollika.recipesbook.data.models.IngredientSearch
 import kartollika.recipesbook.data.repository.RecipesFilterRepository
@@ -20,7 +22,17 @@ class SettingsViewModel
     private val recipesFilterRepository: RecipesFilterRepository
 ) : ViewModel() {
 
+    private var disposable: Disposable? = null
     private val clearCacheLiveData = MutableLiveData<Event<ClearCacheState>>(Event(ClearCacheState.Uninitialized))
+    private val intoleranceIngredientsLiveData = MutableLiveData<List<IngredientSearch>>()
+
+    init {
+        disposable = recipesFilterRepository.getIntoleranceIngredients()
+            .map { it.map { it.mapToIngredientSearchModel() } }
+            .subscribeBy(onNext = { intoleranceIngredientsLiveData.postValue(it) }, onError = { it.printStackTrace() })
+    }
+
+    fun getIntoleranceIngredients(): LiveData<List<IngredientSearch>> = intoleranceIngredientsLiveData
 
     fun getClearCacheDataObservable(): LiveData<Event<ClearCacheState>> = clearCacheLiveData
 

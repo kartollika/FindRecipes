@@ -20,11 +20,8 @@ class SharedPreferencesRepository
             .apply()
     }
 
-    fun getInt(key: String, defaultValue: Int = 0) = Single.fromCallable { sharedPreferences.getInt(key, defaultValue) }
-        .subscribeOn(IoScheduler())
-
-    fun getString(key: String, defaultValue: String = "") =
-        Single.fromCallable { sharedPreferences.getString(key, defaultValue) }
+    fun getInt(key: String, defaultValue: Int = 0) =
+        Single.fromCallable { sharedPreferences.getInt(key, defaultValue) }
             .subscribeOn(IoScheduler())
 
     fun putInt(key: String, value: Int) {
@@ -33,7 +30,19 @@ class SharedPreferencesRepository
             .apply()
     }
 
+    fun getString(key: String, defaultValue: String = "") =
+        Single.fromCallable { sharedPreferences.getString(key, defaultValue) }
+            .subscribeOn(IoScheduler())
+
     fun putString(key: String, value: String) {
         easyPut<String> { this.putString(key, value) }
+    }
+
+    fun getBoolean(key: String, value: Boolean) =
+        Single.fromCallable { sharedPreferences.getBoolean(key, value) }
+            .subscribeOn(IoScheduler())
+
+    fun putBoolean(key: String, value: Boolean) {
+        easyPut<String> { this.putBoolean(key, value) }
     }
 }

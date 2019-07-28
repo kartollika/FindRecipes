@@ -1,6 +1,8 @@
 package kartollika.recipesbook.data.repository
 
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.models.RecipePreview
@@ -15,8 +17,20 @@ import javax.inject.Singleton
 class SearchRecipesRepository
 @Inject constructor(
     private val searchApi: SearchApi,
-    private val filterRepository: RecipesFilterRepository
+    private val filterRepository: RecipesFilterRepository,
+    private val sharedPreferencesRepository: SharedPreferencesRepository
 ) {
+
+    private var disposable: Disposable? = null
+    private var usePredefinedIntolerance: Boolean = false
+
+    init {
+        disposable = RxSharedPreferences.create(sharedPreferencesRepository.getSharedPreferences())
+            .getBoolean(RecipesFilterRepository.SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY)
+            .asObservable()
+            .subscribeOn(IoScheduler())
+            .subscribeBy(onNext = { usePredefinedIntolerance = it }, onError = { it.printStackTrace() })
+    }
 
     fun searchRecipesComplex(offset: Int = 0, number: Int = 10): Single<List<RecipePreview>> =
         Single.zip(
@@ -74,7 +88,15 @@ class SearchRecipesRepository
     private fun getIntoleranceActiveIngredientsFlatFormat(): Single<String> =
         Single.create { emitter ->
             filterRepository.getIntoleranceIngredients()
-                .map { list -> list.filter { it.isActive } }
+                .map { list ->
+                    list.filter {
+                        if (usePredefinedIntolerance) {
+                            it.isPredefinedActive
+                        } else {
+                            it.isActive
+                        }
+                    }
+                }
                 .map { it -> it.map { it.name } }
                 .map { t -> t.joinToString(separator = ",") }
                 .subscribeBy(

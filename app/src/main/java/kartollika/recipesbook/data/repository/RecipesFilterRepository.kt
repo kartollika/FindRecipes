@@ -24,8 +24,12 @@ class RecipesFilterRepository
 
 ) {
 
-    private val SEARCH_RECIPES_COMPLEX_QUERY = "SEARCH_RECIPES_COMPLEX_QUERY"
-    private val SEARCH_RECIPES_COMPLEX_RANKING = "SEARCH_RECIPES_COMPLEX_RANKING"
+    companion object {
+        const val SEARCH_RECIPES_COMPLEX_QUERY = "SEARCH_RECIPES_COMPLEX_QUERY"
+        const val SEARCH_RECIPES_COMPLEX_RANKING = "SEARCH_RECIPES_COMPLEX_RANKING"
+        const val SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY =
+            "SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY"
+    }
 
     fun getIncludedIngredients() = ingredientsRepository.getIncludedIngredients()
 
@@ -79,6 +83,20 @@ class RecipesFilterRepository
     fun saveRankingFilter(ranking: Ranking) {
         sharedPreferencesRepository.putInt(SEARCH_RECIPES_COMPLEX_RANKING, ranking.ranking)
     }
+
+    fun saveUsePredefinedIntoleranceSetting(state: Boolean) {
+        sharedPreferencesRepository.easyPut<Boolean> {
+            putBoolean(
+                SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY,
+                state
+            )
+        }
+    }
+
+    fun getUsePredefinedIntoleranceObservable() =
+        RxSharedPreferences.create(sharedPreferencesRepository.getSharedPreferences())
+            .getBoolean(SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY)
+            .asObservable()
 
     private fun parseFoodInText(text: String): Observable<FoodItem> =
         extractApi.detectFoodInText(text)
