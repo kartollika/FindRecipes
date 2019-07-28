@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kartollika.recipesbook.R
-import kartollika.recipesbook.data.local.entities.IngredientEntity
+import kartollika.recipesbook.data.models.IngredientSearch
 
 interface IngredientActionsListener {
     fun onCheckedStateChanged(ingredient: String, isChecked: Boolean)
@@ -14,6 +14,7 @@ interface IngredientActionsListener {
 
 class IngredientsAdapter(private val context: Context, private val chipGroup: ChipGroup) {
 
+    private var activePredicate: (() -> (IngredientSearch) -> Boolean)? = null
     private var isCloseIconVisible = false
 
     constructor(context: Context, chipGroup: ChipGroup, isCloseIconVisible: Boolean) : this(
@@ -25,7 +26,7 @@ class IngredientsAdapter(private val context: Context, private val chipGroup: Ch
 
     var ingredientActionsListener: IngredientActionsListener? = null
 
-    fun setupIngredients(ingredientsList: List<IngredientEntity>) {
+    fun setupIngredients(ingredientsList: List<IngredientSearch>) {
         chipGroup.removeAllViews()
 
         for (ingredient in ingredientsList) {
@@ -33,7 +34,7 @@ class IngredientsAdapter(private val context: Context, private val chipGroup: Ch
                 text = ingredient.name
                 chipGroup.addView(this)
                 isCloseIconVisible = this@IngredientsAdapter.isCloseIconVisible
-                isChecked = ingredient.isActive
+                isChecked = activePredicate?.invoke()?.invoke(ingredient) ?: false
 
                 setOnCheckedChangeListener { _, isChecked ->
                     ingredientActionsListener?.onCheckedStateChanged(
@@ -48,6 +49,10 @@ class IngredientsAdapter(private val context: Context, private val chipGroup: Ch
                 }
             }
         }
+    }
+
+    fun setActivePredicate(predicate: () -> (IngredientSearch) -> Boolean) {
+        this.activePredicate = predicate
     }
 
     private fun getNewChipInstance(): Chip {

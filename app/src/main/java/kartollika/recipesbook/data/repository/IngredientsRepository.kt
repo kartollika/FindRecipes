@@ -41,11 +41,21 @@ class IngredientsRepository
             .subscribe()
     }
 
-    fun switchActivateIngredient(ingredient: IngredientSearch, state: Boolean): Disposable =
+    fun switchNotPredefinedIngredientState(ingredient: IngredientSearch, state: Boolean): Disposable =
         ingredientsDao.getIngredientByNameAndType(ingredient.name, ingredient.chosenType)
             .map { t ->
                 t.apply {
                     isActive = state
+                }
+            }
+            .subscribeOn(IoScheduler())
+            .subscribe { t -> updateIngredient(t) }
+
+    fun switchPredefinedIngredientState(ingredient: IngredientSearch, state: Boolean): Disposable =
+        ingredientsDao.getIngredientByNameAndType(ingredient.name, ingredient.chosenType)
+            .map { t ->
+                t.apply {
+                    isPredefinedActive = state
                 }
             }
             .subscribeOn(IoScheduler())
