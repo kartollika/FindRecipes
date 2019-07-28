@@ -122,6 +122,14 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
             dismiss()
             super.onCloseDialogListener?.onApply()
         }
+
+        intoleranceIngredientsUsePredefined.setOnCheckedChangeListener { _, checked ->
+            if (checked) {
+
+            } else {
+                intoleranceIngredientsChipGroup.visibility = View.GONE
+            }
+        }
     }
 
     private fun createInputIngredientDialog(type: IngredientChosenType): AlertDialog =

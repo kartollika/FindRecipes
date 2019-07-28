@@ -1,6 +1,5 @@
 package kartollika.recipesbook.data.repository
 
-import android.content.SharedPreferences
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -19,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class RecipesFilterRepository
 @Inject constructor(
-    private val sharedPreferences: SharedPreferences,
+    private val sharedPreferencesRepository: SharedPreferencesRepository,
     private val ingredientsRepository: IngredientsRepository,
     private val extractApi: ExtractApi
 
@@ -36,20 +35,23 @@ class RecipesFilterRepository
 
     fun addNewIngredients(ingredientRawText: String, type: IngredientChosenType) {
         parseFoodInText(ingredientRawText)
-//            .filter { it.tag == "ingredient" }
             .subscribeBy(onNext = { foodItem ->
                 ingredientsRepository.addIngredient(
                     IngredientEntity(
                         foodItem.name,
                         type,
-                        true
+                        isActive = true
                     )
                 )
             })
     }
 
-    fun switchActivateIngredient(ingredient: IngredientSearch, state: Boolean) {
-        ingredientsRepository.switchActivateIngredient(ingredient, state)
+    fun switchNotPredefinedIngredientsState(ingredient: IngredientSearch, state: Boolean) {
+        ingredientsRepository.switchNotPredefinedIngredientState(ingredient, state)
+    }
+
+    fun switchPredefinedIngredientState(ingredient: IngredientSearch, state: Boolean) {
+        ingredientsRepository.switchPredefinedIngredientState(ingredient, state)
     }
 
     fun deleteIngredient(ingredient: IngredientSearch) {
@@ -57,31 +59,25 @@ class RecipesFilterRepository
     }
 
     fun getQueryRecipe() =
-        Single.fromCallable { sharedPreferences.getString(SEARCH_RECIPES_COMPLEX_QUERY, "") }
-            .subscribeOn(IoScheduler())
+        sharedPreferencesRepository.getString(SEARCH_RECIPES_COMPLEX_QUERY)
 
     fun saveQueryRecipe(query: String) {
-        sharedPreferences.edit()
-            .putString(SEARCH_RECIPES_COMPLEX_QUERY, query)
-            .apply()
+        sharedPreferencesRepository.putString(SEARCH_RECIPES_COMPLEX_QUERY, query)
     }
 
     fun getRankingObservable(): Observable<Int> =
-        RxSharedPreferences.create(sharedPreferences).getInteger(
+        RxSharedPreferences.create(sharedPreferencesRepository.getSharedPreferences()).getInteger(
             SEARCH_RECIPES_COMPLEX_RANKING,
             2
         ).asObservable()
             .subscribeOn(IoScheduler())
 
     fun getRankingSingle(): Single<Int> =
-        Single.fromCallable { sharedPreferences.getInt(SEARCH_RECIPES_COMPLEX_RANKING, 2) }
-            .subscribeOn(IoScheduler())
+        sharedPreferencesRepository.getInt(SEARCH_RECIPES_COMPLEX_RANKING, 2)
 
 
     fun saveRankingFilter(ranking: Ranking) {
-        sharedPreferences.edit()
-            .putInt(SEARCH_RECIPES_COMPLEX_RANKING, ranking.ranking)
-            .apply()
+        sharedPreferencesRepository.putInt(SEARCH_RECIPES_COMPLEX_RANKING, ranking.ranking)
     }
 
     private fun parseFoodInText(text: String): Observable<FoodItem> =

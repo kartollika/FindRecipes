@@ -8,5 +8,6 @@ import kartollika.recipesbook.data.models.IngredientChosenType
 data class IngredientEntity(
     @ColumnInfo var name: String,
     var chosenType: IngredientChosenType,
-    var isActive: Boolean
+    var isActive: Boolean,
+    var isPredefinedActive: Boolean = false
 )

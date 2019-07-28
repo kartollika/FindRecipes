@@ -17,11 +17,12 @@ class FilterRecipesViewModel
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-
     private val includedIngredientsList = MutableLiveData<List<IngredientEntity>>()
     private val excludedIngredientsList = MutableLiveData<List<IngredientEntity>>()
     private val intoleranceIngredientsList = MutableLiveData<List<IngredientEntity>>()
     private val queryText = MutableLiveData<String>()
+
+    private var usePredefinedIntolerance: Boolean = true
 
     fun getQueryText(): LiveData<String> = queryText
 
@@ -43,11 +44,12 @@ class FilterRecipesViewModel
     }
 
     fun switchActiveIngredient(ingredient: String, type: IngredientChosenType, state: Boolean) {
-        recipesFilterRepository.switchActivateIngredient(
+        recipesFilterRepository.switchNotPredefinedIngredientsState(
             IngredientSearch(
                 ingredient,
                 type
-            ), state)
+            ), state
+        )
     }
 
     fun deleteIngredient(ingredient: String, type: IngredientChosenType) {
