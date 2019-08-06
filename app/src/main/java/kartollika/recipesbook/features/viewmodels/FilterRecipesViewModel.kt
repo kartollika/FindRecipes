@@ -8,12 +8,12 @@ import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.local.entities.mapToIngredientSearchModel
 import kartollika.recipesbook.data.models.IngredientChosenType
 import kartollika.recipesbook.data.models.IngredientSearch
-import kartollika.recipesbook.data.repository.RecipesFilterRepository
+import kartollika.recipesbook.data.repository.FilterRecipesRepository
 import javax.inject.Inject
 
 class FilterRecipesViewModel
 @Inject constructor(
-    private val recipesFilterRepository: RecipesFilterRepository
+    private val filterRecipesRepository: FilterRecipesRepository
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -41,11 +41,11 @@ class FilterRecipesViewModel
 
 
     fun addNewIngredients(ingredient: String, type: IngredientChosenType) {
-        recipesFilterRepository.addNewIngredients(ingredient, type)
+        filterRecipesRepository.addNewIngredients(ingredient, type)
     }
 
     fun switchActiveIngredient(ingredient: String, type: IngredientChosenType, state: Boolean) {
-        recipesFilterRepository.switchNotPredefinedIngredientsState(
+        filterRecipesRepository.switchNotPredefinedIngredientsState(
             IngredientSearch(
                 ingredient,
                 type
@@ -54,7 +54,7 @@ class FilterRecipesViewModel
     }
 
     fun deleteIngredient(ingredient: String, type: IngredientChosenType) {
-        recipesFilterRepository.deleteIngredient(
+        filterRecipesRepository.deleteIngredient(
             IngredientSearch(
                 ingredient,
                 type
@@ -63,26 +63,27 @@ class FilterRecipesViewModel
     }
 
     fun onQueryInput(query: String) {
-        recipesFilterRepository.saveQueryRecipe(query)
+        filterRecipesRepository.saveQueryRecipe(query)
     }
 
     private fun loadIncludedIngredients() =
-        recipesFilterRepository.getIncludedIngredients()
+        filterRecipesRepository.getIncludedIngredients()
             .map { it.map { it.mapToIngredientSearchModel() } }
             .subscribeBy(onNext = { includedIngredientsList.postValue(it) })
 
     private fun loadExcludedIngredients() =
-        recipesFilterRepository.getExcludedIngredients()
+        filterRecipesRepository.getExcludedIngredients()
             .map { it.map { it.mapToIngredientSearchModel() } }
             .subscribeBy(onNext = { excludedIngredientsList.postValue(it) }, onError = {})
 
     private fun loadIntoleranceIngredients() =
-        recipesFilterRepository.getIntoleranceIngredients()
+        filterRecipesRepository.getIntoleranceIngredients()
             .map { it.map { it.mapToIngredientSearchModel() } }
             .subscribeBy(onNext = { intoleranceIngredientsList.postValue(it) }, onError = {})
 
-    private fun loadQueryRecipe() = recipesFilterRepository.getQueryRecipe()
-        .subscribe { t -> queryText.postValue(t) }
+    private fun loadQueryRecipe() =
+        filterRecipesRepository.getQueryRecipe()
+            .subscribe { t -> queryText.postValue(t) }
 
     override fun onCleared() {
         super.onCleared()
@@ -90,12 +91,10 @@ class FilterRecipesViewModel
     }
 
     fun onUsePredefinedIntoleranceChanged(state: Boolean) {
-        recipesFilterRepository.saveUsePredefinedIntoleranceSetting(state)
+        filterRecipesRepository.saveUsePredefinedIntoleranceSetting(state)
     }
 
     private fun loadPredefinedState() =
-        recipesFilterRepository.getUsePredefinedIntoleranceObservable()
+        filterRecipesRepository.getUsePredefinedIntoleranceObservable()
             .subscribeBy(onNext = { usePredefinedIntolerance.postValue(it) })
-
-
 }

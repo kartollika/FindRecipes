@@ -86,6 +86,5 @@ class RecipesRepository
             .subscribeOn(IoScheduler())
             .subscribe()
     }
-
 }
 

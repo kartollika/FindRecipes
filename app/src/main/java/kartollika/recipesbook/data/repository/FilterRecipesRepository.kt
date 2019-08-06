@@ -16,10 +16,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RecipesFilterRepository
+class FilterRecipesRepository
 @Inject constructor(
     private val sharedPreferencesRepository: SharedPreferencesRepository,
-    private val ingredientsRepository: IngredientsRepository,
+    private val filterIngredientsRepository: FilterIngredientsRepository,
     private val extractApi: ExtractApi
 
 ) {
@@ -31,16 +31,16 @@ class RecipesFilterRepository
             "SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY"
     }
 
-    fun getIncludedIngredients() = ingredientsRepository.getIncludedIngredients()
+    fun getIncludedIngredients() = filterIngredientsRepository.getIncludedIngredients()
 
-    fun getExcludedIngredients() = ingredientsRepository.getExcludedIngredients()
+    fun getExcludedIngredients() = filterIngredientsRepository.getExcludedIngredients()
 
-    fun getIntoleranceIngredients() = ingredientsRepository.getIntoleranceIngredients()
+    fun getIntoleranceIngredients() = filterIngredientsRepository.getIntoleranceIngredients()
 
     fun addNewIngredients(ingredientRawText: String, type: IngredientChosenType) {
         parseFoodInText(ingredientRawText)
             .subscribeBy(onNext = { foodItem ->
-                ingredientsRepository.addIngredient(
+                filterIngredientsRepository.addIngredient(
                     IngredientEntity(
                         foodItem.name,
                         type,
@@ -51,15 +51,15 @@ class RecipesFilterRepository
     }
 
     fun switchNotPredefinedIngredientsState(ingredient: IngredientSearch, state: Boolean) {
-        ingredientsRepository.switchNotPredefinedIngredientState(ingredient, state)
+        filterIngredientsRepository.switchNotPredefinedIngredientState(ingredient, state)
     }
 
     fun switchPredefinedIngredientState(ingredient: IngredientSearch, state: Boolean) {
-        ingredientsRepository.switchPredefinedIngredientState(ingredient, state)
+        filterIngredientsRepository.switchPredefinedIngredientState(ingredient, state)
     }
 
     fun deleteIngredient(ingredient: IngredientSearch) {
-        ingredientsRepository.deleteIngredient(ingredient)
+        filterIngredientsRepository.deleteIngredient(ingredient)
     }
 
     fun getQueryRecipe() =

@@ -194,11 +194,12 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/recipeDetailMakeFavoriteFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:backgroundTint="#E6A910"
-        android:src="@drawable/ic_star_border_black_24dp"
+        android:src="@drawable/ic_star_border_white_24dp"
         app:borderWidth="0dp"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|end" />

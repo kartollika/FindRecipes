@@ -16,12 +16,14 @@ import com.bumptech.glide.request.transition.Transition
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
+import kartollika.recipesbook.common.ui.FavoriteAnimator
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.features.MainActivity
 import kartollika.recipesbook.features.PhotoViewFragment
 import kartollika.recipesbook.features.recipe_detail.adapters.IngredientsRequireAdapter
+import kartollika.recipesbook.features.viewmodels.RecipeDetailViewModel
 import kotlinx.android.synthetic.main.recipe_detail_layout.*
 
 class RecipeDetailFragment : BaseFragment() {
@@ -37,7 +39,7 @@ class RecipeDetailFragment : BaseFragment() {
 
     private lateinit var ingredientsRequireAdapter: IngredientsRequireAdapter
 
-    private val viewModel by injectViewModel { App.diManager.applicationComponent!!.recipeDetailViewModel }
+    private val viewModel: RecipeDetailViewModel by injectViewModel { App.diManager.applicationComponent!!.recipeDetailViewModel }
 
     override fun getLayoutRes(): Int = R.layout.recipe_detail_layout
 
@@ -51,10 +53,9 @@ class RecipeDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initializeIngredientsRecyclerView()
-        toolbar.setNavigationOnClickListener {
-            (activity as MainActivity).navigateUpFullScreen()
-        }
+        initIngredientsRecyclerView()
+        initListeners()
+        initToolbar()
 
         Handler().post { initializeObservers() }
 
@@ -67,7 +68,19 @@ class RecipeDetailFragment : BaseFragment() {
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
     }
 
-    private fun initializeIngredientsRecyclerView() {
+    private fun initListeners() {
+        recipeDetailMakeFavoriteFab.setOnClickListener {
+            viewModel.onSetFavoriteClicked()
+        }
+    }
+
+    private fun initToolbar() {
+        toolbar.setNavigationOnClickListener {
+            (activity as MainActivity).navigateUpFullScreen()
+        }
+    }
+
+    private fun initIngredientsRecyclerView() {
         ingredientsRequireAdapter =
             IngredientsRequireAdapter(IngredientsRequireAdapter.DEFAULT_DIFF_CALLBACK)
         recipeDetailRequiredIngredientsRecyclerView.apply {
@@ -77,16 +90,25 @@ class RecipeDetailFragment : BaseFragment() {
     }
 
     private fun initializeObservers() {
-        viewModel.getRecipeDetail().observe(this, Observer {
+        viewModel.getRecipeDetail().observe(viewLifecycleOwner, Observer {
             fillRecipeInformation(it)
         })
 
-        viewModel.getIsLoading().observe(this, Observer {
+        viewModel.getIsLoading().observe(viewLifecycleOwner, Observer {
             switchLoadingUiState(it)
         })
 
-        viewModel.getIngredientsList().observe(this, Observer {
+        viewModel.getIngredientsList().observe(viewLifecycleOwner, Observer {
             fillIngredientsInformation(it)
+        })
+
+        viewModel.getIsRecipeFavorite().observe(viewLifecycleOwner, Observer { isFavorite ->
+            FavoriteAnimator.animateFavoriteView(recipeDetailMakeFavoriteFab, isFavorite)
+            if (isFavorite) {
+                recipeDetailMakeFavoriteFab.setImageResource(R.drawable.ic_star_white_24dp)
+            } else {
+                recipeDetailMakeFavoriteFab.setImageResource(R.drawable.ic_star_border_white_24dp)
+            }
         })
     }
 

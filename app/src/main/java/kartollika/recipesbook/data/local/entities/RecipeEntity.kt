@@ -1,6 +1,5 @@
 package kartollika.recipesbook.data.local.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kartollika.recipesbook.data.models.Recipe
@@ -10,7 +9,7 @@ const val HOUR = 1000 * 60 * 60
 
 @Entity(tableName = "recipes_table")
 data class RecipeEntity(
-    @PrimaryKey @ColumnInfo
+    @PrimaryKey
     val id: Int,
     val title: String,
     val image: String,
