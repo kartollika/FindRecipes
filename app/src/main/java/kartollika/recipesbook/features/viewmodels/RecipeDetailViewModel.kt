@@ -39,11 +39,11 @@ class RecipeDetailViewModel
         )
     }
 
-    fun setRecipeFavorite() {
+    private fun setRecipeFavorite() {
         recipeDetailRepository.addRecipeToFavorite(currentRecipeId)
     }
 
-    fun setRecipeUnfavorite() {
+    private fun setRecipeUnfavorite() {
         recipeDetailRepository.removeRecipeFromFavorite(currentRecipeId)
     }
 
@@ -54,7 +54,8 @@ class RecipeDetailViewModel
                 onSuccess = {
                     recipeDetail.postValue(it)
                     recipeIngredientsLiveData.postValue(it.requiredIngredients)
-                }
+                },
+                onError = { it.printStackTrace() }
             )
 
     override fun onCleared() {
@@ -72,7 +73,7 @@ class RecipeDetailViewModel
 
     private fun loadIsRecipeFavorite(id: Int): Disposable? =
         recipeDetailRepository.isRecipeFavorite(id)
-            .subscribeBy(onNext = { isRecipeFavorite.postValue(it.isNotEmpty()) },
-                onComplete = {},
-                onError = {})
+            .subscribeBy(
+                onNext = { isRecipeFavorite.postValue(it.isNotEmpty()) },
+                onError = { it.printStackTrace() })
 }

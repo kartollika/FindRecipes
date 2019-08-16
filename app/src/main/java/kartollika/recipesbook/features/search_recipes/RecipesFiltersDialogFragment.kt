@@ -13,9 +13,8 @@ import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.ui.createSearchDelayedObservable
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.IngredientChosenType
-import kartollika.recipesbook.data.models.IngredientSearch
-import kartollika.recipesbook.features.search_recipes.adapters.IngredientActionsListener
-import kartollika.recipesbook.features.search_recipes.adapters.IngredientsAdapter
+import kartollika.recipesbook.features.search_recipes.adapters.filter.ChipActionListener
+import kartollika.recipesbook.features.search_recipes.adapters.filter.IngredientsAdapter
 import kartollika.recipesbook.features.viewmodels.FilterRecipesViewModel
 import kotlinx.android.synthetic.main.input_dialog_layout.view.*
 import kotlinx.android.synthetic.main.search_recipes_filter_layout.*
@@ -59,58 +58,67 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
 
     private fun initAdapters() {
         includedIngredientsAdapter =
-            IngredientsAdapter(requireContext(), includedIngredientsChipGroup, true).apply {
-                setActivePredicate { IngredientSearch::isActiveNormal }
-                ingredientActionsListener = object : IngredientActionsListener {
-                    override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
+            IngredientsAdapter(requireContext()).apply {
+                isCloseIconVisible = true
+                checkedPredicate = { it.isActiveNormal() }
+                actionListener = object :
+                    ChipActionListener {
+                    override fun onCheckedStateChanged(name: String, isChecked: Boolean) {
                         viewModel.switchActiveIngredient(
-                            ingredient,
+                            name,
                             IngredientChosenType.Included,
                             isChecked
                         )
                     }
 
-                    override fun onDeleteAction(ingredient: String) {
-                        viewModel.deleteIngredient(ingredient, IngredientChosenType.Included)
+                    override fun onDeleteAction(name: String) {
+                        viewModel.deleteIngredient(name, IngredientChosenType.Included)
                     }
                 }
             }
+        includedIngredientsChipGroup.setAdapter(includedIngredientsAdapter)
 
         excludedIngredientsAdapter =
-            IngredientsAdapter(requireContext(), excludedIngredientsChipGroup, true).apply {
-                setActivePredicate { IngredientSearch::isActiveNormal }
-                ingredientActionsListener = object : IngredientActionsListener {
-                    override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
+            IngredientsAdapter(requireContext()).apply {
+                isCloseIconVisible = true
+                checkedPredicate = { it.isActiveNormal() }
+                actionListener = object :
+                    ChipActionListener {
+                    override fun onCheckedStateChanged(name: String, isChecked: Boolean) {
                         viewModel.switchActiveIngredient(
-                            ingredient,
+                            name,
                             IngredientChosenType.Excluded,
                             isChecked
                         )
                     }
 
-                    override fun onDeleteAction(ingredient: String) {
-                        viewModel.deleteIngredient(ingredient, IngredientChosenType.Excluded)
+                    override fun onDeleteAction(name: String) {
+                        viewModel.deleteIngredient(name, IngredientChosenType.Excluded)
                     }
                 }
             }
+        excludedIngredientsChipGroup.setAdapter(excludedIngredientsAdapter)
 
         intoleranceIngredientsAdapter =
-            IngredientsAdapter(requireContext(), intoleranceIngredientsChipGroup, false).apply {
-                setActivePredicate { IngredientSearch::isActiveNormal }
-                ingredientActionsListener = object : IngredientActionsListener {
-                    override fun onCheckedStateChanged(ingredient: String, isChecked: Boolean) {
+            IngredientsAdapter(requireContext()).apply {
+                isCloseIconVisible = false
+                checkedPredicate =  { it.isActiveNormal() }
+                actionListener = object :
+                    ChipActionListener {
+                    override fun onCheckedStateChanged(name: String, isChecked: Boolean) {
                         viewModel.switchActiveIngredient(
-                            ingredient,
+                            name,
                             IngredientChosenType.Intolerance,
                             isChecked
                         )
                     }
 
-                    override fun onDeleteAction(ingredient: String) {
+                    override fun onDeleteAction(name: String) {
                         // Empty stub
                     }
                 }
             }
+        intoleranceIngredientsChipGroup.setAdapter(intoleranceIngredientsAdapter)
     }
 
     private fun initListeners() {
@@ -149,15 +157,15 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
 
     private fun initObservers() {
         viewModel.getIncludedIngredients().observe(this, Observer {
-            includedIngredientsAdapter.setupIngredients(it)
+            includedIngredientsAdapter.setupList(it)
         })
 
         viewModel.getExcludedIngredients().observe(this, Observer {
-            excludedIngredientsAdapter.setupIngredients(it)
+            excludedIngredientsAdapter.setupList(it)
         })
 
         viewModel.getIntolerancesIngredients().observe(this, Observer {
-            intoleranceIngredientsAdapter.setupIngredients(it)
+            intoleranceIngredientsAdapter.setupList(it)
         })
 
         viewModel.getQueryText()

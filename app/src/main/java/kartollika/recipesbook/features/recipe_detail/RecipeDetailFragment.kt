@@ -22,7 +22,10 @@ import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.features.MainActivity
 import kartollika.recipesbook.features.PhotoViewFragment
-import kartollika.recipesbook.features.recipe_detail.adapters.IngredientsRequireAdapter
+import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.Data
+import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeDetailInfoItem
+import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeDetailInfoItemHelper
+import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeInfoAdapter
 import kartollika.recipesbook.features.viewmodels.RecipeDetailViewModel
 import kotlinx.android.synthetic.main.recipe_detail_layout.*
 
@@ -37,7 +40,7 @@ class RecipeDetailFragment : BaseFragment() {
             }
     }
 
-    private lateinit var ingredientsRequireAdapter: IngredientsRequireAdapter
+    private val recipeInfoAdapter = RecipeInfoAdapter(RecipeInfoAdapter.DEFAULT_DIFF_CALLBACK)
 
     private val viewModel: RecipeDetailViewModel by injectViewModel { App.diManager.applicationComponent!!.recipeDetailViewModel }
 
@@ -53,7 +56,7 @@ class RecipeDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initIngredientsRecyclerView()
+        initInfoAdapter()
         initListeners()
         initToolbar()
 
@@ -61,6 +64,13 @@ class RecipeDetailFragment : BaseFragment() {
 
         val recipeId = arguments?.getInt("RECIPE_ID") ?: 0
         viewModel.loadRecipeById(recipeId)
+    }
+
+    private fun initInfoAdapter() {
+        recipeDetailContentRecyclerView.apply {
+            adapter = recipeInfoAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     override fun onDetach() {
@@ -77,15 +87,6 @@ class RecipeDetailFragment : BaseFragment() {
     private fun initToolbar() {
         toolbar.setNavigationOnClickListener {
             (activity as MainActivity).navigateUpFullScreen()
-        }
-    }
-
-    private fun initIngredientsRecyclerView() {
-        ingredientsRequireAdapter =
-            IngredientsRequireAdapter(IngredientsRequireAdapter.DEFAULT_DIFF_CALLBACK)
-        recipeDetailRequiredIngredientsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = ingredientsRequireAdapter
         }
     }
 
@@ -114,10 +115,10 @@ class RecipeDetailFragment : BaseFragment() {
 
     private fun switchLoadingUiState(isLoading: Boolean) {
         if (isLoading) {
-            content.visibility = View.GONE
+//            content.visibility = View.GONE
             recipeDetailContentLoadingProgressView.show()
         } else {
-            content.visibility = View.VISIBLE
+//            content.visibility = View.VISIBLE
             recipeDetailContentLoadingProgressView.hide()
         }
     }
@@ -161,7 +162,8 @@ class RecipeDetailFragment : BaseFragment() {
     }
 
     private fun fillIngredientsInformation(list: List<IngredientDetail>) {
-        recipeDetailIngredientsListCardView.visibility = View.VISIBLE
-        ingredientsRequireAdapter.setIngredientsList(list)
+        recipeInfoAdapter.submitList(mutableListOf(RecipeDetailInfoItem(Data(list), RecipeDetailInfoItemHelper.INFO_INGREDIENTS)))
+//        recipeDetailIngredientsListCardView.visibility = View.VISIBLE
+//        requiredIngredientsAdapter.setIngredientsList(list)
     }
 }
