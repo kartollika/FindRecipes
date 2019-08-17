@@ -1,4 +1,4 @@
-package kartollika.recipesbook.data.remote.extract.response
+package kartollika.recipesbook.data.remote.api.extract.response
 
 import kartollika.recipesbook.data.models.FoodItem
 

@@ -1,4 +1,4 @@
-package kartollika.recipesbook.data.remote.search.response
+package kartollika.recipesbook.data.remote.api.search.response
 
 import kartollika.recipesbook.data.models.RecipePreview
 

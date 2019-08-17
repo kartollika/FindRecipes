@@ -1,4 +1,4 @@
-package kartollika.recipesbook.data.remote.data.response
+package kartollika.recipesbook.data.remote.api.data.response
 
 data class RecipeResponse(
     val id: Int,

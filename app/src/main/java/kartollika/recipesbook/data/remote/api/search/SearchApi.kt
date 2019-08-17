@@ -1,4 +1,4 @@
-package kartollika.recipesbook.data.remote.search
+package kartollika.recipesbook.data.remote.api.search
 
 import io.reactivex.Single
 import kartollika.recipesbook.data.remote.NetworkConstants
@@ -11,7 +11,7 @@ import kartollika.recipesbook.data.remote.NetworkConstants.Companion.number_QUER
 import kartollika.recipesbook.data.remote.NetworkConstants.Companion.offset_QUERY
 import kartollika.recipesbook.data.remote.NetworkConstants.Companion.query_QUERY
 import kartollika.recipesbook.data.remote.NetworkConstants.Companion.ranking_QUERY
-import kartollika.recipesbook.data.remote.search.response.SearchRecipeComplexResponse
+import kartollika.recipesbook.data.remote.api.search.response.SearchRecipeComplexResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

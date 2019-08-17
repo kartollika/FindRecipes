@@ -1,14 +1,15 @@
 package kartollika.recipesbook.data.models
 
 import kartollika.recipesbook.data.local.entities.RecipeEntity
-import kartollika.recipesbook.data.remote.data.response.RecipeResponse
-import kartollika.recipesbook.data.remote.data.response.mapToIngredientDetail
+import kartollika.recipesbook.data.remote.api.data.response.RecipeResponse
+import kartollika.recipesbook.data.remote.api.data.response.mapToIngredientDetail
 
 data class Recipe(
     val id: Int,
     val title: String,
     val image: String,
-    var requiredIngredients: List<IngredientDetail> = listOf(),
+    val requiredIngredients: List<IngredientDetail> = emptyList(),
+    val requiredEquipment: List<Equipment> = emptyList(),
     val cookingTime: Int = 0,
     val pricePerServing: Double = 0.0,
     val totalServings: Int = 0

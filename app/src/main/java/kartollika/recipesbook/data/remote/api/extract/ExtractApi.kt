@@ -1,8 +1,8 @@
-package kartollika.recipesbook.data.remote.extract
+package kartollika.recipesbook.data.remote.api.extract
 
 import io.reactivex.Observable
 import kartollika.recipesbook.data.remote.NetworkConstants
-import kartollika.recipesbook.data.remote.extract.response.DetectFoodResponse
+import kartollika.recipesbook.data.remote.api.extract.response.DetectFoodResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

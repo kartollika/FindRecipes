@@ -10,8 +10,8 @@ import kartollika.recipesbook.data.models.FoodItem
 import kartollika.recipesbook.data.models.IngredientChosenType
 import kartollika.recipesbook.data.models.IngredientSearch
 import kartollika.recipesbook.data.models.Ranking
-import kartollika.recipesbook.data.remote.extract.ExtractApi
-import kartollika.recipesbook.data.remote.extract.response.mapToFoodItem
+import kartollika.recipesbook.data.remote.api.extract.ExtractApi
+import kartollika.recipesbook.data.remote.api.extract.response.mapToFoodItem
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,7 +1,7 @@
-package kartollika.recipesbook.data.remote.data.response
+package kartollika.recipesbook.data.remote.api.data.response
 
 data class SimpleEquipmentResponse(
-    val id: Int,
+    val id: Int = 0,
     val name: String,
     val image: String
 )

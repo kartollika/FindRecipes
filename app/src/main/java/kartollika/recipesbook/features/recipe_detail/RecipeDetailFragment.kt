@@ -17,6 +17,7 @@ import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.FavoriteAnimator
+import kartollika.recipesbook.common.ui.PaddingSpaceItemDecoration
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
@@ -68,6 +69,7 @@ class RecipeDetailFragment : BaseFragment() {
 
     private fun initInfoAdapter() {
         recipeDetailContentRecyclerView.apply {
+            addItemDecoration(PaddingSpaceItemDecoration(context, 8, 16))
             adapter = recipeInfoAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -163,7 +165,5 @@ class RecipeDetailFragment : BaseFragment() {
 
     private fun fillIngredientsInformation(list: List<IngredientDetail>) {
         recipeInfoAdapter.submitList(mutableListOf(RecipeDetailInfoItem(Data(list), RecipeDetailInfoItemHelper.INFO_INGREDIENTS)))
-//        recipeDetailIngredientsListCardView.visibility = View.VISIBLE
-//        requiredIngredientsAdapter.setIngredientsList(list)
     }
 }

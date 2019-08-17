@@ -1,4 +1,4 @@
-package kartollika.recipesbook.data.remote.search.request
+package kartollika.recipesbook.data.remote.api.search.request
 
 data class SearchRecipesComplexRequest(
     var limitLicence: Boolean = false,

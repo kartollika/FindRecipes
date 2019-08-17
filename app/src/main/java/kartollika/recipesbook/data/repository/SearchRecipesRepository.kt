@@ -6,10 +6,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.models.RecipePreview
-import kartollika.recipesbook.data.remote.search.SearchApi
-import kartollika.recipesbook.data.remote.search.request.SearchRecipesComplexRequest
-import kartollika.recipesbook.data.remote.search.response.SearchRecipeComplexResponse
-import kartollika.recipesbook.data.remote.search.response.mapToRecipeModel
+import kartollika.recipesbook.data.remote.api.search.SearchApi
+import kartollika.recipesbook.data.remote.api.search.request.SearchRecipesComplexRequest
+import kartollika.recipesbook.data.remote.api.search.response.SearchRecipeComplexResponse
+import kartollika.recipesbook.data.remote.api.search.response.mapToRecipeModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
