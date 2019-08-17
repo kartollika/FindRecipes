@@ -76,7 +76,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField">
 
-                    <com.google.android.material.chip.ChipGroup
+                    <kartollika.recipesbook.common.ui.AdaptableChipGroup
                         android:id="@+id/includedIngredientsChipGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField">
 
-                    </com.google.android.material.chip.ChipGroup>
+                    </kartollika.recipesbook.common.ui.AdaptableChipGroup>
 
                     <TextView
                         android:id="@+id/addIncludedIngredientsTextView"
@@ -126,7 +126,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField">
 
-                    <com.google.android.material.chip.ChipGroup
+                    <kartollika.recipesbook.common.ui.AdaptableChipGroup
                         android:id="@+id/excludedIngredientsChipGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="?android:textColorTertiary" />
 
-                    <com.google.android.material.chip.ChipGroup
+                    <kartollika.recipesbook.common.ui.AdaptableChipGroup
                         android:id="@+id/intoleranceIngredientsChipGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

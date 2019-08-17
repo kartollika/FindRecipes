@@ -6,10 +6,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.data.models.RecipePreview
-import kartollika.recipesbook.data.remote.search.SearchApi
-import kartollika.recipesbook.data.remote.search.request.SearchRecipesComplexRequest
-import kartollika.recipesbook.data.remote.search.response.SearchRecipeComplexResponse
-import kartollika.recipesbook.data.remote.search.response.mapToRecipeModel
+import kartollika.recipesbook.data.remote.api.search.SearchApi
+import kartollika.recipesbook.data.remote.api.search.request.SearchRecipesComplexRequest
+import kartollika.recipesbook.data.remote.api.search.response.SearchRecipeComplexResponse
+import kartollika.recipesbook.data.remote.api.search.response.mapToRecipeModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class SearchRecipesRepository
 @Inject constructor(
     private val searchApi: SearchApi,
-    private val filterRepository: RecipesFilterRepository,
+    private val filterRecipesRepository: FilterRecipesRepository,
     private val sharedPreferencesRepository: SharedPreferencesRepository
 ) {
 
@@ -26,7 +26,7 @@ class SearchRecipesRepository
 
     init {
         disposable = RxSharedPreferences.create(sharedPreferencesRepository.getSharedPreferences())
-            .getBoolean(RecipesFilterRepository.SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY)
+            .getBoolean(FilterRecipesRepository.SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY)
             .asObservable()
             .subscribeOn(IoScheduler())
             .subscribeBy(onNext = { usePredefinedIntolerance = it }, onError = { it.printStackTrace() })
@@ -37,8 +37,8 @@ class SearchRecipesRepository
             listOf(
                 getIncludedActiveIngredientsFlatFormat(),
                 getExcludedActiveIngredientsFlatFormat(),
-                filterRepository.getQueryRecipe(),
-                filterRepository.getRankingSingle(),
+                filterRecipesRepository.getQueryRecipe(),
+                filterRecipesRepository.getRankingSingle(),
                 getIntoleranceActiveIngredientsFlatFormat()
             )
         ) { t -> createSearchRecipesComplexRequest(offset, number, t) }
@@ -67,7 +67,7 @@ class SearchRecipesRepository
 
     private fun getIncludedActiveIngredientsFlatFormat(): Single<String> =
         Single.create { emitter ->
-            filterRepository.getIncludedIngredients()
+            filterRecipesRepository.getIncludedIngredients()
                 .map { t -> t.filter { it.isActive } }
                 .map { t -> t.map { it.name } }
                 .map { t -> t.joinToString(separator = ",") }
@@ -76,7 +76,7 @@ class SearchRecipesRepository
 
     private fun getExcludedActiveIngredientsFlatFormat(): Single<String> =
         Single.create { emitter ->
-            filterRepository.getExcludedIngredients()
+            filterRecipesRepository.getExcludedIngredients()
                 .map { list -> list.filter { it.isActive } }
                 .map { it -> it.map { it.name } }
                 .map { t -> t.joinToString(separator = ",") }
@@ -87,7 +87,7 @@ class SearchRecipesRepository
 
     private fun getIntoleranceActiveIngredientsFlatFormat(): Single<String> =
         Single.create { emitter ->
-            filterRepository.getIntoleranceIngredients()
+            filterRecipesRepository.getIntoleranceIngredients()
                 .map { list ->
                     list.filter {
                         if (usePredefinedIntolerance) {

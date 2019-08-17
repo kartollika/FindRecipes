@@ -14,7 +14,7 @@ import kartollika.recipesbook.data.local.entities.mapToRecipeEntity
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.data.models.mapToRecipeModel
-import kartollika.recipesbook.data.remote.data.DataApi
+import kartollika.recipesbook.data.remote.api.data.DataApi
 import javax.inject.Inject
 
 class RecipesRepository
@@ -86,6 +86,5 @@ class RecipesRepository
             .subscribeOn(IoScheduler())
             .subscribe()
     }
-
 }
 

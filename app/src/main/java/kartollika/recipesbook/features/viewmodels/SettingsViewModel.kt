@@ -12,14 +12,14 @@ import kartollika.recipesbook.common.reactive.Event
 import kartollika.recipesbook.data.local.entities.mapToIngredientSearchModel
 import kartollika.recipesbook.data.models.IngredientChosenType
 import kartollika.recipesbook.data.models.IngredientSearch
-import kartollika.recipesbook.data.repository.RecipesFilterRepository
+import kartollika.recipesbook.data.repository.FilterRecipesRepository
 import kartollika.recipesbook.features.settings.ClearCacheState
 import javax.inject.Inject
 
 class SettingsViewModel
 @Inject constructor(
     private val context: Context,
-    private val recipesFilterRepository: RecipesFilterRepository
+    private val filterRecipesRepository: FilterRecipesRepository
 ) : ViewModel() {
 
     private var disposable: Disposable? = null
@@ -27,7 +27,7 @@ class SettingsViewModel
     private val intoleranceIngredientsLiveData = MutableLiveData<List<IngredientSearch>>()
 
     init {
-        disposable = recipesFilterRepository.getIntoleranceIngredients()
+        disposable = filterRecipesRepository.getIntoleranceIngredients()
             .map { it.map { it.mapToIngredientSearchModel() } }
             .subscribeBy(onNext = { intoleranceIngredientsLiveData.postValue(it) }, onError = { it.printStackTrace() })
     }
@@ -46,7 +46,7 @@ class SettingsViewModel
     }
 
     fun switchActiveIngredient(ingredient: String, type: IngredientChosenType, state: Boolean) {
-        recipesFilterRepository.switchPredefinedIngredientState(
+        filterRecipesRepository.switchPredefinedIngredientState(
             IngredientSearch(
                 ingredient,
                 type

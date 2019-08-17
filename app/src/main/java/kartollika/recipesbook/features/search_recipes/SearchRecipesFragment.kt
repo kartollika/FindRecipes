@@ -17,7 +17,7 @@ import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
 import kartollika.recipesbook.features.MainActivity
 import kartollika.recipesbook.features.recipe_detail.RecipeDetailFragment
-import kartollika.recipesbook.features.search_recipes.adapters.RecipesSearchAdapter
+import kartollika.recipesbook.features.search_recipes.adapters.search.RecipesSearchAdapter
 import kotlinx.android.synthetic.main.search_recipe_item.view.*
 import kotlinx.android.synthetic.main.search_recipes_layout.*
 
@@ -55,7 +55,8 @@ class SearchRecipesFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         recipesSearchedAdapter =
-            RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK).apply {
+            RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK)
+                .apply {
                 onRecipeActionListener = object : RecipesSearchAdapter.OnRecipeActionListener {
                     override fun onItemClicked(recipe: RecipePreview, view: View) {
                         (activity as MainActivity).navigateFullScreen(

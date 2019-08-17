@@ -40,4 +40,9 @@ object StorageModule {
     @JvmStatic
     fun provideRecipeIngredientDao(recipesDatabase: RecipesDatabase) =
         recipesDatabase.getRecipeIngredientDao()
+
+    @Provides
+    @JvmStatic
+    fun provideFavoriteDao(recipesDatabase: RecipesDatabase) =
+        recipesDatabase.getFavoriteDao()
 }

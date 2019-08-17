@@ -11,7 +11,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import kartollika.recipesbook.common.reactive.Event
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
-import kartollika.recipesbook.data.repository.RecipesFilterRepository
+import kartollika.recipesbook.data.repository.FilterRecipesRepository
 import kartollika.recipesbook.data.repository.SearchRecipesRepository
 import kartollika.recipesbook.features.search_recipes.LoadingState
 import javax.inject.Inject
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class SearchRecipesViewModel
 @Inject constructor(
     private val repositorySearch: SearchRecipesRepository,
-    private val filterRepository: RecipesFilterRepository
+    private val filterRecipesRepository: FilterRecipesRepository
 ) : ViewModel() {
 
     private val recipes: MutableLiveData<List<RecipePreview>> = MutableLiveData()
@@ -39,7 +39,7 @@ class SearchRecipesViewModel
     fun getErrorObservable(): LiveData<Event<String>> = errorLiveData
 
     private fun loadCurrentRanking(): Disposable =
-        filterRepository.getRankingObservable()
+        filterRecipesRepository.getRankingObservable()
             .subscribe { rank: Int ->
                 ranking.postValue(
                     Ranking.fromRankingValue(rank)
@@ -73,7 +73,7 @@ class SearchRecipesViewModel
     }
 
     fun applyRankingFilter(ranking: Ranking) {
-        filterRepository.saveRankingFilter(ranking)
+        filterRecipesRepository.saveRankingFilter(ranking)
         performComplexSearch()
     }
 

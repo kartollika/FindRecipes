@@ -7,10 +7,10 @@ import dagger.Module
 import dagger.Provides
 import kartollika.recipesbook.data.remote.DefaultHttpClient
 import kartollika.recipesbook.data.remote.NetworkConstants
-import kartollika.recipesbook.data.remote.data.DataApi
-import kartollika.recipesbook.data.remote.extract.ExtractApi
+import kartollika.recipesbook.data.remote.api.data.DataApi
+import kartollika.recipesbook.data.remote.api.extract.ExtractApi
+import kartollika.recipesbook.data.remote.api.search.SearchApi
 import kartollika.recipesbook.data.remote.interceptors.DefaultInterceptor
-import kartollika.recipesbook.data.remote.search.SearchApi
 import okhttp3.Interceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
