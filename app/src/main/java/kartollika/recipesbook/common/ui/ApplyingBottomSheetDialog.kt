@@ -26,7 +26,7 @@ abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
     abstract fun getLayoutRes(): Int
 
     fun setStyle() {
-        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
+        setStyle(STYLE_NORMAL, R.style.BottomSheetDialogTheme)
     }
 
     fun setCloseDialogListener(listener: OnCloseDialogListener) {

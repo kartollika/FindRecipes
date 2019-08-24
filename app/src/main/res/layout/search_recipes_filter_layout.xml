@@ -221,7 +221,7 @@
             android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:text="Применить"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorPrimary" />
     </FrameLayout>
 
 </LinearLayout>

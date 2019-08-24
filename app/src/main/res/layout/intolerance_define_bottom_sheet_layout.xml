@@ -30,7 +30,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/intoleranceDefineApplyAction"
         android:layout_width="match_parent"
-        style="@style/ApplyButton"
+        style="@style/App.ApplyButton"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Apply" />

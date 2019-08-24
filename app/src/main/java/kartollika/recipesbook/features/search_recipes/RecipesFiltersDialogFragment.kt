@@ -102,7 +102,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
         intoleranceIngredientsAdapter =
             IngredientsAdapter(requireContext()).apply {
                 isCloseIconVisible = false
-                checkedPredicate =  { it.isActiveNormal() }
+                checkedPredicate = { it.isActiveNormal() }
                 actionListener = object :
                     ChipActionListener {
                     override fun onCheckedStateChanged(name: String, isChecked: Boolean) {

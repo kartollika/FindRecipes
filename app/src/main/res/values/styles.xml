@@ -1,12 +1,17 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
 
     <style name="IngredientChipTextAppearance" parent="Widget.MaterialComponents.Chip.Choice">
@@ -19,7 +24,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="ApplyButton" parent="Widget.MaterialComponents.Button">
+    <style name="App.ApplyButton" parent="Widget.MaterialComponents.Button">
         <item name="shapeAppearance">@style/Widget.App.ApplyButtonShapeAppearance</item>
         <item name="backgroundTint">?attr/colorSecondary</item>
         <item name="android:textColor">@android:color/white</item>
@@ -29,4 +34,19 @@
         <item name="hintTextColor">?attr/colorSecondary</item>
         <item name="boxStrokeColor">?attr/colorSecondary</item>
     </style>
+
+    <style name="ChoiceChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="chipBackgroundColor">@color/chip_accent_background_color_selector</item>
+        <item name="android:elevation">4dp</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemRippleColor">#9C9C9C</item>
+        <item name="itemIconTint">@color/bnb_active_inactive_color_selector</item>
+        <item name="itemTextColor">@color/bnb_active_inactive_color_selector</item>
+    </style>
+
 </resources>
