@@ -2,6 +2,7 @@ package kartollika.recipesbook.features
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseActivity
@@ -39,5 +40,9 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.test_bottom_sheet_container, fragment)
             .commit()
+    }
+
+    fun showDialogFragment(fragment: DialogFragment) {
+        fragment.show(supportFragmentManager, "")
     }
 }

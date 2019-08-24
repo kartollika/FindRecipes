@@ -57,15 +57,15 @@ class SearchRecipesFragment : BaseFragment() {
         recipesSearchedAdapter =
             RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK)
                 .apply {
-                onRecipeActionListener = object : RecipesSearchAdapter.OnRecipeActionListener {
-                    override fun onItemClicked(recipe: RecipePreview, view: View) {
-                        (activity as MainActivity).navigateFullScreen(
-                            RecipeDetailFragment.getInstance(recipe.id),
-                            sharedElements = mapOf(view.recipeDetailImage to "recipe_detail_image")
-                        )
+                    onRecipeActionListener = object : RecipesSearchAdapter.OnRecipeActionListener {
+                        override fun onItemClicked(recipe: RecipePreview, view: View) {
+                            (activity as MainActivity).navigateFullScreen(
+                                RecipeDetailFragment.getInstance(recipe.id),
+                                sharedElements = mapOf(view.recipeDetailImage to "recipe_detail_image")
+                            )
+                        }
                     }
                 }
-            }
 
         searchRecipesRecyclerView.apply {
             addItemDecoration(PaddingSpaceItemDecoration(requireContext(), vertical = 8, horizontal = 16))
@@ -126,26 +126,25 @@ class SearchRecipesFragment : BaseFragment() {
                 }
             })
         }
-        dialog.show(childFragmentManager, "FiltersDialog")
+        (activity as MainActivity).showDialogFragment(dialog)
     }
 
     private fun initializeObservers() {
-        viewModel.getRecipes()
-            .observe(viewLifecycleOwner, Observer {
-                recipesSearchedAdapter.setRecipesList(it)
-            })
+        viewModel.getRecipes().observe(this, Observer {
+            recipesSearchedAdapter.setRecipesList(it)
+        })
 
-        viewModel.getRefreshingEvent().observe(viewLifecycleOwner, Observer {
+        viewModel.getRefreshingEvent().observe(this, Observer {
             if (!it.hasBeenHandled) {
                 searchRecipesSwipeRefreshLayout.isRefreshing = it.peekContent() == LoadingState.Loading
             }
         })
 
-        viewModel.getRanking().observe(viewLifecycleOwner, Observer {
+        viewModel.getRanking().observe(this, Observer {
             updateSortingIndicator(it)
         })
 
-        viewModel.getErrorObservable().observe(viewLifecycleOwner, Observer {
+        viewModel.getErrorObservable().observe(this, Observer {
             if (!it.hasBeenHandled) {
 
             }
@@ -154,4 +153,7 @@ class SearchRecipesFragment : BaseFragment() {
         })
     }
 
+    companion object {
+        fun newInstance() = SearchRecipesFragment()
+    }
 }
