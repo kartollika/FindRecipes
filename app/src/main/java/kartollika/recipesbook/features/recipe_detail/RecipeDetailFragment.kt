@@ -19,13 +19,9 @@ import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.FavoriteAnimator
 import kartollika.recipesbook.common.ui.PaddingSpaceItemDecoration
 import kartollika.recipesbook.common.utils.injectViewModel
-import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.features.MainActivity
 import kartollika.recipesbook.features.PhotoViewFragment
-import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.Data
-import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeDetailInfoItem
-import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeDetailInfoItemHelper
 import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeInfoAdapter
 import kartollika.recipesbook.features.viewmodels.RecipeDetailViewModel
 import kotlinx.android.synthetic.main.recipe_detail_layout.*
@@ -69,7 +65,7 @@ class RecipeDetailFragment : BaseFragment() {
 
     private fun initInfoAdapter() {
         recipeDetailContentRecyclerView.apply {
-            addItemDecoration(PaddingSpaceItemDecoration(context, 8, 16))
+            addItemDecoration(PaddingSpaceItemDecoration(context, 8, 8))
             adapter = recipeInfoAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -93,25 +89,30 @@ class RecipeDetailFragment : BaseFragment() {
     }
 
     private fun initializeObservers() {
-        viewModel.getRecipeDetail().observe(viewLifecycleOwner, Observer {
+        viewModel.getRecipeDetail().observe(this, Observer {
             fillRecipeInformation(it)
         })
 
-        viewModel.getIsLoading().observe(viewLifecycleOwner, Observer {
+        viewModel.getIsLoading().observe(this, Observer {
             switchLoadingUiState(it)
         })
 
-        viewModel.getIngredientsList().observe(viewLifecycleOwner, Observer {
-            fillIngredientsInformation(it)
-        })
 
-        viewModel.getIsRecipeFavorite().observe(viewLifecycleOwner, Observer { isFavorite ->
-            FavoriteAnimator.animateFavoriteView(recipeDetailMakeFavoriteFab, isFavorite)
+        viewModel.getIsRecipeFavorite().observe(this, Observer { isFavorite ->
             if (isFavorite) {
                 recipeDetailMakeFavoriteFab.setImageResource(R.drawable.ic_star_white_24dp)
             } else {
                 recipeDetailMakeFavoriteFab.setImageResource(R.drawable.ic_star_border_white_24dp)
             }
+
+            Handler().post {
+                FavoriteAnimator.animateFavoriteView(recipeDetailMakeFavoriteFab, isFavorite)
+            }
+        })
+
+        viewModel.getRecipeInfoAdapterList().observe(this, Observer {
+            recipeInfoAdapter.submitList(it)
+            recipeInfoAdapter.notifyDataSetChanged()
         })
     }
 
@@ -125,9 +126,9 @@ class RecipeDetailFragment : BaseFragment() {
         }
     }
 
-    private fun fillRecipeInformation(it: Recipe) {
+    private fun fillRecipeInformation(recipe: Recipe) {
         Glide.with(this).asBitmap()
-            .centerCrop().load(it.image).into(object : CustomTarget<Bitmap>() {
+            .centerCrop().load(recipe.image).into(object : CustomTarget<Bitmap>() {
 
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     recipeDetailImage.setImageBitmap(resource)
@@ -150,20 +151,12 @@ class RecipeDetailFragment : BaseFragment() {
                 }
             })
 
-        collapsingToolbar.title = it.title
+        collapsingToolbar.title = recipe.title
         recipeDetailImage.setOnClickListener { view ->
             (activity as MainActivity).navigateFullScreen(
-                PhotoViewFragment.newInstance(it.image, it.title),
+                PhotoViewFragment.newInstance(recipe.image, recipe.title),
                 sharedElements = mapOf(recipeDetailImage to "recipe_detail_image")
             )
         }
-
-        recipeDetailCookingTime.text = getString(R.string.cooking_time, it.cookingTime)
-        recipeDetailPricePerServing.text = getString(R.string.price_per_serving, it.pricePerServing)
-        recipeDetailTotalServings.text = getString(R.string.total_servings, it.totalServings)
-    }
-
-    private fun fillIngredientsInformation(list: List<IngredientDetail>) {
-        recipeInfoAdapter.submitList(mutableListOf(RecipeDetailInfoItem(Data(list), RecipeDetailInfoItemHelper.INFO_INGREDIENTS)))
     }
 }
