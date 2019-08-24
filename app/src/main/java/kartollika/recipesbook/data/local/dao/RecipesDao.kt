@@ -1,4 +1,4 @@
-package kartollika.recipesbook.data.local
+package kartollika.recipesbook.data.local.dao
 
 import androidx.room.*
 import io.reactivex.Completable

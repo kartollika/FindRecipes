@@ -3,7 +3,7 @@ package kartollika.recipesbook.features.recipe_detail.adapters.recipe_info
 import android.content.Context
 import android.view.LayoutInflater
 import kartollika.recipesbook.R
-import kartollika.recipesbook.common.utils.lists.chip.BaseChipAdapter
+import kartollika.recipesbook.common.base.lists.chip.BaseChipAdapter
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.holders.ingredients.IngredientHolder
 

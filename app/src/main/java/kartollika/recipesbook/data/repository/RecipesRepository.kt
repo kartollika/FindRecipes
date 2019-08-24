@@ -4,9 +4,9 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
-import kartollika.recipesbook.data.local.RecipeIngredientDao
-import kartollika.recipesbook.data.local.RecipeIngredientRecipeDao
-import kartollika.recipesbook.data.local.RecipesDao
+import kartollika.recipesbook.data.local.dao.RecipeIngredientDao
+import kartollika.recipesbook.data.local.dao.RecipeIngredientRecipeDao
+import kartollika.recipesbook.data.local.dao.RecipesDao
 import kartollika.recipesbook.data.local.entities.RecipeEntity
 import kartollika.recipesbook.data.local.entities.RecipeIngredientRecipeJoinEntity
 import kartollika.recipesbook.data.local.entities.mapToIngredientDetail

@@ -1,4 +1,4 @@
-package kartollika.recipesbook.common.utils.lists.chip
+package kartollika.recipesbook.common.base.lists.chip
 
 import android.view.View
 
