@@ -8,6 +8,7 @@
     <string name="filter">Filter</string>
     <string name="used_ingredients_count">Ingredients used: %1$d</string>
     <string name="missed_ingredients_count">Ingredients missing: %1$d</string>
+    <string name="ready_in_hours_minutes">%1$d hour %2$d minutes</string>
     <string name="ready_in_minutes">%1$d minutes</string>
     <string name="cooking_time">Cooking time: %1$d</string>
     <string name="total_servings">Total servings: %1$d</string>
