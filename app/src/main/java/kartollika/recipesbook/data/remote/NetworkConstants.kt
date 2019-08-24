@@ -34,7 +34,7 @@ abstract class NetworkConstants {
     abstract class Data {
         companion object {
             const val recipeInformation = "recipes/{id}/information"
-            const val recipeRequiredEquipment = "recipes/{id}/equipmentWidget"
+            const val recipeRequiredEquipment = "recipes/{id}/equipmentWidget.json"
         }
     }
 }

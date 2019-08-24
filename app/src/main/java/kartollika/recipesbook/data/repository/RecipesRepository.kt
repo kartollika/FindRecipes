@@ -15,6 +15,7 @@ import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
 import kartollika.recipesbook.data.models.mapToRecipeModel
 import kartollika.recipesbook.data.remote.api.data.DataApi
+import kartollika.recipesbook.data.remote.api.data.response.mapToEquipment
 import javax.inject.Inject
 
 class RecipesRepository
@@ -31,7 +32,7 @@ class RecipesRepository
             getCachedIngredients(recipeId),
             BiFunction { t1, t2 ->
                 t1.apply {
-                    requiredIngredients = t2
+                    this.copy(requiredIngredients = t2)
                 }
             }
         )
@@ -48,6 +49,12 @@ class RecipesRepository
                         }
                     }
             )
+
+    fun getRecipeRequiredEquipment(recipeId: Int) =
+        Single.defer { dataApi.getRecipeRequiredEquipment(recipeId) }
+            .subscribeOn(IoScheduler())
+            .map { it.equipment }
+            .map { it.map { it.mapToEquipment() } }
 
     private fun getCachedRecipe(recipeId: Int) =
         Single.defer {
