@@ -12,7 +12,7 @@ class RequiredEquipmentAdapter(private val context: Context) :
 
     override fun onCreateChipViewHolder(): EquipmentHolder {
         return EquipmentHolder(
-            LayoutInflater.from(context).inflate(R.layout.as_chip_layout, null)
+            LayoutInflater.from(context).inflate(R.layout.chip_detail, null)
         )
     }
 

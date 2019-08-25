@@ -12,7 +12,7 @@ class RequiredIngredientsAdapter(private val context: Context) :
 
     override fun onCreateChipViewHolder(): IngredientHolder {
         return IngredientHolder(
-            LayoutInflater.from(context).inflate(R.layout.as_chip_layout, null)
+            LayoutInflater.from(context).inflate(R.layout.chip_detail, null)
         )
     }
 

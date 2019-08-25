@@ -25,7 +25,7 @@
     </style>
 
     <style name="App.ApplyButton" parent="Widget.MaterialComponents.Button">
-        <item name="shapeAppearance">@style/Widget.App.ApplyButtonShapeAppearance</item>
+        <item name="shapeAppearance">@style/App.ApplyButtonShapeAppearance</item>
         <item name="backgroundTint">?attr/colorSecondary</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
@@ -38,15 +38,24 @@
     <style name="ChoiceChip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
         <item name="chipBackgroundColor">@color/chip_accent_background_color_selector</item>
-        <item name="android:elevation">4dp</item>
         <item name="chipStrokeWidth">1dp</item>
+        <item name="android:elevation">4dp</item>
         <item name="chipStrokeColor">@android:color/darker_gray</item>
+        <item name="textEndPadding">8dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemRippleColor">#9C9C9C</item>
         <item name="itemIconTint">@color/bnb_active_inactive_color_selector</item>
         <item name="itemTextColor">@color/bnb_active_inactive_color_selector</item>
+    </style>
+
+    <style name="ChipNotSelectable" parent="ChoiceChip">
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:state_checked">false</item>
+        <item name="closeIconVisible">false</item>
     </style>
 
 </resources>
