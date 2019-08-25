@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sort_maximize_used_ingredients"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="Maximize used" />
+
+    <item
+        android:id="@+id/sort_minimize_missed_ingredients"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="Minimize missed" />
+
+    <item
+        android:id="@+id/sort_relevance"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="Relevance" />
+</menu>
