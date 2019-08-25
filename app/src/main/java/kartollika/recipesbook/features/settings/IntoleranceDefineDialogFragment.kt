@@ -2,10 +2,14 @@ package kartollika.recipesbook.features.settings
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import kartollika.recipesbook.App
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.utils.injectViewModel
+import kartollika.recipesbook.data.models.IngredientChosenType
+import kartollika.recipesbook.features.search_recipes.adapters.filter.ChipActionListener
+import kartollika.recipesbook.features.search_recipes.adapters.filter.IngredientsAdapter
 import kartollika.recipesbook.features.viewmodels.SettingsViewModel
 import kotlinx.android.synthetic.main.intolerance_define_bottom_sheet_layout.*
 
@@ -18,7 +22,7 @@ class IntoleranceDefineDialogFragment : ApplyingBottomSheetDialog() {
 
     override fun getLayoutRes(): Int = R.layout.intolerance_define_bottom_sheet_layout
 
-//    private lateinit var intoleranceIngredientsAdapter: BaseChipAdapter<IngredientSearch>
+    private lateinit var intoleranceIngredientsAdapter: IngredientsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,7 +32,7 @@ class IntoleranceDefineDialogFragment : ApplyingBottomSheetDialog() {
     }
 
     private fun initAdapters() {
-       /* intoleranceIngredientsAdapter = IngredientsAdapter(requireContext()).apply {
+        intoleranceIngredientsAdapter = IngredientsAdapter(requireContext()).apply {
             isCloseIconVisible = false
             checkedPredicate = { it.isActivePredefined() }
             actionListener = object :
@@ -41,14 +45,14 @@ class IntoleranceDefineDialogFragment : ApplyingBottomSheetDialog() {
                     // Empty method stub
                 }
             }
-        }*/
-//        defineIntolerancesChipGroup.setAdapter(intoleranceIngredientsAdapter)
+            defineIntolerancesChipGroup.setAdapter(this)
+        }
     }
 
     private fun initObservers() {
-//        viewModel.getIntoleranceIngredients().observe(viewLifecycleOwner, Observer {
-//            intoleranceIngredientsAdapter.setupList(it)
-//        })
+        viewModel.getIntoleranceIngredients().observe(viewLifecycleOwner, Observer {
+            intoleranceIngredientsAdapter.setupList(it)
+        })
     }
 
     private fun initListeners() {

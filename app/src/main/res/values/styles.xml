@@ -1,54 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="bottomSheetStyle">@style/BottomSheet</item>
-    </style>
-
-    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
-        <item name="android:navigationBarColor">@android:color/white</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-    </style>
-
-    <style name="IngredientChipTextAppearance" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
-    </style>
-
     <style name="TitleText">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="App.ApplyButton" parent="Widget.MaterialComponents.Button">
-        <item name="shapeAppearance">@style/App.ApplyButtonShapeAppearance</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.AppTheme.ApplyButtonShapeAppearance</item>
         <item name="backgroundTint">?attr/colorSecondary</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="App.TextField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="hintTextColor">?attr/colorSecondary</item>
-        <item name="boxStrokeColor">?attr/colorSecondary</item>
+        <item name="hintTextColor">?attr/colorPrimary</item>
+        <item name="boxStrokeColor">?attr/colorPrimary</item>
     </style>
 
     <style name="ChoiceChip" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
         <item name="chipBackgroundColor">@color/chip_accent_background_color_selector</item>
-        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeWidth">0.5dp</item>
         <item name="android:elevation">4dp</item>
         <item name="chipStrokeColor">@android:color/darker_gray</item>
         <item name="textEndPadding">8dp</item>
         <item name="android:gravity">center</item>
-    </style>
-
-    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemRippleColor">#9C9C9C</item>
-        <item name="itemIconTint">@color/bnb_active_inactive_color_selector</item>
-        <item name="itemTextColor">@color/bnb_active_inactive_color_selector</item>
     </style>
 
     <style name="ChipNotSelectable" parent="ChoiceChip">
@@ -56,6 +30,18 @@
         <item name="android:focusable">false</item>
         <item name="android:state_checked">false</item>
         <item name="closeIconVisible">false</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.MyTheme.BottomSheet.Modal</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.MyTheme.BottomSheet.Modal</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">@android:color/transparent</item>
+    </style>
+    <style name="Widget.MyTheme.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>
