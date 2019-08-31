@@ -20,7 +20,10 @@
     <!--on which they appear.-->
     <color name="color_on_primary">#ffffff</color>
     <color name="color_on_secondary">#fff</color>
-    <color name="color_on_background">#000000</color>
+    <color name="color_on_background">#929292</color>
     <color name="color_on_surface">#000000</color>
     <color name="color_on_error">#ffffff</color>
+
+    <color name="text_color_high_emphasis">#DE000000</color>
+    <color name="text_color_medium_emphasis">#99000000</color>
 </resources>

@@ -32,6 +32,10 @@
         <item name="closeIconVisible">false</item>
     </style>
 
+    <style name="App.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.MyTheme.Body1</item>
+    </style>
+
     <style name="ThemeOverlay.AppTheme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>

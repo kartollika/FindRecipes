@@ -15,8 +15,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/filter"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +23,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="1"
         android:orientation="vertical"
@@ -63,8 +62,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/included_ingredients"
-                    android:textSize="18sp" />
+                    android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
+                    android:text="@string/included_ingredients" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -113,8 +112,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/excluded_ingredients"
-                    android:textSize="18sp" />
+                    android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
+                    android:text="@string/excluded_ingredients" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,8 +143,7 @@
                         android:gravity="center_vertical"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
-                        android:text="@string/add_excluded_ingredients"
-                        android:textSize="14sp" />
+                        android:text="@string/add_excluded_ingredients" />
 
                 </LinearLayout>
 
@@ -161,6 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
+                    android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
                     android:text="@string/intolerance_ingredients"
                     android:textSize="18sp" />
 
@@ -177,6 +176,7 @@
                         android:id="@+id/intoleranceIngredientsUsePredefinedCheckBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorTertiary"
                         android:padding="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="Use predefined" />

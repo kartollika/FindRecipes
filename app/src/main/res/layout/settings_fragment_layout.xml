@@ -18,9 +18,8 @@
             android:layout_marginRight="64dp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
+            android:textAppearance="@style/TextAppearance.MyTheme.Headline4"
             android:text="Settings"
-            android:textColor="@android:color/black"
-            android:textSize="32sp"
             app:layout_scrollFlags="exitUntilCollapsed|scroll" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -62,17 +61,17 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Sign in your Google account"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textAppearance="@style/TextAppearance.MyTheme.Body1"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Synchronize your settings"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:text="Synchronize your settings" />
                 </LinearLayout>
 
                 <ImageView
@@ -89,11 +88,10 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
                 android:paddingBottom="8dp"
-                android:text="Main settings"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="Main settings" />
 
             <LinearLayout
                 android:id="@+id/settingsSetupIntoleranceAction"
@@ -115,14 +113,6 @@
                     android:layout_weight="1"
                     android:text="Set up intolerance"
                     android:textSize="16sp" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:rotation="-90"
-                    android:tint="@android:color/darker_gray"
-                    app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -138,8 +128,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Clear images cache"
-                    android:textSize="16sp" />
+                    android:text="Clear images cache" />
             </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
@@ -147,12 +136,12 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
+                android:textStyle="bold"
                 android:paddingRight="16dp"
+                android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
                 android:paddingBottom="8dp"
                 android:text="About application"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -166,8 +155,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Version"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/TextAppearance.MyTheme.Body1"
+                    android:text="Version" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/settingsVersionNameTextView"

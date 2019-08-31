@@ -62,6 +62,7 @@
     </style>
 
     <style name="TextAppearance.MyTheme.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/text_color_high_emphasis</item>
         <!--Your custom type style here-->
     </style>
 
@@ -70,7 +71,7 @@
     </style>
 
     <style name="TextAppearance.MyTheme.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <!--Your custom type style here-->
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Body2" parent="TextAppearance.MaterialComponents.Body2">
