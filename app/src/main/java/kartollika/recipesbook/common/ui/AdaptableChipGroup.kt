@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.view.View
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import kartollika.recipesbook.common.utils.lists.chip.BaseChipAdapter
-import kartollika.recipesbook.common.utils.lists.chip.ChipAdapterObservable
+import kartollika.recipesbook.common.base.lists.chip.BaseChipAdapter
+import kartollika.recipesbook.common.base.lists.chip.ChipAdapterObservable
 
 class AdaptableChipGroup(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
     ChipGroup(context, attrs, defStyleAttr) {

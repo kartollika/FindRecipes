@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/fade_gradient" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/recipeItemImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/recipeItemReadyInMinutes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:text="12 minutes" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/recipeItemUsedIngredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,9 +94,5 @@
                 app:layout_constraintTop_toBottomOf="@id/recipeItemUsedIngredients"
                 tools:text="Ingredients missing: 0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </LinearLayout>
-
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

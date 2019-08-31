@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import kartollika.recipesbook.R
-import kartollika.recipesbook.common.base.BaseRecyclerHolder
+import kartollika.recipesbook.common.base.lists.recycler.BaseRecyclerHolder
 import kartollika.recipesbook.data.models.Equipment
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeDetailInfoItemHelper.INFO_LIST_BLOCK_EQUIPMENT

@@ -1,7 +1,7 @@
 package kartollika.recipesbook.data.repository
 
 import io.reactivex.internal.schedulers.IoScheduler
-import kartollika.recipesbook.data.local.FavoriteDao
+import kartollika.recipesbook.data.local.dao.FavoriteDao
 import kartollika.recipesbook.data.local.entities.FavoriteRecipeEntity
 import javax.inject.Inject
 import javax.inject.Singleton

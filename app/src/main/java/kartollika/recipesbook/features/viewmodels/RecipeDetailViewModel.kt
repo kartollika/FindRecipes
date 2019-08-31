@@ -1,5 +1,6 @@
 package kartollika.recipesbook.features.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,7 @@ import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.Recipe
 import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.RecipeDetailInfoItemHelper.INFO_TEXT
 import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.models.ImageTextModel
 import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.models.ListBlockModel
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class RecipeDetailViewModel
@@ -34,13 +36,16 @@ class RecipeDetailViewModel
     private val isRecipeFavoriteLiveData = MutableLiveData<Boolean>(false)
     private val recipeInfoAdapterListLiveData = MutableLiveData<List<RecipeDetailInfoItem>>()
     private val recipeInfoAdapterList = mutableListOf<RecipeDetailInfoItem>()
+    private lateinit var context: WeakReference<Context>
 
     fun getRecipeDetail(): LiveData<Recipe> = recipeDetail
     fun getIsLoading(): LiveData<Boolean> = isLoadingLiveData
     fun getIsRecipeFavorite(): LiveData<Boolean> = isRecipeFavoriteLiveData
     fun getRecipeInfoAdapterList(): LiveData<List<RecipeDetailInfoItem>> = recipeInfoAdapterListLiveData
 
-    fun loadRecipeById(id: Int) {
+    fun loadRecipeById(context: Context, id: Int) {
+        this.context = WeakReference(context)
+
         currentRecipeId = id
         isLoadingLiveData.postValue(false)
         compositeDisposable.addAll(
@@ -88,24 +93,34 @@ class RecipeDetailViewModel
     }
 
     private fun parseCommonInformation(recipe: Recipe) {
-        Single.fromCallable {
-            insertNewInfoItem(
-                0,
-                ImageTextModel(recipe.cookingTime.toString(), R.drawable.ic_access_time_black_24dp),
-                INFO_TEXT
-            )
-            insertNewInfoItem(
-                1,
-                ImageTextModel(recipe.pricePerServing.toString(), R.drawable.abc_ic_star_black_36dp),
-                INFO_TEXT
-            )
+        val context = context.get()?.let { context ->
+            Single.fromCallable {
+                insertNewInfoItem(
+                    0,
+                    ImageTextModel(
+                        context.getString(R.string.cooking_time, recipe.cookingTime),
+                        R.drawable.ic_access_time_black_24dp
+                    ),
+                    INFO_TEXT
+                )
+                insertNewInfoItem(
+                    1,
+                    ImageTextModel(
+                        context.getString(R.string.price_per_serving, recipe.pricePerServing),
+                        R.drawable.abc_ic_star_black_36dp
+                    ),
+                    INFO_TEXT
+                )
+            }
+                .subscribeOn(NewThreadScheduler())
+                .subscribe()
         }
-            .subscribeOn(NewThreadScheduler())
-            .subscribe()
+
     }
 
     private fun parseEquipmentInformation(recipe: Recipe) {
         searchRecipesRepository.getRecipeRequiredEquipment(recipe.id)
+            .subscribeOn(NewThreadScheduler())
             .subscribeBy(onSuccess = { list ->
                 insertNewInfoItem(
                     3,

@@ -13,12 +13,10 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         diManager = DIManager(this)
-
         initializeDatabase()
     }
 
     private fun initializeDatabase() {
         RecipesDatabase.getInstance(this)
     }
-
 }

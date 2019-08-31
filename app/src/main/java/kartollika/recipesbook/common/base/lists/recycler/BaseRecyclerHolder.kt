@@ -1,4 +1,4 @@
-package kartollika.recipesbook.common.base
+package kartollika.recipesbook.common.base.lists.recycler
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

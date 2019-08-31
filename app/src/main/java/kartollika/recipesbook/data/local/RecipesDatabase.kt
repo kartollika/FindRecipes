@@ -8,7 +8,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import io.reactivex.internal.schedulers.IoScheduler
-import kartollika.recipesbook.common.utils.TimeConverters
+import kartollika.recipesbook.common.utils.TimeUtils
+import kartollika.recipesbook.data.local.dao.*
 import kartollika.recipesbook.data.local.entities.*
 import kartollika.recipesbook.data.models.IngredientChosenTypeConverters
 import kartollika.recipesbook.data.models.IngredientSearch
@@ -21,7 +22,7 @@ import kartollika.recipesbook.data.models.IngredientSearch
         FavoriteRecipeEntity::class],
     version = 1
 )
-@TypeConverters(IngredientChosenTypeConverters::class, TimeConverters::class)
+@TypeConverters(IngredientChosenTypeConverters::class, TimeUtils::class)
 abstract class RecipesDatabase : RoomDatabase() {
 
     abstract fun getIngredientsDao(): IngredientsDao

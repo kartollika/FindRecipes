@@ -13,7 +13,6 @@ import kartollika.recipesbook.data.local.entities.mapToIngredientSearchModel
 import kartollika.recipesbook.data.models.IngredientChosenType
 import kartollika.recipesbook.data.models.IngredientSearch
 import kartollika.recipesbook.data.repository.FilterRecipesRepository
-import kartollika.recipesbook.features.settings.ClearCacheState
 import javax.inject.Inject
 
 class SettingsViewModel
@@ -23,7 +22,7 @@ class SettingsViewModel
 ) : ViewModel() {
 
     private var disposable: Disposable? = null
-    private val clearCacheLiveData = MutableLiveData<Event<ClearCacheState>>(Event(ClearCacheState.Uninitialized))
+    private val clearCacheLiveData = MutableLiveData<Event<Boolean>>()
     private val intoleranceIngredientsLiveData = MutableLiveData<List<IngredientSearch>>()
 
     init {
@@ -34,14 +33,13 @@ class SettingsViewModel
 
     fun getIntoleranceIngredients(): LiveData<List<IngredientSearch>> = intoleranceIngredientsLiveData
 
-    fun getClearCacheDataObservable(): LiveData<Event<ClearCacheState>> = clearCacheLiveData
+    fun getClearCacheDataObservable(): LiveData<Event<Boolean>> = clearCacheLiveData
 
     fun clearImagesCache() {
         Single.fromCallable { context.cacheDir.deleteRecursively() }
             .subscribeOn(IoScheduler())
-            .doOnSubscribe { clearCacheLiveData.postValue(Event(ClearCacheState.Running)) }
-            .doOnSuccess { if (it) clearCacheLiveData.postValue(Event(ClearCacheState.Finished)) }
-            .doOnError { clearCacheLiveData.postValue(Event(ClearCacheState.Error)) }
+            .doOnSuccess { clearCacheLiveData.postValue(Event(it)) }
+            .doOnError { clearCacheLiveData.postValue(Event(false)) }
             .subscribeBy(onError = { it.printStackTrace() })
     }
 

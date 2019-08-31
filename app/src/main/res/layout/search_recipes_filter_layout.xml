@@ -9,14 +9,13 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/filter"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +23,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="1"
         android:orientation="vertical"
@@ -41,7 +40,6 @@
             android:paddingRight="16dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
@@ -60,12 +58,12 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/included_ingredients"
-                    android:textSize="18sp" />
+                    android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
+                    android:text="@string/included_ingredients" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -87,7 +85,7 @@
 
                     </kartollika.recipesbook.common.ui.AdaptableChipGroup>
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/addIncludedIngredientsTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -110,12 +108,12 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/excluded_ingredients"
-                    android:textSize="18sp" />
+                    android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
+                    android:text="@string/excluded_ingredients" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,7 +133,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/addExcludedIngredientsTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -145,8 +143,7 @@
                         android:gravity="center_vertical"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
-                        android:text="@string/add_excluded_ingredients"
-                        android:textSize="14sp" />
+                        android:text="@string/add_excluded_ingredients" />
 
                 </LinearLayout>
 
@@ -158,10 +155,11 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
+                    android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
                     android:text="@string/intolerance_ingredients"
                     android:textSize="18sp" />
 
@@ -174,15 +172,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField">
 
-                    <CheckBox
+                    <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/intoleranceIngredientsUsePredefinedCheckBox"
                         android:layout_width="match_parent"
+                        android:textAppearance="@style/TextAppearance.MyTheme.Body1"
+                        android:textColor="?attr/colorOnBackground"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Use predefined"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="?android:textColorTertiary" />
+                        android:text="Use predefined" />
 
                     <kartollika.recipesbook.common.ui.AdaptableChipGroup
                         android:id="@+id/intoleranceIngredientsChipGroup"
@@ -193,19 +191,14 @@
                         app:layout_constraintTop_toBottomOf="@+id/recipeQueryFilterTextField" />
 
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
-
-
     </androidx.core.widget.NestedScrollView>
 
     <FrameLayout
         android:id="@+id/saveContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:layout_height="wrap_content">
 
         <View
             android:layout_width="match_parent"
@@ -213,16 +206,15 @@
             android:layout_gravity="top"
             android:background="#C5C5C5" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/saveFiltersActionView"
-            style="@style/TextAppearance.AppCompat.Medium"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
             android:layout_gravity="right|bottom"
-            android:background="?attr/selectableItemBackground"
             android:padding="16dp"
-            android:text="Применить"
-            android:textColor="@color/colorAccent" />
+            android:text="Применить" />
     </FrameLayout>
 
 </LinearLayout>

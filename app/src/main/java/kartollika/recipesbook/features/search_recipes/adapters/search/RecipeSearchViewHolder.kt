@@ -3,7 +3,7 @@ package kartollika.recipesbook.features.search_recipes.adapters.search
 import android.view.View
 import com.bumptech.glide.Glide
 import kartollika.recipesbook.R
-import kartollika.recipesbook.common.base.BaseRecyclerHolder
+import kartollika.recipesbook.common.base.lists.recycler.BaseRecyclerHolder
 import kartollika.recipesbook.data.models.RecipePreview
 import kotlinx.android.synthetic.main.search_recipe_item.view.*
 

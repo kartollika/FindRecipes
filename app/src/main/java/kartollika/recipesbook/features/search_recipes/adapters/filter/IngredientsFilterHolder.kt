@@ -3,7 +3,7 @@ package kartollika.recipesbook.features.search_recipes.adapters.filter
 import android.view.View
 import com.google.android.material
     .chip.Chip
-import kartollika.recipesbook.common.utils.lists.chip.BaseChipHolder
+import kartollika.recipesbook.common.base.lists.chip.BaseChipHolder
 import kartollika.recipesbook.data.models.IngredientSearch
 
 class IngredientsFilterHolder(itemView: View) : BaseChipHolder<IngredientSearch>(itemView) {

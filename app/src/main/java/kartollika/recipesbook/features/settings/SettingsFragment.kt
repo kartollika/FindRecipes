@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import kartollika.recipesbook.App
 import kartollika.recipesbook.BuildConfig
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.utils.injectViewModel
+import kartollika.recipesbook.common.utils.showSnackbarShort
 import kartollika.recipesbook.features.MainActivity
 import kartollika.recipesbook.features.search_recipes.SearchRecipesFragment
 import kartollika.recipesbook.features.viewmodels.SettingsViewModel
@@ -21,14 +21,22 @@ class SettingsFragment : BaseFragment() {
 
     private val viewModel: SettingsViewModel by injectViewModel { App.diManager.applicationComponent!!.settingsViewModel }
 
+    private lateinit var bottomSheetContainer: View
+
     override fun getLayoutRes(): Int = R.layout.settings_fragment_layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initViews()
+
         initListeners()
         initObservers()
-
         initAboutAppInfo()
+    }
+
+    private fun initViews() {
+        bottomSheetContainer = activity!!.findViewById<View>(R.id.test_bottom_sheet_container)
     }
 
     private fun initAboutAppInfo() {
@@ -72,29 +80,17 @@ class SettingsFragment : BaseFragment() {
             }
 
             when (it.getContentIfNotHandled()) {
-                ClearCacheState.Uninitialized -> {
-                    settingsClearCacheProgress.visibility = View.GONE
+                true -> {
+                    showSnackbarShort(bottomSheetContainer, "Cache cleared")
                 }
-                ClearCacheState.Running -> {
-                    settingsClearCacheProgress.visibility = View.VISIBLE
-                }
-                ClearCacheState.Finished -> {
-                    settingsClearCacheProgress.visibility = View.GONE
-                    Snackbar.make(
-                        activity!!.findViewById<View>(R.id.test_bottom_sheet_container),
-                        it.peekContent().message,
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-                ClearCacheState.Error -> {
-                    settingsClearCacheProgress.visibility = View.GONE
-                    Toast.makeText(
-                        requireContext(),
-                        it.peekContent().message, Toast.LENGTH_SHORT
-                    ).show()
+                false -> {
+                    showSnackbarShort(bottomSheetContainer, "Error occured on clearing cache")
                 }
             }
         })
     }
 
+    companion object {
+        fun newInstance() = SettingsFragment()
+    }
 }

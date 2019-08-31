@@ -60,7 +60,7 @@ class RecipeDetailFragment : BaseFragment() {
         Handler().post { initializeObservers() }
 
         val recipeId = arguments?.getInt("RECIPE_ID") ?: 0
-        viewModel.loadRecipeById(recipeId)
+        viewModel.loadRecipeById(requireContext(), recipeId)
     }
 
     private fun initInfoAdapter() {
@@ -73,7 +73,7 @@ class RecipeDetailFragment : BaseFragment() {
 
     override fun onDetach() {
         super.onDetach()
-        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.color_surface)
     }
 
     private fun initListeners() {
@@ -137,7 +137,7 @@ class RecipeDetailFragment : BaseFragment() {
                         palette!!.getDarkVibrantColor(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorPrimaryDark
+                                R.color.color_surface
                             )
                         )
                             .also {

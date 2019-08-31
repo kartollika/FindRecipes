@@ -1,10 +1,10 @@
 package kartollika.recipesbook.features.search_recipes
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kartollika.recipesbook.App
@@ -102,7 +102,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
         intoleranceIngredientsAdapter =
             IngredientsAdapter(requireContext()).apply {
                 isCloseIconVisible = false
-                checkedPredicate =  { it.isActiveNormal() }
+                checkedPredicate = { it.isActiveNormal() }
                 actionListener = object :
                     ChipActionListener {
                     override fun onCheckedStateChanged(name: String, isChecked: Boolean) {
@@ -140,8 +140,8 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
         }
     }
 
-    private fun createInputIngredientDialog(type: IngredientChosenType): AlertDialog =
-        AlertDialog.Builder(context).apply {
+    private fun createInputIngredientDialog(type: IngredientChosenType): MaterialAlertDialogBuilder =
+        MaterialAlertDialogBuilder(context).apply {
             val dialogInnerView =
                 LayoutInflater.from(context).inflate(R.layout.input_dialog_layout, null)
             val ingredientsTextField = dialogInnerView.inputDialogTextField
@@ -153,7 +153,7 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
                 )
             }
             setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
-        }.create()
+        }
 
     private fun initObservers() {
         viewModel.getIncludedIngredients().observe(this, Observer {

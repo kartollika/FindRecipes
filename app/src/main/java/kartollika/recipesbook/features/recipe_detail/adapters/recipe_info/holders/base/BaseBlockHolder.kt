@@ -1,9 +1,9 @@
 package kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.holders.base
 
 import android.view.View
-import kartollika.recipesbook.common.base.BaseRecyclerHolder
-import kartollika.recipesbook.common.utils.lists.chip.BaseChipAdapter
-import kartollika.recipesbook.common.utils.lists.chip.BaseChipHolder
+import kartollika.recipesbook.common.base.lists.chip.BaseChipAdapter
+import kartollika.recipesbook.common.base.lists.chip.BaseChipHolder
+import kartollika.recipesbook.common.base.lists.recycler.BaseRecyclerHolder
 import kartollika.recipesbook.features.recipe_detail.adapters.recipe_info.models.ListBlockModel
 import kotlinx.android.synthetic.main.list_block.view.*
 

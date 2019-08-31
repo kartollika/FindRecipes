@@ -3,7 +3,7 @@ package kartollika.recipesbook.data.repository
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.IoScheduler
-import kartollika.recipesbook.data.local.IngredientsDao
+import kartollika.recipesbook.data.local.dao.IngredientsDao
 import kartollika.recipesbook.data.local.entities.IngredientEntity
 import kartollika.recipesbook.data.models.IngredientChosenType
 import kartollika.recipesbook.data.models.IngredientSearch

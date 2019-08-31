@@ -25,8 +25,8 @@ abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
 
     abstract fun getLayoutRes(): Int
 
-    fun setStyle() {
-        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
+    private fun setStyle() {
+        setStyle(STYLE_NORMAL, R.style.ThemeOverlay_AppTheme_BottomSheetDialog)
     }
 
     fun setCloseDialogListener(listener: OnCloseDialogListener) {
@@ -35,7 +35,7 @@ abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle()
+//        setStyle()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
