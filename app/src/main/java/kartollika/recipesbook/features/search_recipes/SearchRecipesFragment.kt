@@ -1,6 +1,7 @@
 package kartollika.recipesbook.features.search_recipes
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
@@ -37,6 +38,7 @@ class SearchRecipesFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.diManager.applicationComponent?.inject(this)
+        initAdapters()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,7 +47,36 @@ class SearchRecipesFragment : BaseFragment() {
         if (getView() != null) {
             initializeObservers()
             initViews()
+            initEmptyView()
         }
+    }
+
+    private fun initEmptyView() {
+        LayoutInflater.from(context).inflate(R.layout.empty_view, emptyViewContainer, true)
+    }
+
+    private fun initAdapters() {
+        recipesSearchedAdapter =
+            RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK).apply {
+                onRecipeActionListener = object : RecipesSearchAdapter.OnRecipeActionListener {
+                    override fun onItemClicked(recipe: RecipePreview, view: View) {
+                        (activity as MainActivity).navigateFullScreen(
+                            RecipeDetailFragment.getInstance(recipe.id),
+                            sharedElements = mapOf(view.recipeDetailImage to "recipe_detail_image")
+                        )
+                    }
+                }
+                onAdapterContentChangedListener =
+                    object : RecipesSearchAdapter.OnAdapterContentChangedListener {
+                        override fun onDataEmpty() {
+                            emptyViewContainer.visibility = View.VISIBLE
+                        }
+
+                        override fun onDataNotEmpty() {
+                            emptyViewContainer.visibility = View.GONE
+                        }
+                    }
+            }
     }
 
     private fun initViews() {
@@ -54,21 +85,14 @@ class SearchRecipesFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        recipesSearchedAdapter =
-            RecipesSearchAdapter(RecipesSearchAdapter.DEFAULT_DIFF_CALLBACK)
-                .apply {
-                    onRecipeActionListener = object : RecipesSearchAdapter.OnRecipeActionListener {
-                        override fun onItemClicked(recipe: RecipePreview, view: View) {
-                            (activity as MainActivity).navigateFullScreen(
-                                RecipeDetailFragment.getInstance(recipe.id),
-                                sharedElements = mapOf(view.recipeDetailImage to "recipe_detail_image")
-                            )
-                        }
-                    }
-                }
-
         searchRecipesRecyclerView.apply {
-            addItemDecoration(PaddingSpaceItemDecoration(requireContext(), vertical = 8, horizontal = 16))
+            addItemDecoration(
+                PaddingSpaceItemDecoration(
+                    requireContext(),
+                    vertical = 8,
+                    horizontal = 16
+                )
+            )
             addOnScrollListener(endlessScrollListener)
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
@@ -136,7 +160,8 @@ class SearchRecipesFragment : BaseFragment() {
 
         viewModel.getRefreshingEvent().observe(this, Observer {
             if (!it.hasBeenHandled) {
-                searchRecipesSwipeRefreshLayout.isRefreshing = it.peekContent() == LoadingState.Loading
+                searchRecipesSwipeRefreshLayout.isRefreshing =
+                    it.peekContent() == LoadingState.Loading
             }
         })
 

@@ -11,11 +11,17 @@ import kartollika.recipesbook.data.models.RecipePreview
 class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
     ListAdapter<RecipePreview, RecipeSearchViewHolder>(diffCallback) {
 
-    var onRecipeActionListener: OnRecipeActionListener? = null
+    interface OnAdapterContentChangedListener {
+        fun onDataEmpty()
+        fun onDataNotEmpty()
+    }
 
     interface OnRecipeActionListener {
         fun onItemClicked(recipe: RecipePreview, view: View)
     }
+
+    var onRecipeActionListener: OnRecipeActionListener? = null
+    var onAdapterContentChangedListener: OnAdapterContentChangedListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeSearchViewHolder {
         return RecipeSearchViewHolder(
@@ -33,6 +39,12 @@ class RecipesSearchAdapter(diffCallback: DiffUtil.ItemCallback<RecipePreview>) :
 
     fun setRecipesList(recipes: List<RecipePreview>) {
         submitList(recipes)
+
+        if (recipes.isEmpty()) {
+            onAdapterContentChangedListener?.onDataEmpty()
+        } else {
+            onAdapterContentChangedListener?.onDataNotEmpty()
+        }
     }
 
     companion object {

@@ -48,6 +48,9 @@ class RecipeDetailFragment : BaseFragment() {
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         setHasOptionsMenu(true)
+
+        val recipeId = arguments?.getInt("RECIPE_ID") ?: 0
+        viewModel.loadRecipeById(requireContext(), recipeId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,9 +61,6 @@ class RecipeDetailFragment : BaseFragment() {
         initToolbar()
 
         Handler().post { initializeObservers() }
-
-        val recipeId = arguments?.getInt("RECIPE_ID") ?: 0
-        viewModel.loadRecipeById(requireContext(), recipeId)
     }
 
     private fun initInfoAdapter() {

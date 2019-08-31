@@ -24,6 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
+        android:elevation="16dp"
+        app:elevation="16dp"
         app:itemHorizontalTranslationEnabled="true"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_navigation_menu" />
