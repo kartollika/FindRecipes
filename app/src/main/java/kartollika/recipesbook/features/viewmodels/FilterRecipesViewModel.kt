@@ -69,21 +69,29 @@ class FilterRecipesViewModel
     private fun loadIncludedIngredients() =
         filterRecipesRepository.getIncludedIngredients()
             .map { it.map { it.mapToIngredientSearchModel() } }
-            .subscribeBy(onNext = { includedIngredientsList.postValue(it) })
+            .subscribeBy(
+                onNext = { includedIngredientsList.postValue(it) },
+                onError = { it.printStackTrace() })
 
     private fun loadExcludedIngredients() =
         filterRecipesRepository.getExcludedIngredients()
             .map { it.map { it.mapToIngredientSearchModel() } }
-            .subscribeBy(onNext = { excludedIngredientsList.postValue(it) }, onError = {})
+            .subscribeBy(
+                onNext = { excludedIngredientsList.postValue(it) },
+                onError = { it.printStackTrace() })
 
     private fun loadIntoleranceIngredients() =
         filterRecipesRepository.getIntoleranceIngredients()
             .map { it.map { it.mapToIngredientSearchModel() } }
-            .subscribeBy(onNext = { intoleranceIngredientsList.postValue(it) }, onError = {})
+            .subscribeBy(
+                onNext = { intoleranceIngredientsList.postValue(it) },
+                onError = { it.printStackTrace() })
 
     private fun loadQueryRecipe() =
         filterRecipesRepository.getQueryRecipe()
-            .subscribe { t -> queryText.postValue(t) }
+            .subscribeBy(
+                onSuccess = { t -> queryText.postValue(t) },
+                onError = { it.printStackTrace() })
 
     override fun onCleared() {
         super.onCleared()
@@ -96,5 +104,7 @@ class FilterRecipesViewModel
 
     private fun loadPredefinedState() =
         filterRecipesRepository.getUsePredefinedIntoleranceObservable()
-            .subscribeBy(onNext = { usePredefinedIntolerance.postValue(it) })
+            .subscribeBy(
+                onNext = { usePredefinedIntolerance.postValue(it) },
+                onError = { it.printStackTrace() })
 }
