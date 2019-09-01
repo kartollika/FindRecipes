@@ -12,9 +12,8 @@ object StorageModule {
 
     @Provides
     @JvmStatic
-    fun provideSharedPreferences(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-    }
+    fun provideSharedPreferences(context: Context): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
 
     @Provides
     @JvmStatic
