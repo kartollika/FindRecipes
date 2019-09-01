@@ -81,10 +81,10 @@ class SettingsFragment : BaseFragment() {
 
             when (it.getContentIfNotHandled()) {
                 true -> {
-                    showSnackbarShort(bottomSheetContainer, "Cache cleared")
+                    bottomSheetContainer.showSnackbarShort("Cache cleared")
                 }
                 false -> {
-                    showSnackbarShort(bottomSheetContainer, "Error occured on clearing cache")
+                    bottomSheetContainer.showSnackbarShort("Error occured on clearing cache")
                 }
             }
         })

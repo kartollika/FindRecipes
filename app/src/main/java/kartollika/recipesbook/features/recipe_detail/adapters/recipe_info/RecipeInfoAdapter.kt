@@ -53,18 +53,22 @@ class RecipeInfoAdapter(diffCallback: DiffUtil.ItemCallback<RecipeDetailInfoItem
         val item = getItem(position)
         val data = item.data.data
 
-        when (item.type) {
-            INFO_TEXT -> {
-                (holder as ImageTextInfoHolder).bind(data as ImageTextModel)
-            }
-            INFO_LIST_BLOCK_INGREDIENTS -> {
-                (holder as RequiredIngredientsItemInfoHolder).bind(data as ListBlockModel<IngredientDetail>)
-            }
-            INFO_LIST_BLOCK_EQUIPMENT -> {
-                (holder as RequiredEquipmentItemInfoHolder).bind(data as ListBlockModel<Equipment>)
-            }
+        try {
+            when (item.type) {
+                INFO_TEXT -> {
+                    (holder as ImageTextInfoHolder).bind(data as ImageTextModel)
+                }
+                INFO_LIST_BLOCK_INGREDIENTS -> {
+                    (holder as RequiredIngredientsItemInfoHolder).bind(data as ListBlockModel<IngredientDetail>)
+                }
+                INFO_LIST_BLOCK_EQUIPMENT -> {
+                    (holder as RequiredEquipmentItemInfoHolder).bind(data as ListBlockModel<Equipment>)
+                }
 
-            else -> throw java.lang.IllegalArgumentException("Invalid view type")
+                else -> throw java.lang.IllegalArgumentException("Invalid view type")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

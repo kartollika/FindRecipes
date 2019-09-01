@@ -10,9 +10,9 @@ object Log {
         e, d, w
     }
 
-    fun Throwable.e() = log(LoggerLevel.e, this)
-    fun Throwable.d() = log(LoggerLevel.d, this)
-    fun Throwable.w() = log(LoggerLevel.w, this)
+    public fun Throwable.e() = log(LoggerLevel.e, this)
+    public fun Throwable.d() = log(LoggerLevel.d, this)
+    public fun Throwable.w() = log(LoggerLevel.w, this)
 
     private fun log(loggerLevel: LoggerLevel, thr: Throwable) {
         when (loggerLevel) {

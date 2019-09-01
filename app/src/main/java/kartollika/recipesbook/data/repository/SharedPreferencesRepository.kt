@@ -3,6 +3,7 @@ package kartollika.recipesbook.data.repository
 import android.content.SharedPreferences
 import io.reactivex.Single
 import io.reactivex.internal.schedulers.IoScheduler
+import kartollika.recipesbook.common.utils.wrapSingleAndRun
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,7 +15,7 @@ class SharedPreferencesRepository
 
     fun getSharedPreferences() = sharedPreferences
 
-    fun <T> easyPut(putAction: SharedPreferences.Editor.() -> SharedPreferences.Editor) {
+    fun easyPut(putAction: SharedPreferences.Editor.() -> SharedPreferences.Editor) {
         sharedPreferences.edit()
             .putAction()
             .apply()
@@ -31,11 +32,11 @@ class SharedPreferencesRepository
     }
 
     fun getString(key: String, defaultValue: String = "") =
-        Single.fromCallable { sharedPreferences.getString(key, defaultValue) }
+        Single.fromCallable<String> { sharedPreferences.getString(key, defaultValue) }
             .subscribeOn(IoScheduler())
 
     fun putString(key: String, value: String) {
-        easyPut<String> { this.putString(key, value) }
+        wrapSingleAndRun({ easyPut { this.putString(key, value) } })
     }
 
     fun getBoolean(key: String, value: Boolean) =
@@ -43,6 +44,6 @@ class SharedPreferencesRepository
             .subscribeOn(IoScheduler())
 
     fun putBoolean(key: String, value: Boolean) {
-        easyPut<String> { this.putBoolean(key, value) }
+        easyPut { this.putBoolean(key, value) }
     }
 }

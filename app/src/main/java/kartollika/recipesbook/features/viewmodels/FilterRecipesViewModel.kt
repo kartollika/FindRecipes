@@ -90,7 +90,7 @@ class FilterRecipesViewModel
     private fun loadQueryRecipe() =
         filterRecipesRepository.getQueryRecipe()
             .subscribeBy(
-                onSuccess = { t -> queryText.postValue(t) },
+                onSuccess = { t: String -> queryText.postValue(t) },
                 onError = { it.printStackTrace() })
 
     override fun onCleared() {

@@ -47,6 +47,7 @@ class RecipeDetailFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        postponeEnterTransition()
         setHasOptionsMenu(true)
 
         val recipeId = arguments?.getInt("RECIPE_ID") ?: 0
@@ -73,7 +74,7 @@ class RecipeDetailFragment : BaseFragment() {
 
     override fun onDetach() {
         super.onDetach()
-        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.color_surface)
+        colorStatusBar(ContextCompat.getColor(requireContext(), R.color.color_surface))
     }
 
     private fun initListeners() {
@@ -96,7 +97,6 @@ class RecipeDetailFragment : BaseFragment() {
         viewModel.getIsLoading().observe(this, Observer {
             switchLoadingUiState(it)
         })
-
 
         viewModel.getIsRecipeFavorite().observe(this, Observer { isFavorite ->
             if (isFavorite) {
@@ -130,21 +130,26 @@ class RecipeDetailFragment : BaseFragment() {
         Glide.with(this).asBitmap()
             .centerCrop().load(recipe.image).into(object : CustomTarget<Bitmap>() {
 
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    recipeDetailImage.setImageBitmap(resource)
+                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                    startPostponedEnterTransition()
+                    recipeDetailImage.setImageBitmap(bitmap)
+                    getVibrantUpperRegionImageColor(bitmap)
+                }
 
-                    Palette.Builder(resource).setRegion(0, 0, resource.width, 50).generate { palette ->
-                        palette!!.getDarkVibrantColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.color_surface
+                private fun getVibrantUpperRegionImageColor(bitmap: Bitmap) {
+                    Palette.Builder(bitmap).setRegion(0, 0, bitmap.width, 50)
+                        .generate { palette ->
+                            palette!!.getDarkVibrantColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.color_surface
+                                )
                             )
-                        )
-                            .also {
-                                requireActivity().window.statusBarColor = it
-                                collapsingToolbar?.setContentScrimColor(it)
-                            }
-                    }
+                                .also {
+                                    colorStatusBar(it)
+                                    collapsingToolbar?.setContentScrimColor(it)
+                                }
+                        }
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -152,11 +157,15 @@ class RecipeDetailFragment : BaseFragment() {
             })
 
         collapsingToolbar.title = recipe.title
-        recipeDetailImage.setOnClickListener { view ->
+        recipeDetailImage.setOnClickListener {
             (activity as MainActivity).navigateFullScreen(
                 PhotoViewFragment.newInstance(recipe.image, recipe.title),
                 sharedElements = mapOf(recipeDetailImage to "recipe_detail_image")
             )
         }
+    }
+
+    private fun colorStatusBar(color: Int) {
+        requireActivity().window.statusBarColor = color
     }
 }

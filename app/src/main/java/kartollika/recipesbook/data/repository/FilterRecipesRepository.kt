@@ -85,11 +85,8 @@ class FilterRecipesRepository
     }
 
     fun saveUsePredefinedIntoleranceSetting(state: Boolean) {
-        sharedPreferencesRepository.easyPut<Boolean> {
-            putBoolean(
-                SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY,
-                state
-            )
+        sharedPreferencesRepository.easyPut {
+            putBoolean(SERACH_RECIPES_COMPLEX_USE_PREDEFINED_INTOLERANCE_KEY, state)
         }
     }
 
