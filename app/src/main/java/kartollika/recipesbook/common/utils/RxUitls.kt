@@ -8,7 +8,7 @@ fun <T> wrapSingleAndRun(
     callable: () -> T,
     scheduler: Scheduler = IoScheduler()
 ) {
-    Single.fromCallable { callable }
+    Single.fromCallable { callable() }
         .subscribeOn(scheduler)
         .subscribe()
 }

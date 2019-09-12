@@ -2,7 +2,6 @@ package kartollika.recipesbook.features.settings
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import kartollika.recipesbook.App
 import kartollika.recipesbook.BuildConfig
@@ -36,7 +35,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        bottomSheetContainer = activity!!.findViewById<View>(R.id.test_bottom_sheet_container)
+        bottomSheetContainer = activity!!.findViewById(R.id.test_bottom_sheet_container)
     }
 
     private fun initAboutAppInfo() {
@@ -55,7 +54,6 @@ class SettingsFragment : BaseFragment() {
         }
 
         settingsSignInGoogleAction.setOnClickListener {
-
         }
 
         settingsSetupIntoleranceAction.setOnClickListener {
@@ -63,7 +61,7 @@ class SettingsFragment : BaseFragment() {
                 setCloseDialogListener(object : ApplyingBottomSheetDialog.OnCloseDialogListener {
                     override fun onApply() {
                         dismiss()
-                        Toast.makeText(requireContext(), "Intolerance was saved", Toast.LENGTH_SHORT).show()
+                        bottomSheetContainer.showSnackbarShort("Intolerance was saved")
                     }
 
                     override fun onCanceled() {
