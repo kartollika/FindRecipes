@@ -13,6 +13,7 @@ import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
 import kartollika.recipesbook.common.ui.EndlessScrollListener
 import kartollika.recipesbook.common.ui.PaddingSpaceItemDecoration
+import kartollika.recipesbook.common.utils.createSnackbar
 import kartollika.recipesbook.common.utils.injectViewModel
 import kartollika.recipesbook.data.models.Ranking
 import kartollika.recipesbook.data.models.RecipePreview
@@ -173,7 +174,7 @@ class SearchRecipesFragment : BaseFragment() {
             if (!it.hasBeenHandled) {
 
             }
-            Snackbar.make(fabOpenRecipesFilters, it.peekContent(), Snackbar.LENGTH_LONG)
+            createSnackbar(fabOpenRecipesFilters, it.peekContent(), Snackbar.LENGTH_LONG)
                 .setAction("Retry") { viewModel.performComplexSearch() }.show()
         })
     }
