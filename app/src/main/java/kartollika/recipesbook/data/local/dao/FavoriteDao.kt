@@ -22,6 +22,6 @@ interface FavoriteDao {
     @Query("DELETE from favorite_recipes WHERE recipeId = :id")
     fun removeFavorite(id: Int): Completable
 
-    @Query("SELECT * from recipes_table, favorite_recipes WHERE id = recipeId LIMIT :number OFFSET :offset")
+    @Query("SELECT id, image, title, cachedUntil from recipes_table, favorite_recipes WHERE id = recipeId LIMIT :number OFFSET :offset")
     fun getAllFavoriteRecipes(number: Int, offset: Int): Single<List<RecipeEntity>>
 }

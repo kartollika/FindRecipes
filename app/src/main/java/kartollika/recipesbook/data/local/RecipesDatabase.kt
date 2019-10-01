@@ -10,7 +10,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import io.reactivex.internal.schedulers.IoScheduler
 import kartollika.recipesbook.common.utils.TimeUtils
 import kartollika.recipesbook.data.local.dao.*
-import kartollika.recipesbook.data.local.entities.*
+import kartollika.recipesbook.data.local.entities.FavoriteRecipeEntity
+import kartollika.recipesbook.data.local.entities.IngredientEntity
+import kartollika.recipesbook.data.local.entities.RecipeEntity
+import kartollika.recipesbook.data.local.entities.RecipeIngredientEntity
 import kartollika.recipesbook.data.models.IngredientChosenTypeConverters
 import kartollika.recipesbook.data.models.IngredientSearch
 
@@ -18,7 +21,6 @@ import kartollika.recipesbook.data.models.IngredientSearch
     entities = [IngredientEntity::class,
         RecipeEntity::class,
         RecipeIngredientEntity::class,
-        RecipeIngredientRecipeJoinEntity::class,
         FavoriteRecipeEntity::class],
     version = 1
 )

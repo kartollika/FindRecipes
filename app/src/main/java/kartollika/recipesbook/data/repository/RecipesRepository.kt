@@ -8,11 +8,11 @@ import kartollika.recipesbook.data.local.dao.RecipeIngredientDao
 import kartollika.recipesbook.data.local.dao.RecipeIngredientRecipeDao
 import kartollika.recipesbook.data.local.dao.RecipesDao
 import kartollika.recipesbook.data.local.entities.RecipeEntity
-import kartollika.recipesbook.data.local.entities.RecipeIngredientRecipeJoinEntity
 import kartollika.recipesbook.data.local.entities.mapToIngredientDetail
 import kartollika.recipesbook.data.local.entities.mapToRecipeEntity
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
+import kartollika.recipesbook.data.models.mapToRecipeIngredientEntity
 import kartollika.recipesbook.data.models.mapToRecipeModel
 import kartollika.recipesbook.data.remote.api.data.DataApi
 import kartollika.recipesbook.data.remote.api.data.response.mapToEquipment
@@ -45,7 +45,7 @@ class RecipesRepository
                     }
                     .doOnSuccess {
                         it.requiredIngredients.forEach { ingredient ->
-                            insertIngredientForRecipeRelation(recipeId, ingredient.id)
+                            insertIngredientForRecipeRelation(recipeId, ingredient)
                         }
                     }
             )
@@ -65,7 +65,8 @@ class RecipesRepository
 
     private fun getCachedIngredients(recipeId: Int) =
         Single.defer {
-            recipeIngredientRecipeDao.getIngredientsOfRecipe(recipeId)
+            recipeIngredientRecipeDao.getRecipeWithIngredients(recipeId)
+                .map { it.flatMap { it.ingredients } }
                 .map {
                     if (it.isEmpty()) {
                         throw IllegalArgumentException()
@@ -77,10 +78,12 @@ class RecipesRepository
 
     private fun insertIngredientForRecipeRelation(
         recipeId: Int,
-        ingredientId: Int
+        ingredient: IngredientDetail
     ) {
-        recipeIngredientRecipeDao.insert(
-            RecipeIngredientRecipeJoinEntity(recipeId, ingredientId)
+        recipeIngredientRecipeDao.insertIngredientForRecipe(
+            ingredient.mapToRecipeIngredientEntity().copy(
+                recipeId = recipeId
+            )
         )
             .subscribeOn(IoScheduler())
             .subscribeBy(

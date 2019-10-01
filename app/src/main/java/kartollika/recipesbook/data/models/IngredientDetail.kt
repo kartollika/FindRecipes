@@ -8,7 +8,8 @@ data class IngredientDetail(
     val original: String,
     val image: String,
     val amount: Double,
-    val unit: String
+    val unit: String,
+    var recipeId: Int = 0
 )
 
 fun IngredientDetail.mapToRecipeIngredientEntity() =
@@ -18,5 +19,6 @@ fun IngredientDetail.mapToRecipeIngredientEntity() =
         original = this.original,
         image = this.image,
         amount = this.amount,
-        unit = this.unit
+        unit = this.unit,
+        recipeId = this.recipeId
     )
