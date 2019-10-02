@@ -3,8 +3,8 @@ package kartollika.recipesbook.features.search_recipes
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kartollika.recipesbook.App
@@ -140,8 +140,8 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
         }
     }
 
-    private fun createInputIngredientDialog(type: IngredientChosenType): MaterialAlertDialogBuilder =
-        MaterialAlertDialogBuilder(context).apply {
+    private fun createInputIngredientDialog(type: IngredientChosenType): AlertDialog.Builder =
+        AlertDialog.Builder(context!!).apply {
             val dialogInnerView =
                 LayoutInflater.from(context).inflate(R.layout.input_dialog_layout, null)
             val ingredientsTextField = dialogInnerView.inputDialogTextField

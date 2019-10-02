@@ -9,7 +9,6 @@ import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kartollika.recipesbook.R
 
 abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
 
@@ -25,9 +24,9 @@ abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
 
     abstract fun getLayoutRes(): Int
 
-    private fun setStyle() {
-        setStyle(STYLE_NORMAL, R.style.ThemeOverlay_AppTheme_BottomSheetDialog)
-    }
+//    private fun setStyle() {
+//        setStyle(STYLE_NORMAL, R.style.ThemeOverlay_AppTheme_BottomSheetDialog)
+//    }
 
     fun setCloseDialogListener(listener: OnCloseDialogListener) {
         onCloseDialogListener = listener

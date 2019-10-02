@@ -53,7 +53,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/recipeDetailTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:textSize="24sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.appbar.MaterialToolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
