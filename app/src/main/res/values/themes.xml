@@ -22,6 +22,9 @@
         <item name="android:textColorPrimary">@color/text_color_medium_emphasis</item>
         <item name="android:textColorTertiary">@color/text_color_high_emphasis</item>
 
+        <item name="android:statusBarColor">@color/color_background</item>
+        <item name="android:navigationBarColor">@color/color_surface</item>
+
         <!--Material type attributes-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MyTheme.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MyTheme.Headline2</item>
@@ -38,12 +41,16 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MyTheme.Overline</item>
 
         <!--Material shape attributes-->
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.AppTheme.MediumComponent</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
+        </item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.AppTheme.MediumComponent
+        </item>
 
         <!--Component styles-->
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-<!--        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.AppTheme.BottomSheetDialog</item>-->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
+        </item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.AppTheme.BottomSheetDialog</item>
         <item name="textInputStyle">@style/App.TextField</item>
         <item name="chipStyle">@style/ChoiceChip</item>
         <item name="android:textViewStyle">@style/App.TextView</item>

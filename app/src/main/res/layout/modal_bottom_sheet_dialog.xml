@@ -45,11 +45,12 @@
         android:layout_gravity="bottom"
         android:padding="8dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/modal_sheet_apply"
             android:layout_width="match_parent"
+            style="@style/ApplyButton"
             android:layout_height="48dp"
-            tools:text="Positive" />
+            android:text="Apply" />
 
     </FrameLayout>
 
