@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/upper_rounded_white_background"
     android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/design_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|center_horizontal">
+        android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/modal_sheet_content_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/background_sheet_upper_part">
+            android:orientation="vertical"
+            android:paddingBottom="72dp">
 
             <FrameLayout
                 android:id="@+id/modal_sheet_toolbar"
@@ -35,37 +35,22 @@
                     android:textAppearance="@style/TextAppearance.MyTheme.Headline6"
                     tools:text="Test" />
             </FrameLayout>
-            
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="56dp"
-                android:background="?attr/actionBarDivider"/>
-        </FrameLayout>
-    </FrameLayout>
-    
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/modal_sheet_negative_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Negative"/>
-
-            <Button
-                android:id="@+id/modal_sheet_positive_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Positive"/>
         </LinearLayout>
     </FrameLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/modal_sheet_apply"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            tools:text="Positive" />
+
+    </FrameLayout>
+
+</FrameLayout>

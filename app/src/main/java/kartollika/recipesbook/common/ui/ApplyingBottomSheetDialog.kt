@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.annotation.StringRes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kartollika.recipesbook.R
 
 abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
 
@@ -17,28 +20,53 @@ abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
         fun onCanceled()
     }
 
+    private lateinit var titleView: TextView
+    private lateinit var applyView: View
+
     protected val callbacks: MutableList<BottomSheetBehavior.BottomSheetCallback> = mutableListOf()
     protected var onCloseDialogListener: OnCloseDialogListener? = null
+    private var title: CharSequence = ""
+    private var applyAction: (() -> Unit)? = null
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<out View>
 
     abstract fun getLayoutRes(): Int
 
-//    private fun setStyle() {
-//        setStyle(STYLE_NORMAL, R.style.ThemeOverlay_AppTheme_BottomSheetDialog)
-//    }
-
     fun setCloseDialogListener(listener: OnCloseDialogListener) {
         onCloseDialogListener = listener
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        setStyle()
+    fun setTitle(title: CharSequence) {
+        this.title = title
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getLayoutRes(), container, false)
+    fun setTitle(@StringRes titleRes: Int) {
+        title = context?.getString(titleRes) ?: ""
+    }
+
+    fun setOnApplyListener(applyAction: () -> Unit) {
+        this.applyAction = applyAction
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.modal_bottom_sheet_dialog, container, false)
+
+        view.findViewById<ViewGroup>(R.id.modal_sheet_content_holder)
+            .addView(inflater.inflate(getLayoutRes(), null))
+
+        titleView = view.findViewById(R.id.modal_sheet_title)
+        applyView = view.findViewById(R.id.modal_sheet_apply)
+
+        return view
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -80,11 +108,15 @@ abstract class ApplyingBottomSheetDialog : BottomSheetDialogFragment() {
                 }
             })
         }
+
         return dialog
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        titleView.text = title
+        applyView.setOnClickListener { onCloseDialogListener?.onApply() }
     }
 
     fun addCallback(callback: BottomSheetBehavior.BottomSheetCallback) {

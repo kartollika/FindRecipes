@@ -130,10 +130,10 @@ class RecipesFiltersDialogFragment : ApplyingBottomSheetDialog() {
             createInputIngredientDialog(IngredientChosenType.Excluded).show()
         }
 
-        saveFiltersActionView.setOnClickListener {
-            dismiss()
-            super.onCloseDialogListener?.onApply()
-        }
+//        saveFiltersActionView.setOnClickListener {
+//            dismiss()
+//            super.onCloseDialogListener?.onApply()
+//        }
 
         intoleranceIngredientsUsePredefinedCheckBox.setOnCheckedChangeListener { _, checked ->
             viewModel.onUsePredefinedIntoleranceChanged(checked)

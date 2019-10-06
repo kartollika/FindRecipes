@@ -60,6 +60,7 @@ class SettingsFragment : BaseFragment() {
 
         settingsSetupIntoleranceAction.setOnClickListener {
             IntoleranceDefineDialogFragment().apply {
+                setTitle("Define your intolerance")
                 setCloseDialogListener(object : ApplyingBottomSheetDialog.OnCloseDialogListener {
                     override fun onApply() {
                         dismiss()

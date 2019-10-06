@@ -74,7 +74,7 @@ class RecipeDetailFragment : BaseFragment() {
 
     override fun onDetach() {
         super.onDetach()
-        colorStatusBar(ContextCompat.getColor(requireContext(), R.color.color_primary_dark))
+        colorStatusBar(ContextCompat.getColor(requireContext(), R.color.color_surface))
     }
 
     private fun initListeners() {
@@ -142,7 +142,7 @@ class RecipeDetailFragment : BaseFragment() {
                             palette!!.getDarkVibrantColor(
                                 ContextCompat.getColor(
                                     requireContext(),
-                                    R.color.color_primary_dark
+                                    R.color.color_surface
                                 )
                             )
                                 .also {
