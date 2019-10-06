@@ -4,7 +4,6 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
-import kartollika.recipesbook.data.local.dao.RecipeIngredientDao
 import kartollika.recipesbook.data.local.dao.RecipeIngredientRecipeDao
 import kartollika.recipesbook.data.local.dao.RecipesDao
 import kartollika.recipesbook.data.local.entities.RecipeEntity
@@ -22,7 +21,6 @@ class RecipesRepository
 @Inject constructor(
     private val recipesDao: RecipesDao,
     private val recipeIngredientRecipeDao: RecipeIngredientRecipeDao,
-    private val recipeIngredientDao: RecipeIngredientDao,
     private val dataApi: DataApi
 ) {
 
@@ -30,12 +28,7 @@ class RecipesRepository
         Single.zip<Recipe, List<IngredientDetail>, Recipe>(
             getCachedRecipe(recipeId),
             getCachedIngredients(recipeId),
-            BiFunction { t1, t2 ->
-                t1.apply {
-                    this.copy(requiredIngredients = t2)
-                }
-            }
-        )
+            BiFunction { t1, t2 -> t1.copy(requiredIngredients = t2) })
             .subscribeOn(IoScheduler())
             .onErrorResumeNext(
                 dataApi.getRecipeInformation(recipeId)

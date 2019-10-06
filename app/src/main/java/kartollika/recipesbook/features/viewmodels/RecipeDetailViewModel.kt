@@ -41,7 +41,8 @@ class RecipeDetailViewModel
     fun getRecipeDetail(): LiveData<Recipe> = recipeDetail
     fun getIsLoading(): LiveData<Boolean> = isLoadingLiveData
     fun getIsRecipeFavorite(): LiveData<Boolean> = isRecipeFavoriteLiveData
-    fun getRecipeInfoAdapterList(): LiveData<List<RecipeDetailInfoItem>> = recipeInfoAdapterListLiveData
+    fun getRecipeInfoAdapterList(): LiveData<List<RecipeDetailInfoItem>> =
+        recipeInfoAdapterListLiveData
 
     fun loadRecipeById(context: Context, id: Int) {
         this.context = WeakReference(context)
@@ -81,19 +82,17 @@ class RecipeDetailViewModel
     }
 
     private fun parseIngredientsInformation(recipe: Recipe) {
-        Single.fromCallable {
+        if (recipe.requiredIngredients.isNotEmpty()) {
             insertNewInfoItem(
                 2,
                 ListBlockModel("Ingredients", recipe.requiredIngredients),
                 INFO_LIST_BLOCK_INGREDIENTS
             )
         }
-            .subscribeOn(NewThreadScheduler())
-            .subscribe()
     }
 
     private fun parseCommonInformation(recipe: Recipe) {
-        val context = context.get()?.let { context ->
+        context.get()?.let { context ->
             Single.fromCallable {
                 insertNewInfoItem(
                     0,
@@ -115,18 +114,19 @@ class RecipeDetailViewModel
                 .subscribeOn(NewThreadScheduler())
                 .subscribe()
         }
-
     }
 
     private fun parseEquipmentInformation(recipe: Recipe) {
         searchRecipesRepository.getRecipeRequiredEquipment(recipe.id)
             .subscribeOn(NewThreadScheduler())
             .subscribeBy(onSuccess = { list ->
-                insertNewInfoItem(
-                    3,
-                    ListBlockModel("Equipment", list),
-                    INFO_LIST_BLOCK_EQUIPMENT
-                )
+                if (list.isNotEmpty()) {
+                    insertNewInfoItem(
+                        3,
+                        ListBlockModel("Equipment", list),
+                        INFO_LIST_BLOCK_EQUIPMENT
+                    )
+                }
             })
     }
 

@@ -28,7 +28,6 @@ class IntoleranceDefineDialogFragment : ApplyingBottomSheetDialog() {
         super.onViewCreated(view, savedInstanceState)
         initAdapters()
         initObservers()
-        initListeners()
     }
 
     private fun initAdapters() {
@@ -53,9 +52,5 @@ class IntoleranceDefineDialogFragment : ApplyingBottomSheetDialog() {
         viewModel.getIntoleranceIngredients().observe(viewLifecycleOwner, Observer {
             intoleranceIngredientsAdapter.setupList(it)
         })
-    }
-
-    private fun initListeners() {
-        intoleranceDefineApplyAction.setOnClickListener { super.onCloseDialogListener?.onApply() }
     }
 }

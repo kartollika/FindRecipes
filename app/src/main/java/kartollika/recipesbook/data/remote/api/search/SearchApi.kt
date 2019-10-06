@@ -17,11 +17,9 @@ import retrofit2.http.Query
 
 interface SearchApi {
 
-//    ranking: Whether to
-//    minimize missing ingredients (0),
-//    maximize used ingredients (1) first, or
-//    rank recipes by relevance (2).
-
+    /**
+     * @param ranking: Whether to minimize missing ingredients (0), maximize used ingredients (1) first, or rank recipes by relevance (2).
+     */
     @GET(NetworkConstants.Search.recipesByIngredients)
     fun searchRecipesComplex(
         @Query(limitLicense_QUERY) limitLicense: Boolean = false,
