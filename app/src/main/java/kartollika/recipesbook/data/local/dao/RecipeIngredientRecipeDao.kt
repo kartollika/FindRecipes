@@ -2,23 +2,20 @@ package kartollika.recipesbook.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import io.reactivex.Completable
 import io.reactivex.Single
+import kartollika.recipesbook.data.local.entities.RecipeAndIngredients
 import kartollika.recipesbook.data.local.entities.RecipeIngredientEntity
-import kartollika.recipesbook.data.local.entities.RecipeIngredientRecipeJoinEntity
 
 @Dao
 interface RecipeIngredientRecipeDao {
 
-    @Query(
-        "SELECT * from recipe_ingredient_table INNER JOIN recipe_ingredient_recipe_join_table " +
-            "ON recipe_ingredient_table.id=recipe_ingredient_recipe_join_table.recipeIngredientId " +
-            "WHERE recipe_ingredient_recipe_join_table.recipeId=:recipeId"
-    )
-    fun getIngredientsOfRecipe(recipeId: Int): Single<List<RecipeIngredientEntity>>
+    @Transaction
+    @Query("SELECT id from recipes_table WHERE id = :recipeId")
+    fun getRecipeWithIngredients(recipeId: Int): Single<List<RecipeAndIngredients>>
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(recipeIngredientRecipeJoin: RecipeIngredientRecipeJoinEntity): Completable
+    @Insert
+    fun insertIngredientForRecipe(ingredientEntity: RecipeIngredientEntity): Completable
 }

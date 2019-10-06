@@ -4,18 +4,18 @@ import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kartollika.recipesbook.common.utils.dpToPx
+import kartollika.recipesbook.common.utils.dp
 
 class PaddingSpaceItemDecoration constructor(
-    private val context: Context,
+    context: Context,
     private var vertical: Int = 0,
     private var horizontal: Int = 0
 ) :
     RecyclerView.ItemDecoration() {
 
     init {
-        vertical = dpToPx(vertical.toFloat(), context)
-        horizontal = dpToPx(horizontal.toFloat(), context)
+        vertical = dp(vertical, context)
+        horizontal = dp(horizontal, context)
     }
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

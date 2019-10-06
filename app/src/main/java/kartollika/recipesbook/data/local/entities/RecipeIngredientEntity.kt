@@ -1,19 +1,17 @@
 package kartollika.recipesbook.data.local.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import kartollika.recipesbook.data.models.IngredientDetail
 
-@Entity(tableName = "recipe_ingredient_table")
+@Entity(tableName = "recipe_ingredient_table", primaryKeys = ["id", "recipeId"])
 data class RecipeIngredientEntity(
-    @PrimaryKey @ColumnInfo
     val id: Int,
     val name: String,
     val original: String,
     val image: String,
     val amount: Double,
-    val unit: String
+    val unit: String,
+    val recipeId: Int
 )
 
 fun RecipeIngredientEntity.mapToIngredientDetail() =
@@ -23,5 +21,6 @@ fun RecipeIngredientEntity.mapToIngredientDetail() =
         original = this.original,
         image = this.image,
         amount = this.amount,
-        unit = this.unit
+        unit = this.unit,
+        recipeId = this.recipeId
     )

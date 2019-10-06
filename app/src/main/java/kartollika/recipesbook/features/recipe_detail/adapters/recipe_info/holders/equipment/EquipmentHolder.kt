@@ -7,9 +7,9 @@ import kartollika.recipesbook.data.models.Equipment
 
 class EquipmentHolder(view: View) : BaseChipHolder<Equipment>(view) {
 
-    private val text = view as Chip
+    private val chip = view as Chip
 
     fun bind(ingredientDetail: Equipment) {
-        text.text = ingredientDetail.name
+        chip.text = ingredientDetail.name
     }
 }

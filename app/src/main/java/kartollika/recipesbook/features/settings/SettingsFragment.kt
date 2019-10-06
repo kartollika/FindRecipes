@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import kartollika.recipesbook.App
 import kartollika.recipesbook.BuildConfig
 import kartollika.recipesbook.R
 import kartollika.recipesbook.common.base.BaseFragment
 import kartollika.recipesbook.common.ui.ApplyingBottomSheetDialog
+import kartollika.recipesbook.common.utils.createSnackbar
 import kartollika.recipesbook.common.utils.injectViewModel
-import kartollika.recipesbook.common.utils.showSnackbarShort
 import kartollika.recipesbook.features.MainActivity
 import kartollika.recipesbook.features.search_recipes.SearchRecipesFragment
 import kartollika.recipesbook.features.viewmodels.SettingsViewModel
@@ -21,7 +22,7 @@ class SettingsFragment : BaseFragment() {
 
     private val viewModel: SettingsViewModel by injectViewModel { App.diManager.applicationComponent!!.settingsViewModel }
 
-    private lateinit var bottomSheetContainer: View
+    private lateinit var bottomNavigation: View
 
     override fun getLayoutRes(): Int = R.layout.settings_fragment_layout
 
@@ -36,7 +37,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        bottomSheetContainer = activity!!.findViewById<View>(R.id.test_bottom_sheet_container)
+        bottomNavigation = activity!!.findViewById(R.id.bottomNavigationView)
     }
 
     private fun initAboutAppInfo() {
@@ -60,10 +61,15 @@ class SettingsFragment : BaseFragment() {
 
         settingsSetupIntoleranceAction.setOnClickListener {
             IntoleranceDefineDialogFragment().apply {
+                setTitle("Define your intolerance")
                 setCloseDialogListener(object : ApplyingBottomSheetDialog.OnCloseDialogListener {
                     override fun onApply() {
                         dismiss()
-                        Toast.makeText(requireContext(), "Intolerance was saved", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Intolerance was saved",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     override fun onCanceled() {
@@ -81,10 +87,12 @@ class SettingsFragment : BaseFragment() {
 
             when (it.getContentIfNotHandled()) {
                 true -> {
-                    bottomSheetContainer.showSnackbarShort("Cache cleared")
+                    createSnackbar(view!!, "Cache cleared", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(bottomNavigation).show()
                 }
                 false -> {
-                    bottomSheetContainer.showSnackbarShort("Error occured on clearing cache")
+                    createSnackbar(view!!, "Error occured on clearing cache", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(bottomNavigation).show()
                 }
             }
         })

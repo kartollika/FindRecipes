@@ -57,7 +57,7 @@ class HubFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelecte
         }
 
         fragmentTransaction
-            .replace(R.id.test_bottom_sheet_container, fragment)
+            .replace(R.id.hub_container, fragment)
             .commit()
         return true
     }

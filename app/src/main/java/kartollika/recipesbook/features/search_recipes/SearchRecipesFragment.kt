@@ -142,8 +142,10 @@ class SearchRecipesFragment : BaseFragment() {
 
     private fun openFilters() {
         val dialog = RecipesFiltersDialogFragment().apply {
+            setTitle("Filter")
             setCloseDialogListener(object : ApplyingBottomSheetDialog.OnCloseDialogListener {
                 override fun onApply() {
+                    dismiss()
                     viewModel.performComplexSearch()
                 }
 

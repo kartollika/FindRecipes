@@ -1,7 +1,5 @@
 package kartollika.recipesbook.common.utils
 
-import android.content.Context
-import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
 
@@ -14,18 +12,6 @@ fun onRenderFinished(view: View, action: Runnable) {
                 action.run()
             }
         }
-    )
-}
-
-fun dpToPx(dp: Float, context: Context): Int {
-    return dpToPxFloat(dp, context).toInt()
-}
-
-fun dpToPxFloat(dp: Float, context: Context): Float {
-    return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        dp,
-        context.resources.displayMetrics
     )
 }
 

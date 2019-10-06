@@ -4,10 +4,25 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="ApplyButton">
-        <item name="shapeAppearance">@style/ShapeAppearance.AppTheme.ApplyButtonShapeAppearance</item>
-        <item name="buttonStyle">@style/Widget.MaterialComponents.Button</item>
-        <item name="android:textColor">@android:color/white</item>
+   <!--<style name="ChoiceChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+        <item name="chipBackgroundColor">@color/chip_accent_background_color_selector</item>
+        <item name="chipStrokeWidth">0.5dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:focusable">true</item>
+        <item name="chipStrokeColor">@android:color/darker_gray</item>
+        <item name="textEndPadding">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ChipNotSelectable" parent="ChoiceChip">
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:state_checked">false</item>
+        <item name="closeIconVisible">false</item>
+    </style>-->
+
+    <style name="ApplyButton" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">?attr/colorSecondary</item>
     </style>
 
@@ -37,17 +52,29 @@
         <item name="android:textAppearance">@style/TextAppearance.MyTheme.Body1</item>
     </style>
 
+    <style name="CustomBottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.MyTheme.BottomSheet.Modal</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor">@android:color/background_light</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">@android:color/transparent</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="ThemeOverlay.AppTheme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowAnimationStyle">@style/Animation.MyTheme.BottomSheet.Modal</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="bottomSheetStyle">@style/Widget.MyTheme.BottomSheet.Modal</item>
-        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">
-            @android:color/transparent
-        </item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">@android:color/transparent</item>
     </style>
-
     <style name="Widget.MyTheme.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>

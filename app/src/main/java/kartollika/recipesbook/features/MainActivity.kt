@@ -38,7 +38,7 @@ class MainActivity : BaseActivity() {
 
     fun navigateBottomSheet(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .add(R.id.test_bottom_sheet_container, fragment)
+            .add(R.id.hub_container, fragment)
             .commit()
     }
 

@@ -4,15 +4,14 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.internal.schedulers.IoScheduler
 import io.reactivex.rxkotlin.subscribeBy
-import kartollika.recipesbook.data.local.dao.RecipeIngredientDao
 import kartollika.recipesbook.data.local.dao.RecipeIngredientRecipeDao
 import kartollika.recipesbook.data.local.dao.RecipesDao
 import kartollika.recipesbook.data.local.entities.RecipeEntity
-import kartollika.recipesbook.data.local.entities.RecipeIngredientRecipeJoinEntity
 import kartollika.recipesbook.data.local.entities.mapToIngredientDetail
 import kartollika.recipesbook.data.local.entities.mapToRecipeEntity
 import kartollika.recipesbook.data.models.IngredientDetail
 import kartollika.recipesbook.data.models.Recipe
+import kartollika.recipesbook.data.models.mapToRecipeIngredientEntity
 import kartollika.recipesbook.data.models.mapToRecipeModel
 import kartollika.recipesbook.data.remote.api.data.DataApi
 import kartollika.recipesbook.data.remote.api.data.response.mapToEquipment
@@ -22,7 +21,6 @@ class RecipesRepository
 @Inject constructor(
     private val recipesDao: RecipesDao,
     private val recipeIngredientRecipeDao: RecipeIngredientRecipeDao,
-    private val recipeIngredientDao: RecipeIngredientDao,
     private val dataApi: DataApi
 ) {
 
@@ -30,12 +28,7 @@ class RecipesRepository
         Single.zip<Recipe, List<IngredientDetail>, Recipe>(
             getCachedRecipe(recipeId),
             getCachedIngredients(recipeId),
-            BiFunction { t1, t2 ->
-                t1.apply {
-                    this.copy(requiredIngredients = t2)
-                }
-            }
-        )
+            BiFunction { t1, t2 -> t1.copy(requiredIngredients = t2) })
             .subscribeOn(IoScheduler())
             .onErrorResumeNext(
                 dataApi.getRecipeInformation(recipeId)
@@ -45,7 +38,7 @@ class RecipesRepository
                     }
                     .doOnSuccess {
                         it.requiredIngredients.forEach { ingredient ->
-                            insertIngredientForRecipeRelation(recipeId, ingredient.id)
+                            insertIngredientForRecipeRelation(recipeId, ingredient)
                         }
                     }
             )
@@ -65,7 +58,8 @@ class RecipesRepository
 
     private fun getCachedIngredients(recipeId: Int) =
         Single.defer {
-            recipeIngredientRecipeDao.getIngredientsOfRecipe(recipeId)
+            recipeIngredientRecipeDao.getRecipeWithIngredients(recipeId)
+                .map { it.flatMap { it.ingredients } }
                 .map {
                     if (it.isEmpty()) {
                         throw IllegalArgumentException()
@@ -77,10 +71,12 @@ class RecipesRepository
 
     private fun insertIngredientForRecipeRelation(
         recipeId: Int,
-        ingredientId: Int
+        ingredient: IngredientDetail
     ) {
-        recipeIngredientRecipeDao.insert(
-            RecipeIngredientRecipeJoinEntity(recipeId, ingredientId)
+        recipeIngredientRecipeDao.insertIngredientForRecipe(
+            ingredient.mapToRecipeIngredientEntity().copy(
+                recipeId = recipeId
+            )
         )
             .subscribeOn(IoScheduler())
             .subscribeBy(

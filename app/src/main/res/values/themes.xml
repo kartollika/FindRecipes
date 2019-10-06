@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme.DayNight" parent="Base.MyTheme"/>
+    <style name="AppTheme" parent="Base.Theme.App" />
 
-    <!--Base custom theme which will be shared between both light and dark theme variants-->
-    <style name="Base.MyTheme" parent="Base.MaterialThemeBuilder">
+    <style name="Base.Theme.App" parent="Base.Theme">
         <!--Material color attributes -->
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryVariant">@color/color_primary_variant</item>
@@ -23,6 +22,9 @@
         <item name="android:textColorPrimary">@color/text_color_medium_emphasis</item>
         <item name="android:textColorTertiary">@color/text_color_high_emphasis</item>
 
+        <item name="android:statusBarColor">@color/color_background</item>
+        <item name="android:navigationBarColor">@color/color_surface</item>
+
         <!--Material type attributes-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MyTheme.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MyTheme.Headline2</item>
@@ -39,25 +41,26 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MyTheme.Overline</item>
 
         <!--Material shape attributes-->
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.AppTheme.MediumComponent</item>
-        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.AppTheme.LargeComponent</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
+        </item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.AppTheme.MediumComponent
+        </item>
 
         <!--Component styles-->
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
+        </item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.AppTheme.BottomSheetDialog</item>
         <item name="textInputStyle">@style/App.TextField</item>
         <item name="chipStyle">@style/ChoiceChip</item>
         <item name="android:textViewStyle">@style/App.TextView</item>
     </style>
 
-    <style name="Base.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:statusBarColor">?colorSurface</item>
+    <style name="Base.Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <item name="android:navigationBarColor">?android:colorBackground</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="android:navigationBarDividerColor" tools:ignore="NewApi">#32ADADAD</item>
-
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowActivityTransitions">true</item>
     </style>
